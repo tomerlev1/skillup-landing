@@ -4,106 +4,72 @@ import { motion } from "motion/react";
 import Button from "@/components/ui/Button";
 import HeroBrandStage from "@/components/landing/HeroBrandStage";
 
-const PARTICLES = Array.from({ length: 25 }, (_, i) => ({
-  left: `${((i * 37 + 13) % 100)}%`,
-  size: (i % 3) + 1.5,
-  duration: (i % 8) + 10,
-  delay: (i * 1.7) % 10,
-  opacity: ((i % 4) + 1) * 0.1,
-}));
-
-function Particles() {
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {PARTICLES.map((p, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full bg-brand-400"
-          style={{
-            left: p.left,
-            bottom: "-10px",
-            width: p.size,
-            height: p.size,
-            opacity: p.opacity,
-            animation: `particle-float ${p.duration}s linear ${p.delay}s infinite`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
 export default function HeroSection() {
   return (
     <div className="relative h-full w-full overflow-hidden">
-      {/* Radial gradient overlays */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        aria-hidden="true"
-      >
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 80% 50% at 70% 40%, rgba(137,86,232,0.10), transparent), radial-gradient(ellipse 60% 60% at 30% 70%, rgba(255,112,51,0.05), transparent)",
-          }}
-        />
-      </div>
-
-      {/* Floating particles */}
-      <Particles />
-
       {/* Content */}
-      <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-center gap-6 px-6 pt-20 pb-8 md:flex-row md:gap-20 md:px-16 md:pb-0">
+      <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-center gap-6 px-6 pt-24 pb-12 md:flex-row md:gap-20 md:px-16 md:pb-0 md:pt-20">
         {/* Text side */}
-        <div className="flex max-w-lg flex-col items-center text-center md:items-start md:text-right">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+        <div className="flex max-w-xl flex-col items-center text-center md:items-start md:text-right">
+          {/* Eyebrow */}
+          <motion.p
+            className="mb-6 text-xs font-semibold uppercase tracking-[0.22em] text-brand-600"
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            dir="ltr"
           >
-            <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-brand-500/20 bg-brand-500/10 px-4 py-1.5 text-xs font-semibold text-brand-400">
-              <span className="h-1.5 w-1.5 rounded-full bg-brand-500 animate-pulse-dot" />
-              עברית מלאה · כל הארץ · חדש בישראל
-            </span>
-          </motion.div>
+            00 - SkillUp
+          </motion.p>
 
           {/* Title */}
-          <motion.h1
-            className="mt-4 text-3xl font-black leading-tight tracking-tight md:mt-6 md:text-5xl"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <span className="text-white">המורה הפרטי הנכון לכם נמצא כאן. </span>
-            <span className="gradient-text">
+          <h1 className="text-4xl font-black leading-[1.05] tracking-tight text-dark-900 md:text-6xl lg:text-7xl">
+            <motion.span
+              className="block text-dark-900"
+              initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+              animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
+              transition={{ duration: 0.9, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            >
+              המורה הפרטי הנכון לכם נמצא כאן,
+            </motion.span>
+            <motion.span
+              className="gradient-text mt-2 block"
+              initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+              animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
+              transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            >
               כל מקצוע, כל גיל, כל מקום בישראל.
-            </span>
-          </motion.h1>
+            </motion.span>
+          </h1>
 
           {/* Subtitle */}
           <motion.p
-            className="mt-4 mb-6 text-base leading-relaxed text-dark-400 md:mt-6 md:mb-9 md:text-lg"
-            initial={{ opacity: 0, y: 20 }}
+            className="mt-6 mb-8 max-w-xl text-base leading-relaxed text-dark-600 md:text-lg"
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.55, delay: 0.85, ease: [0.16, 1, 0.3, 1] }}
           >
             9 תחומים, 3 דרכי לימוד, אלפי שילובים. אתם בוחרים את המורה, את השעה
-            ואת המקום. אנחנו רק דואגים שהכל יעבוד חלק. בלי עמלות תיווך. בלי
-            רדיפה בוואטסאפ. בעברית מלאה. ממשיכים לצמוח יחד.
+            ואת המקום, ואנחנו דואגים שהכל יעבוד חלק - בלי עמלות תיווך, בלי
+            רדיפה בוואטסאפ, בעברית מלאה.
           </motion.p>
 
-          {/* CTA */}
+          {/* CTA row */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.55, delay: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="flex flex-col items-center gap-3 sm:flex-row md:items-start md:justify-start">
+            <div className="flex flex-col items-center gap-4 sm:flex-row md:items-center md:justify-start">
               <Button variant="primary" arrow href="#download">
                 זמין עכשיו בחנות האפליקציות
               </Button>
+              <a
+                href="#how-it-works"
+                className="text-sm font-semibold text-dark-700 underline-offset-4 transition-colors hover:text-brand-600 hover:underline"
+              >
+                ראו איך זה עובד ↓
+              </a>
             </div>
           </motion.div>
         </div>

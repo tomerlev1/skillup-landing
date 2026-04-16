@@ -22,29 +22,22 @@ const STAGE_H = 640;
  * Coordinates are relative to the stage center (positive x = right, positive y = down).
  */
 const ICONS = [
-  { Icon: SubjectBookIcon,       size: 38, x: -130, y: -180, dur: 9.2, delay: 0,   color: "text-amber-200" },
-  { Icon: SubjectAtomIcon,       size: 44, x:  140, y: -160, dur: 11,  delay: 0.4, color: "text-cyan-200" },
-  { Icon: SubjectPaletteIcon,    size: 42, x: -180, y:  -40, dur: 10.4,delay: 0.9, color: "text-pink-200" },
-  { Icon: SubjectRulerIcon,      size: 40, x:  180, y:   20, dur: 12.6,delay: 1.1, color: "text-emerald-200" },
-  { Icon: SubjectGlobeIcon,      size: 42, x: -160, y:  130, dur: 13.4,delay: 0.6, color: "text-sky-200" },
-  { Icon: SubjectLightbulbIcon,  size: 36, x:  150, y:  150, dur: 9.8, delay: 1.5, color: "text-yellow-200" },
-  { Icon: SubjectMusicIcon,      size: 38, x:   60, y: -200, dur: 10.2,delay: 1.8, color: "text-rose-200" },
-  { Icon: SubjectCodeIcon,       size: 40, x:  -70, y:  210, dur: 11.6,delay: 0.2, color: "text-indigo-200" },
-  { Icon: SubjectChefHatIcon,    size: 40, x:   80, y:  220, dur: 12,  delay: 1.3, color: "text-violet-100" },
+  { Icon: SubjectBookIcon,       size: 38, x: -130, y: -180, dur: 9.2, delay: 0,   color: "brand-300" },
+  { Icon: SubjectAtomIcon,       size: 44, x:  140, y: -160, dur: 11,  delay: 0.4, color: "brand-400" },
+  { Icon: SubjectPaletteIcon,    size: 42, x: -180, y:  -40, dur: 10.4,delay: 0.9, color: "brand-200" },
+  { Icon: SubjectRulerIcon,      size: 40, x:  180, y:   20, dur: 12.6,delay: 1.1, color: "brand-300" },
+  { Icon: SubjectGlobeIcon,      size: 42, x: -160, y:  130, dur: 13.4,delay: 0.6, color: "brand-400" },
+  { Icon: SubjectLightbulbIcon,  size: 36, x:  150, y:  150, dur: 9.8, delay: 1.5, color: "brand-300" },
+  { Icon: SubjectMusicIcon,      size: 38, x:   60, y: -200, dur: 10.2,delay: 1.8, color: "brand-200" },
+  { Icon: SubjectCodeIcon,       size: 40, x:  -70, y:  210, dur: 11.6,delay: 0.2, color: "brand-400" },
+  { Icon: SubjectChefHatIcon,    size: 40, x:   80, y:  220, dur: 12,  delay: 1.3, color: "brand-300" },
 ] as const;
 
-// Tailwind doesn't include text-amber-200/text-yellow-200/text-sky-200 in our @theme tokens;
-// instead inline a color map → hex, so we don't need to extend globals for these subject tints.
+// All orbit icons resolve to muted brand-purple tints — single-palette restraint.
 const COLOR_HEX: Record<string, string> = {
-  "text-amber-200":   "#FDE68A",
-  "text-cyan-200":    "#A5F3FC",
-  "text-pink-200":    "#FBCFE8",
-  "text-emerald-200": "#A7F3D0",
-  "text-sky-200":     "#BAE6FD",
-  "text-yellow-200":  "#FEF08A",
-  "text-rose-200":    "#FECDD3",
-  "text-indigo-200":  "#C7D2FE",
-  "text-violet-100":  "#EDE9FE",
+  "brand-200": "#DDD6FE",
+  "brand-300": "#C4B5FD",
+  "brand-400": "#A78BFA",
 };
 
 export default function HeroBrandStage() {
@@ -65,7 +58,7 @@ export default function HeroBrandStage() {
           width: STAGE_W * 0.95,
           height: STAGE_H * 0.85,
           background:
-            "radial-gradient(ellipse 60% 55% at 50% 45%, rgba(137,86,232,0.18) 0%, rgba(76,29,149,0.08) 45%, transparent 75%)",
+            "radial-gradient(ellipse 60% 55% at 50% 45%, rgba(196,181,253,0.35) 0%, rgba(221,214,254,0.15) 45%, transparent 75%)",
         }}
       />
 
@@ -77,9 +70,8 @@ export default function HeroBrandStage() {
           style={{
             left: "50%",
             top: "50%",
-            color: COLOR_HEX[color] ?? "#FFF",
-            filter:
-              "drop-shadow(0 0 18px rgba(137,86,232,0.35)) drop-shadow(0 4px 10px rgba(0,0,0,0.4))",
+            color: COLOR_HEX[color] ?? "#C4B5FD",
+            filter: "drop-shadow(0 2px 8px rgba(106,13,145,0.15))",
           }}
           initial={{ x: x, y: y, opacity: 0, scale: 0.5 }}
           animate={{
@@ -113,7 +105,7 @@ export default function HeroBrandStage() {
             className="absolute inset-0 -m-16 rounded-full animate-glow-pulse"
             style={{
               background:
-                "radial-gradient(circle, rgba(167,139,250,0.35) 0%, rgba(124,58,237,0.15) 40%, transparent 70%)",
+                "radial-gradient(circle, rgba(167,139,250,0.25) 0%, rgba(196,181,253,0.12) 40%, transparent 70%)",
             }}
           />
           <img
@@ -121,16 +113,10 @@ export default function HeroBrandStage() {
             alt="SkillUp"
             width={180}
             height={154}
-            className="relative drop-shadow-[0_0_30px_rgba(167,139,250,0.5)]"
+            className="relative drop-shadow-[0_2px_20px_rgba(137,86,232,0.25)]"
           />
         </div>
-        <span
-          className="mt-4 text-3xl font-black tracking-wide text-white md:text-4xl"
-          style={{
-            textShadow:
-              "0 0 20px rgba(167,139,250,0.5), 0 4px 12px rgba(0,0,0,0.4)",
-          }}
-        >
+        <span className="mt-4 text-3xl font-black tracking-wide text-dark-900 md:text-4xl">
           SkillUp
         </span>
       </motion.div>

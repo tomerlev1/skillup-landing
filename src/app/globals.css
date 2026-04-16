@@ -102,26 +102,32 @@ body {
   font-family: var(--font-rubik), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #FBFAFC;
+  color: #0F172A;
 }
 
-/* Fullpage scroll: lock viewport on desktop — only on landing page */
-@media (min-width: 768px) {
-  html.fullpage-active,
-  html.fullpage-active body {
-    overflow: hidden;
-    height: 100vh;
-    height: 100dvh;
-  }
+/* One canvas — ambient radial mesh fixed behind all content.
+   Every section on the landing page is transparent so the mesh shows through. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 50% at 85% 0%, rgba(221, 214, 254, 0.55), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 10% 100%, rgba(255, 229, 214, 0.45), transparent 65%),
+    radial-gradient(ellipse 70% 40% at 50% 50%, rgba(245, 243, 255, 0.6), transparent 70%);
 }
 
 ::selection {
-  background: rgba(137, 86, 232, 0.32);
-  color: white;
+  background: rgba(137, 86, 232, 0.20);
+  color: #1E293B;
 }
 
 /* ===== GRADIENT TEXT UTILITY ===== */
 .gradient-text {
-  background: linear-gradient(135deg, #A78BFA, #8956E8, #FF7033);
+  background: linear-gradient(135deg, #6A0D91, #8956E8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -134,17 +140,38 @@ body {
   background-clip: text;
 }
 
-/* ===== GLASS CARD ===== */
+/* ===== GLASS CARD (light variant) ===== */
 .glass-card {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(226, 232, 240, 0.7);
+  backdrop-filter: blur(14px);
 }
 
-.glass-card:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(167, 139, 250, 0.25);
-  box-shadow: 0 8px 30px rgba(137, 86, 232, 0.12);
+/* ===== SECTION BLOOM — per-section localized radial wash =====
+   Override --bloom-x / --bloom-y inline to place the bloom. */
+.section-bloom {
+  position: relative;
+  isolation: isolate;
+}
+
+.section-bloom::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 45% 60% at var(--bloom-x, 80%) var(--bloom-y, 20%),
+    rgba(137, 86, 232, 0.08),
+    transparent 70%
+  );
+}
+
+/* ===== HAIRLINE DIVIDER ===== */
+.hairline {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, #E2E8F0 50%, transparent);
 }
 
 /* ===== ANIMATIONS ===== */
@@ -168,11 +195,9 @@ body {
   100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.15); }
 }
 
-@keyframes particle-float {
-  0% { transform: translateY(100vh) scale(0); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-2px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .animate-pulse-dot {
@@ -190,7 +215,7 @@ body {
 /* ===== SCROLL PROGRESS BAR ===== */
 .scroll-progress {
   transform-origin: right;
-  background: linear-gradient(90deg, #6A0D91, #8956E8, #FF7033);
+  background: linear-gradient(90deg, #6A0D91, #8956E8);
 }
 
 /* ===== PHONE SCREEN TRANSITIONS ===== */

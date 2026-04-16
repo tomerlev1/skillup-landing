@@ -18,10 +18,7 @@ export default function LandingPage() {
     <>
       <Navbar />
       <main>
-        <section
-          id="hero"
-          className="relative min-h-svh w-full bg-gradient-to-br from-brand-900 via-brand-800 to-brand-950"
-        >
+        <section id="hero" className="relative min-h-svh w-full">
           <HeroSection />
         </section>
 
@@ -29,17 +26,13 @@ export default function LandingPage() {
 
         <TrustBarSection />
 
-        <section
-          id="why-skillup"
-          className="w-full bg-white"
-        >
+        <section id="why-skillup" className="w-full">
           <PainPointsSection />
         </section>
 
-        <section
-          id="how-it-works"
-          className="w-full bg-gradient-to-b from-dark-50 to-brand-50"
-        >
+        <div className="hairline mx-auto max-w-5xl" />
+
+        <section id="how-it-works" className="w-full">
           <HowItWorksSection />
         </section>
 
@@ -49,17 +42,13 @@ export default function LandingPage() {
 
         <ForTutorsSection />
 
-        <section
-          id="features"
-          className="w-full bg-gradient-to-b from-white to-brand-50"
-        >
+        <section id="features" className="w-full">
           <FeaturesSection />
         </section>
 
-        <section
-          id="stats"
-          className="w-full bg-gradient-to-br from-brand-50 via-white to-accent-50"
-        >
+        <div className="hairline mx-auto max-w-5xl" />
+
+        <section id="stats" className="w-full">
           <StatsSection />
         </section>
 

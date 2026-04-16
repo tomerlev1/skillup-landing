@@ -75,18 +75,6 @@ const ICON_PATHS: Record<CategoryId, React.ReactNode> = {
   ),
 };
 
-const COLOR_MAP: Record<CategoryId, { bg: string; ring: string; text: string }> = {
-  "math-science": { bg: "bg-brand-50", ring: "ring-brand-200", text: "text-brand-600" },
-  "foreign-languages": { bg: "bg-indigo-50", ring: "ring-indigo-200", text: "text-indigo-600" },
-  "hebrew-literature": { bg: "bg-amber-50", ring: "ring-amber-200", text: "text-amber-600" },
-  "exam-prep": { bg: "bg-emerald-50", ring: "ring-emerald-200", text: "text-emerald-600" },
-  humanities: { bg: "bg-rose-50", ring: "ring-rose-200", text: "text-rose-600" },
-  "sports-fitness": { bg: "bg-cyan-50", ring: "ring-cyan-200", text: "text-cyan-600" },
-  "arts-creativity": { bg: "bg-violet-50", ring: "ring-violet-200", text: "text-violet-600" },
-  "tech-programming": { bg: "bg-slate-100", ring: "ring-slate-200", text: "text-slate-700" },
-  "life-skills": { bg: "bg-pink-50", ring: "ring-pink-200", text: "text-pink-600" },
-};
-
 function CategoryIcon({ id, className }: { id: CategoryId; className?: string }) {
   return (
     <svg
@@ -106,16 +94,23 @@ export default function SubjectsSection() {
   return (
     <section
       id="subjects"
-      className="w-full bg-dark-50 px-6 py-16 md:py-24 md:px-16"
+      className="section-bloom w-full px-6 py-20 md:py-28 md:px-16"
+      style={{ ["--bloom-x" as string]: "85%", ["--bloom-y" as string]: "30%" }}
     >
       <div className="mx-auto max-w-6xl">
         <ScrollReveal>
+          <p
+            className="mb-3 text-center text-xs font-semibold uppercase tracking-[0.22em] text-brand-600"
+            dir="ltr"
+          >
+            04 - 9 תחומים
+          </p>
           <h2 className="text-center text-3xl font-extrabold tracking-tight text-dark-900 md:text-4xl">
             9 תחומים, מורים פרטיים בכל אחד
           </h2>
         </ScrollReveal>
         <ScrollReveal delay={0.1}>
-          <p className="mt-3 mb-12 text-center text-dark-500">
+          <p className="mx-auto mt-3 mb-12 max-w-xl text-center text-dark-500">
             מבגרות ופסיכומטרי ועד מוזיקה, בישול ונהיגה. הלמידה היום היא הרבה
             יותר מבית הספר.
           </p>
@@ -123,31 +118,28 @@ export default function SubjectsSection() {
 
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {CATEGORIES.map((cat, i) => {
-            const colors = COLOR_MAP[cat.id];
             const isNew = "isNew" in cat && cat.isNew === true;
 
             return (
               <ScrollReveal key={cat.id} delay={0.05 * (i % 3)}>
                 <div
-                  className={`relative h-full rounded-2xl border bg-white p-6 text-start transition-all hover:-translate-y-0.5 hover:shadow-lg ${
+                  className={`group relative h-full rounded-2xl border bg-white p-6 text-start shadow-sm transition-all duration-300 hover:border-brand-300 hover:shadow-md ${
                     isNew
-                      ? "border-pink-300 ring-2 ring-pink-100"
+                      ? "border-accent-200 ring-2 ring-accent-100"
                       : "border-dark-200"
                   }`}
                 >
                   {isNew && (
-                    <span className="absolute top-3 left-3 rounded-full bg-pink-500 px-2.5 py-0.5 text-xs font-bold text-white shadow-sm">
+                    <span className="absolute top-3 left-3 rounded-full bg-accent-500 px-2.5 py-0.5 text-xs font-bold text-white shadow-sm">
                       חדש
                     </span>
                   )}
 
                   <div className="mb-4 flex items-center gap-3">
-                    <div
-                      className={`flex h-12 w-12 items-center justify-center rounded-xl ring-1 ${colors.bg} ${colors.ring}`}
-                    >
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 ring-1 ring-brand-100 transition-colors duration-300 group-hover:bg-brand-100 group-hover:ring-brand-200">
                       <CategoryIcon
                         id={cat.id}
-                        className={`h-6 w-6 ${colors.text}`}
+                        className="h-6 w-6 text-brand-600 transition-colors duration-300 group-hover:text-brand-700"
                       />
                     </div>
                     <h3 className="text-lg font-bold text-dark-900">

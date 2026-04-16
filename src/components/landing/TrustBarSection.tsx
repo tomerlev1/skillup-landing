@@ -13,14 +13,14 @@ const BADGES = [
 
 export default function TrustBarSection() {
   return (
-    <section className="w-full bg-white border-y border-dark-100 px-6 py-8 md:px-16">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-10 gap-y-4">
+    <section className="w-full border-y border-dark-200 px-6 py-6 md:px-16">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-2.5 md:gap-3">
         {BADGES.map(({ Icon, label }) => (
           <span
             key={label}
-            className="flex items-center gap-2 text-sm font-medium text-dark-700"
+            className="inline-flex items-center gap-2 rounded-full border border-dark-200 bg-white/70 px-3.5 py-1.5 text-[13px] font-medium text-dark-700 backdrop-blur-sm"
           >
-            <Icon className="h-5 w-5 text-brand-500" />
+            <Icon className="h-4 w-4 text-brand-600" />
             {label}
           </span>
         ))}

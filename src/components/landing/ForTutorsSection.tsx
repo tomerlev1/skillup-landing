@@ -46,7 +46,7 @@ const PRO_TIER = [
   "עדיפות בתוצאות החיפוש",
   "תג PRO זהב על הפרופיל",
   "דשבורד הכנסות מורחב",
-  "0% עמלת תיווך — תמיד",
+  "0% עמלת תיווך, תמיד",
 ];
 
 function CheckIcon({ className }: { className?: string }) {
@@ -74,43 +74,50 @@ export default function ForTutorsSection() {
   return (
     <section
       id="for-tutors"
-      className="relative w-full overflow-hidden bg-gradient-to-br from-brand-700 via-brand-600 to-brand-800 px-6 py-20 md:py-28 md:px-16"
+      className="section-bloom relative w-full overflow-hidden px-6 py-20 md:py-28 md:px-16"
+      style={{ ["--bloom-x" as string]: "50%", ["--bloom-y" as string]: "50%" }}
     >
+      {/* Stronger localized violet bloom — the color moment of the page */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(ellipse 75% 55% at 50% 50%, rgba(196,181,253,0.22), transparent 70%)",
+        }}
+      />
+
       {/* Decorative SkillUp glyph watermark */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-20 -left-20 h-[420px] w-[420px] opacity-[0.08]"
+        className="pointer-events-none absolute -top-20 -left-20 h-[420px] w-[420px] opacity-[0.05] mix-blend-multiply"
         style={{
           backgroundImage: "url(/images/SkillUp-Splash-Glyph.svg)",
           backgroundRepeat: "no-repeat",
           backgroundSize: "contain",
         }}
       />
-      {/* Soft top highlight */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 80% 30% at 50% 0%, rgba(255,255,255,0.08), transparent 60%)",
-        }}
-      />
 
       <div className="relative z-10 mx-auto max-w-6xl">
         <div className="mx-auto max-w-3xl text-center">
           <ScrollReveal>
-            <span className="mb-3 inline-flex items-center gap-2 rounded-full border border-accent-300/40 bg-accent-500/15 px-3.5 py-1 text-xs font-bold text-accent-100">
-              <span className="h-1.5 w-1.5 rounded-full bg-accent-400 animate-pulse-dot" />
+            <p
+              className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-brand-600"
+              dir="ltr"
+            >
+              06 - למורים
+            </p>
+            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-dark-200 bg-white/70 px-3.5 py-1 text-xs font-semibold text-dark-700 backdrop-blur-sm">
               מודל מנויים ממוקד צמיחה
             </span>
           </ScrollReveal>
           <ScrollReveal delay={0.05}>
-            <h2 className="text-3xl font-extrabold tracking-tight text-white md:text-4xl">
-              אתם צומחים. אנחנו צומחים יחד איתכם.
+            <h2 className="text-3xl font-extrabold tracking-tight text-dark-900 md:text-4xl">
+              אתם צומחים, ואנחנו צומחים יחד איתכם.
             </h2>
           </ScrollReveal>
           <ScrollReveal delay={0.1}>
-            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-brand-100 md:text-lg">
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-dark-600 md:text-lg">
               SkillUp מחבר אתכם ישירות לתלמידים באזור שלכם. אתם קובעים את המחיר,
               את הזמינות, ואת המקצועות. בלי טלפונים ל-20 הורים, בלי מתווכים, בלי
               ניירת. הרשמה לוקחת 5 דקות.
@@ -123,17 +130,11 @@ export default function ForTutorsSection() {
           {TEACHER_SCREENS.map((screen, i) => (
             <ScrollReveal key={screen.src} delay={0.15 + i * 0.08}>
               <div className="flex flex-col items-center text-center">
-                <RealAppFrame
-                  src={screen.src}
-                  alt={screen.alt}
-                  width={240}
-                />
-                <h3 className="mt-5 text-base font-bold text-white">
+                <RealAppFrame src={screen.src} alt={screen.alt} width={240} />
+                <h3 className="mt-5 text-base font-bold text-dark-900">
                   {screen.title}
                 </h3>
-                <p className="mt-1.5 text-sm text-brand-200">
-                  {screen.caption}
-                </p>
+                <p className="mt-1.5 text-sm text-dark-500">{screen.caption}</p>
               </div>
             </ScrollReveal>
           ))}
@@ -142,10 +143,10 @@ export default function ForTutorsSection() {
         {/* Tier comparison: Free vs Pro */}
         <ScrollReveal delay={0.4}>
           <div className="mt-20 text-center">
-            <h3 className="text-2xl font-extrabold tracking-tight text-white md:text-3xl">
+            <h3 className="text-2xl font-extrabold tracking-tight text-dark-900 md:text-3xl">
               שתי דרגות. דרך אחת לצמוח.
             </h3>
-            <p className="mx-auto mt-3 max-w-xl text-sm text-brand-100 md:text-base">
+            <p className="mx-auto mt-3 max-w-xl text-sm text-dark-600 md:text-base">
               התחילו חינם. כשהפעילות שלכם גדלה, Pro פותח לכם את הברז של תלמידים
               חדשים. כשאתם צומחים, אנחנו צומחים יחד איתכם.
             </p>
@@ -155,35 +156,35 @@ export default function ForTutorsSection() {
         <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
           {/* Free tier */}
           <ScrollReveal delay={0.45}>
-            <div className="flex h-full flex-col rounded-3xl border border-white/15 bg-white/5 p-7 backdrop-blur-sm md:p-8">
+            <div className="flex h-full flex-col rounded-3xl border border-dark-200 bg-white p-7 shadow-sm transition-colors hover:border-brand-300 md:p-8">
               <div className="mb-1 flex items-baseline justify-between">
-                <span className="text-xs font-bold uppercase tracking-[0.18em] text-brand-200">
+                <span className="text-xs font-bold uppercase tracking-[0.18em] text-dark-500">
                   Free
                 </span>
-                <span className="text-xs font-semibold text-brand-200">
+                <span className="text-xs font-semibold text-dark-500">
                   להתחלה
                 </span>
               </div>
-              <h4 className="mt-2 text-2xl font-extrabold text-white md:text-3xl">
+              <h4 className="mt-2 text-2xl font-extrabold text-dark-900 md:text-3xl">
                 חינם · עד 4 תלמידים
               </h4>
-              <p className="mt-2 text-sm text-brand-100">
+              <p className="mt-2 text-sm text-dark-600">
                 כל מה שצריך כדי לבדוק שהפלטפורמה עובדת לכם, בלי להוציא שקל.
               </p>
               <ul className="mt-6 space-y-3">
                 {FREE_TIER.map((item) => (
                   <li
                     key={item}
-                    className="flex items-start gap-2.5 text-sm text-white/95"
+                    className="flex items-start gap-2.5 text-sm text-dark-800"
                   >
-                    <CheckIcon className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-200" />
+                    <CheckIcon className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-500" />
                     <span className="leading-relaxed">{item}</span>
                   </li>
                 ))}
               </ul>
               <a
                 href="#download"
-                className="mt-7 inline-flex w-full items-center justify-center rounded-xl border border-white/30 bg-white/10 px-5 py-3 text-sm font-bold text-white transition-all hover:-translate-y-0.5 hover:bg-white/15"
+                className="mt-7 inline-flex w-full items-center justify-center rounded-xl border border-dark-300 bg-white px-5 py-3 text-sm font-bold text-dark-800 transition-colors hover:bg-dark-50"
               >
                 התחילו חינם
               </a>
@@ -192,9 +193,9 @@ export default function ForTutorsSection() {
 
           {/* Pro tier */}
           <ScrollReveal delay={0.55}>
-            <div className="relative flex h-full flex-col rounded-3xl border-2 border-accent-300 bg-gradient-to-br from-white to-accent-50 p-7 shadow-2xl md:p-8">
+            <div className="relative flex h-full flex-col rounded-3xl border border-brand-200 bg-white p-7 shadow-md transition-shadow hover:shadow-lg md:p-8">
               {/* Recommended badge */}
-              <span className="absolute -top-3 right-7 rounded-full bg-accent-500 px-3 py-1 text-xs font-extrabold text-white shadow-lg">
+              <span className="absolute -top-3 right-7 rounded-full bg-accent-500 px-3 py-1 text-xs font-extrabold text-white shadow-md">
                 לצמיחה אמיתית
               </span>
 
@@ -205,7 +206,7 @@ export default function ForTutorsSection() {
                   </svg>
                   PRO
                 </span>
-                <span className="text-xs font-semibold text-accent-600">
+                <span className="text-xs font-semibold text-brand-600">
                   לצמיחה
                 </span>
               </div>
@@ -223,13 +224,13 @@ export default function ForTutorsSection() {
                     className="flex items-start gap-2.5 text-sm text-dark-800"
                   >
                     <CheckIcon className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-500" />
-                    <span className="leading-relaxed font-medium">{item}</span>
+                    <span className="font-medium leading-relaxed">{item}</span>
                   </li>
                 ))}
               </ul>
               <a
                 href="#download"
-                className="mt-7 inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-l from-accent-600 to-accent-500 px-5 py-3 text-sm font-extrabold text-white shadow-md transition-all hover:-translate-y-0.5 hover:shadow-xl"
+                className="mt-7 inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-l from-accent-600 to-accent-500 px-5 py-3 text-sm font-extrabold text-white shadow-md transition-shadow hover:shadow-lg"
               >
                 שדרגו ל-Pro כשתהיו מוכנים
               </a>
@@ -243,7 +244,7 @@ export default function ForTutorsSection() {
             <Button variant="primary" href="#download" arrow>
               הצטרפו כמורים
             </Button>
-            <p className="max-w-md text-xs leading-relaxed text-brand-100">
+            <p className="max-w-md text-center text-xs leading-relaxed text-dark-500">
               0% עמלת תיווך, תמיד. אנחנו לא לוקחים חתיכה מהשיעור שלכם.
               ההכנסה שלכם מ-Pro זזה רק כשאתם מחליטים לצמוח.
             </p>

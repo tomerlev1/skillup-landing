@@ -4,12 +4,19 @@ export default function QuickAnswerSection() {
   return (
     <section
       id="quick-answer"
-      className="w-full bg-white px-6 py-16 md:py-24 md:px-16"
+      className="section-bloom w-full px-6 py-14 md:py-20 md:px-16"
+      style={{ ["--bloom-x" as string]: "15%", ["--bloom-y" as string]: "80%" }}
     >
       <div className="mx-auto max-w-3xl">
         <ScrollReveal>
-          <div className="rounded-2xl border border-brand-200 bg-brand-50/60 p-7 md:p-10">
-            <h2 className="mb-4 text-2xl font-extrabold tracking-tight text-dark-900 md:text-3xl">
+          <p
+            className="mb-4 text-center text-xs font-semibold uppercase tracking-[0.22em] text-brand-600"
+            dir="ltr"
+          >
+            01 - הסיפור הקצר
+          </p>
+          <div className="rounded-2xl border border-dark-200 bg-white p-7 shadow-sm md:p-10">
+            <h2 className="mb-4 text-center text-2xl font-extrabold tracking-tight text-dark-900 md:text-3xl">
               מה זה SkillUp?
             </h2>
             <p className="text-base leading-relaxed text-dark-700 md:text-lg">

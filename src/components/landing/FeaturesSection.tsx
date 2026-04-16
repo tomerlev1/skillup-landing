@@ -10,6 +10,8 @@ import {
   ModalityIcon,
   DashboardIcon,
   BoltIcon,
+  SecureLockIcon,
+  TrustCheckIcon,
 } from "@/components/icons/CustomIcons";
 
 const ICON_MAP = {
@@ -22,29 +24,20 @@ const ICON_MAP = {
   bolt: BoltIcon,
 } as const;
 
-const COLOR_MAP = {
-  blue: { bg: "bg-brand-500/10" },
-  emerald: { bg: "bg-emerald-500/10" },
-  indigo: { bg: "bg-indigo-500/10" },
-  amber: { bg: "bg-amber-500/10" },
-  rose: { bg: "bg-rose-500/10" },
-  cyan: { bg: "bg-cyan-500/10" },
-} as const;
-
-// Compact security trust strip — production-grade signals shipping in the iOS app.
+// Production-grade signals shipping in the iOS app.
 const TRUST_ROWS = [
   {
-    icon: "🔐",
+    Icon: SecureLockIcon,
     title: "אימות במפתחות חומרה",
     detail: "סיסמאות וטוקנים נשמרים ב-iOS Keychain עם הצפנה ברמת חומרה.",
   },
   {
-    icon: "🛡",
+    Icon: ShieldVerifiedIcon,
     title: "תואם OWASP Mobile Top 10",
     detail: "אימות מאובטח, הגנה על תקשורת ונתונים, פרטיות ברירת מחדל.",
   },
   {
-    icon: "🇪🇺",
+    Icon: TrustCheckIcon,
     title: "אנליטיקה באירופה (GDPR)",
     detail: "כל המדדים נשלחים לשרתי EU. תואם לתקנות פרטיות ישראליות ואירופיות.",
   },
@@ -52,25 +45,24 @@ const TRUST_ROWS = [
 
 export default function FeaturesSection() {
   return (
-    <div className="relative w-full px-6 py-16 md:py-24 md:px-16">
-      {/* Radial gradient overlay */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        aria-hidden="true"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 40% at 50% 0%, rgba(137,86,232,0.08), transparent)",
-        }}
-      />
-
+    <div
+      className="section-bloom relative w-full px-6 py-20 md:py-28 md:px-16"
+      style={{ ["--bloom-x" as string]: "85%", ["--bloom-y" as string]: "50%" }}
+    >
       <div className="relative z-10">
         <ScrollReveal>
-          <h2 className="text-center text-4xl font-extrabold tracking-tight text-dark-900">
+          <p
+            className="mb-3 text-center text-xs font-semibold uppercase tracking-[0.22em] text-brand-600"
+            dir="ltr"
+          >
+            07 - יכולות
+          </p>
+          <h2 className="text-center text-3xl font-extrabold tracking-tight text-dark-900 md:text-4xl">
             היכולות שמייחדות את SkillUp
           </h2>
         </ScrollReveal>
         <ScrollReveal delay={0.1}>
-          <p className="mt-3 mb-12 text-center text-dark-600">
+          <p className="mx-auto mt-3 mb-12 max-w-2xl text-center text-dark-600">
             לא עוד אפליקציה למציאת מורים. אפליקציה שעוצבה איך שלמידה צריכה להיראות ב-2026.
           </p>
         </ScrollReveal>
@@ -79,15 +71,12 @@ export default function FeaturesSection() {
         <div className="mx-auto grid max-w-5xl grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 [&>*:last-child]:lg:col-start-2">
           {FEATURES.map((feature, i) => {
             const IconComponent = ICON_MAP[feature.icon];
-            const colors = COLOR_MAP[feature.color];
 
             return (
               <ScrollReveal key={i} delay={0.1 + (i % 3) * 0.1}>
-                <div className="cursor-default rounded-2xl border border-dark-200 bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-md h-full">
-                  <div
-                    className={`mb-3.5 flex h-12 w-12 items-center justify-center rounded-xl ${colors.bg}`}
-                  >
-                    <IconComponent size={24} />
+                <div className="cursor-default h-full rounded-2xl border border-dark-200 bg-white p-7 shadow-sm transition-all duration-300 hover:border-brand-300 hover:shadow-md">
+                  <div className="mb-3.5 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 ring-1 ring-brand-100">
+                    <IconComponent size={24} className="text-brand-600" />
                   </div>
                   <h3 className="text-base font-bold text-dark-900">
                     {feature.title}
@@ -117,9 +106,9 @@ export default function FeaturesSection() {
                   key={row.title}
                   className="flex items-start gap-3 rounded-xl border border-dark-200 bg-white p-4 shadow-sm"
                 >
-                  <span className="text-xl leading-none" aria-hidden="true">
-                    {row.icon}
-                  </span>
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-brand-50 ring-1 ring-brand-100">
+                    <row.Icon className="h-5 w-5 text-brand-600" />
+                  </div>
                   <div>
                     <p className="text-sm font-bold text-dark-900">{row.title}</p>
                     <p className="mt-1 text-xs leading-relaxed text-dark-600">
