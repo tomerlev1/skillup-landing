@@ -1,75 +1,70 @@
-"use client";
-
 import ScrollReveal from "@/components/animations/ScrollReveal";
+import Eyebrow from "@/components/ui/Eyebrow";
 import { PAIN_POINTS } from "@/lib/constants";
-import {
-  FrustratedSearchIcon,
-  UnverifiedTeacherIcon,
-  ComplicatedCoordIcon,
-  ChevronDownIcon,
-} from "@/components/icons/CustomIcons";
 
-const PAIN_ICON_MAP = {
-  "frustrated-search": FrustratedSearchIcon,
-  "unverified-teacher": UnverifiedTeacherIcon,
-  "complicated-coord": ComplicatedCoordIcon,
-} as const;
+const NUMS = ["01", "02", "03"];
 
 export default function PainPointsSection() {
   return (
-    <div
-      className="section-bloom w-full px-6 py-20 text-center md:py-28 md:px-16"
-      style={{ ["--bloom-x" as string]: "85%", ["--bloom-y" as string]: "10%" }}
-    >
-      <ScrollReveal>
-        <p
-          className="mb-3 text-xs font-semibold uppercase tracking-[0.22em] text-brand-600"
-          dir="ltr"
-        >
-          02 - למה SkillUp
-        </p>
-        <h2 className="text-3xl font-extrabold tracking-tight text-dark-900 md:text-4xl">
-          למה SkillUp?
-        </h2>
-      </ScrollReveal>
-
-      <ScrollReveal delay={0.1}>
-        <p className="mx-auto mt-3 mb-12 max-w-xl text-dark-500">
-          מצאנו פתרון לכל בעיה שהכרתם
-        </p>
-      </ScrollReveal>
-
-      {/* Pain cards */}
-      <div className="mx-auto flex max-w-4xl flex-col gap-6 md:flex-row">
-        {PAIN_POINTS.map((point, i) => {
-          const IconComponent = PAIN_ICON_MAP[point.iconId];
-          return (
-            <ScrollReveal key={i} delay={0.15 + i * 0.1} className="flex-1">
-              <div className="rounded-2xl border border-dark-200 bg-white p-7 text-center shadow-sm transition-all duration-300 hover:border-brand-300 hover:shadow-md">
-                <div className="mb-3 flex justify-center">
-                  <IconComponent size={48} />
-                </div>
-                <h3 className="mb-1.5 text-base font-bold text-dark-900">
-                  {point.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-dark-500">
-                  {point.description}
-                </p>
-              </div>
-            </ScrollReveal>
-          );
-        })}
-      </div>
-
-      {/* Arrow + solution text */}
-      <ScrollReveal delay={0.5}>
-        <div className="mt-12 mb-4 flex justify-center text-brand-400">
-          <ChevronDownIcon className="h-7 w-7" />
+    <div className="w-full px-6 py-20 md:py-28 md:px-16">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-16 md:grid-cols-[1fr_1.6fr]">
+        {/* Left column — heading */}
+        <div>
+          <ScrollReveal>
+            <Eyebrow n="02 / PAIN POINTS">למה SkillUp</Eyebrow>
+          </ScrollReveal>
+          <ScrollReveal delay={0.1}>
+            <h2 className="display display-lg mt-6">
+              למה
+              <br />
+              <em className="not-italic grad-text">SkillUp</em>?
+            </h2>
+          </ScrollReveal>
+          <ScrollReveal delay={0.2}>
+            <p className="mt-6 max-w-[34ch] text-base leading-[1.7] text-[var(--fg-muted)]">
+              מצאנו פתרון לכל בעיה שהכרתם. עם SkillUp, הכל פשוט.
+            </p>
+          </ScrollReveal>
         </div>
-        <p className="text-lg font-semibold text-dark-800">
-          עם SkillUp, הכל פשוט
-        </p>
-      </ScrollReveal>
+
+        {/* Right column — editorial numbered list */}
+        <div className="flex flex-col">
+          {PAIN_POINTS.map((p, i) => {
+            const isFirst = i === 0;
+            const isLast = i === PAIN_POINTS.length - 1;
+            return (
+              <ScrollReveal key={i} delay={0.15 + i * 0.1}>
+                <div
+                  className="grid grid-cols-[60px_1fr] items-start gap-6 py-8"
+                  style={{
+                    borderTop: isFirst
+                      ? "1.5px solid var(--color-ink-900)"
+                      : "1px solid var(--rule)",
+                    borderBottom: isLast
+                      ? "1.5px solid var(--color-ink-900)"
+                      : "none",
+                  }}
+                >
+                  <div
+                    className="font-mono-lc text-sm font-semibold text-[var(--accent)]"
+                    dir="ltr"
+                  >
+                    {NUMS[i]}
+                  </div>
+                  <div>
+                    <h3 className="display text-[28px] font-extrabold leading-[1.2] tracking-[-0.02em]">
+                      {p.title}
+                    </h3>
+                    <p className="mt-2 max-w-[60ch] text-[15px] leading-[1.65] text-[var(--fg-muted)]">
+                      {p.description}
+                    </p>
+                  </div>
+                </div>
+              </ScrollReveal>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

@@ -5,16 +5,6 @@ export const CONTACT_EMAIL = "skillup.team.il@gmail.com";
 export const APP_STORE_URL = "#"; // TODO: Replace with real App Store URL
 export const PLAY_STORE_URL = "#"; // TODO: Replace with real Play Store URL
 
-// Real, day-1-verifiable promises. Not invented user metrics.
-// Items with `display` render as static text (CountUp only handles integers).
-export const STATS = [
-  { value: 9, suffix: "", label: "תחומי לימוד, מבגרות ועד מיומנויות חיים" },
-  { value: 3, suffix: "", label: "דרכי לימוד: אונליין, אצל המורה, אצלכם" },
-  { value: 5, suffix: "", label: "טיירים של התקדמות אישית. ללמוד הופך למשחק." },
-  { display: "24h", label: "ביטול חינם עד 24 שעות לפני השיעור" },
-  { display: "0₪", label: "עמלת תיווך. תמיד. בלי יוצא מהכלל." },
-] as const;
-
 export const NAV_LINKS = [
   { href: "#why-skillup", label: "למה SkillUp" },
   { href: "#how-it-works", label: "איך זה עובד" },
@@ -35,13 +25,13 @@ export const PAIN_POINTS = [
     iconId: "unverified-teacher" as const,
     title: "איך יודעים שהמורה באמת טוב?",
     description:
-      "כל מורה עובר אימות זהות, בדיקת השכלה ואישור רקע. הורים רואים דירוגים אמיתיים מתלמידים אמיתיים.",
+      "מורים מאומתים, ביקורות אמינות ואמיתיות מתלמידים שלמדו אצלם ואופציות רחבות שמאפשרות לקלוע בול למורה שמתאים לכם.",
   },
   {
     iconId: "complicated-coord" as const,
     title: "תיאום מסובך ותשלומים מבלבלים?",
     description:
-      "יומן, צ׳אט ותזכורות, הכל בתוך האפליקציה. בלי לרדוף אחרי הודעות, בלי להתבלבל. התשלום? ישיר מכם למורה, בלי תיווכנים באמצע. אנחנו לא לוקחים עמלה אף פעם, גם אחרי הבטא.",
+      "יומן, צ׳אט ותזכורות, הכל בתוך האפליקציה. בלי לרדוף אחרי הודעות, בלי להתבלבל. התשלום? ישיר מכם למורה, בלי תיווכנים באמצע. אנחנו לא לוקחים עמלה אף פעם, גם אחרי גרסת הבטא.",
   },
 ] as const;
 
@@ -71,10 +61,10 @@ export const STEPS = [
 // 7 features that hit the actual differentiators (verified against the iOS repo).
 export const FEATURES = [
   {
-    icon: "trophy" as const,
-    title: "5 טיירים של התקדמות אישית",
+    icon: "dashboard" as const,
+    title: "5 מערכות ניהול באפליקציה אחת",
     description:
-      "צעד ראשון, במומנטום, עולה שלב, שולט בעניינים, מאסטר SkillUp. סף מעבר 0/3/10/25/50 שיעורים. כל שיעור מקרב לרמה הבאה. ללמוד הופך למשחק.",
+      "לוח שיעורים, תשלומים, תלמידים, הכנסות, והתקשרות — הכול במקום אחד. תגידו שלום לאקסל, לביט ולוואטסאפ.",
     color: "amber" as const,
   },
   {
@@ -171,3 +161,31 @@ export const CATEGORIES = [
     isNew: true,
   },
 ] as const;
+
+// Short trust badges for the marquee ticker above QuickAnswer.
+export const TRUST_BADGES = [
+  "0% עמלה",
+  "מורים מאומתים",
+  "אונליין · אצל המורה · אצלכם",
+  "עברית מלאה · RTL",
+  "ביטול חינם בהתאם למדיניות הביטולים שלנו",
+  "תשלום ישיר למורה",
+  "בישראל, בעברית",
+] as const;
+
+// The 5 management systems that make up the Features hero tile.
+export const MANAGEMENT_SYSTEMS = [
+  { n: "01", label: "לוח שיעורים" },
+  { n: "02", label: "תשלומים" },
+  { n: "03", label: "תלמידים" },
+  { n: "04", label: "הכנסות" },
+  { n: "05", label: "תקשורת" },
+] as const;
+
+// Pull-quote intro for the Quick Answer section (pre-launch, honest).
+export const QUICK_ANSWER =
+  "SkillUp היא אפליקציית מובייל ישראלית שמחברת תלמידים, הורים ומבוגרים עם מורים פרטיים מאומתים ב-9 תחומים: מתמטיקה ומדעים, שפות זרות, עברית וספרות, בגרויות ופסיכומטרי, מדעי הרוח, ספורט, אומנות, תכנות, ופנאי ומיומנויות חיים (בישול, נהיגה, אתיקט). 3 דרכי לימוד: אונליין, אצל המורה, או אצלכם בבית. ללא עמלת תיווך. התשלום ביניכם לבין המורה. ביטול לפני השיעור בהתאם למדיניות הביטולים שלנו.";
+
+// Founders' letter — replaces testimonials until real reviews land.
+export const FOUNDER_LETTER =
+  "בנינו את SkillUp כי מצאנו את עצמנו, כמו כל הורה ותלמיד בישראל, רודפים אחרי המלצות בקבוצות וואטסאפ, מתאמים שעות בטלפון, ומשלמים במזומן בלי שום שקיפות. בלי שום הגיון. רצינו שיהיה מקום אחד בעברית, על הטלפון, שבו רואים מורה, רואים מחיר, רואים שעות, ולוחצים. בלי תיווך. בלי עמלות. בלי הפתעות. SkillUp כאן, עכשיו, ואתם מוזמנים להיות חלק מההתחלה שלנו.";

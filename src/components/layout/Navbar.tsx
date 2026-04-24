@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { MenuIcon, CloseIcon } from "@/components/icons/CustomIcons";
@@ -17,6 +17,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolledPastThreshold, setScrolledPastThreshold] = useState(false);
   const [scrollActiveSection, setScrollActiveSection] = useState("");
+  const progressRef = useRef<HTMLDivElement | null>(null);
 
   // Non-homepage routes (privacy, terms) keep a solid navbar always.
   const scrolled = !isHomepage || scrolledPastThreshold;
@@ -35,14 +36,36 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    // Progress bar updates through a ref + rAF so React never re-renders on scroll.
+    // Without this, the per-frame state updates fight with any CSS transition and
+    // the bar stutters.
+    let ticking = false;
+    const tickProgress = () => {
+      ticking = false;
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      if (progressRef.current) {
+        progressRef.current.style.transform = `scaleX(${p})`;
+      }
+    };
+
     function handleScroll() {
       setScrolledPastThreshold(window.scrollY > 60);
       updateScrollActiveSection();
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(tickProgress);
+      }
     }
 
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("resize", tickProgress, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", tickProgress);
+    };
   }, [updateScrollActiveSection]);
 
   useEffect(() => {
@@ -68,7 +91,16 @@ export default function Navbar() {
           ? "border-b border-dark-200 bg-white/80 backdrop-blur-xl"
           : "border-b border-transparent bg-white/60 backdrop-blur-md"
       }`}
+      style={{ position: "fixed" }}
     >
+      {/* Scroll-progress bar (updates via ref — no re-renders) */}
+      <div className="nav-progress" aria-hidden="true">
+        <div
+          ref={progressRef}
+          className="nav-progress-bar"
+          style={{ transform: "scaleX(0)" }}
+        />
+      </div>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-16">
         {/* Logo + beta pill */}
         <div className="flex items-center gap-2.5">

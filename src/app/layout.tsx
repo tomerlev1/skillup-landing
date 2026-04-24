@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Rubik } from "next/font/google";
+import { Rubik, Heebo, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SITE_URL } from "@/lib/constants";
 import { JSON_LD_BLOCKS } from "@/lib/structured-data";
@@ -8,6 +8,20 @@ const rubik = Rubik({
   variable: "--font-family-rubik",
   subsets: ["hebrew", "latin"],
   weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const heebo = Heebo({
+  variable: "--font-family-heebo",
+  subsets: ["hebrew", "latin"],
+  weight: ["500", "700", "800", "900"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-family-jetbrains-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -136,7 +150,7 @@ export default function RootLayout({
           />
         ))}
       </head>
-      <body className={`${rubik.variable} font-[family-name:var(--font-family-rubik)] antialiased`}>
+      <body className={`${rubik.variable} ${heebo.variable} ${jetbrainsMono.variable} font-[family-name:var(--font-family-rubik)] antialiased`}>
         {children}
       </body>
     </html>

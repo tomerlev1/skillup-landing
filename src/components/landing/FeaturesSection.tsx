@@ -1,126 +1,293 @@
-"use client";
-
 import ScrollReveal from "@/components/animations/ScrollReveal";
-import { FEATURES } from "@/lib/constants";
+import Eyebrow from "@/components/ui/Eyebrow";
+import { FEATURES, MANAGEMENT_SYSTEMS } from "@/lib/constants";
 import {
-  ShieldVerifiedIcon,
-  ChatBubbleIcon,
-  TrophyIcon,
+  DashboardIcon,
   VideoIcon,
   ModalityIcon,
-  DashboardIcon,
+  ChatBubbleIcon,
+  ShieldVerifiedIcon,
   BoltIcon,
-  SecureLockIcon,
-  TrustCheckIcon,
+  SparkleIcon,
 } from "@/components/icons/CustomIcons";
 
-const ICON_MAP = {
-  trophy: TrophyIcon,
+type FeatureIcon = (typeof FEATURES)[number]["icon"];
+
+const ICON_MAP: Record<
+  FeatureIcon,
+  React.ComponentType<{ className?: string; size?: number }>
+> = {
+  dashboard: DashboardIcon,
   modality: ModalityIcon,
   video: VideoIcon,
   "message-circle": ChatBubbleIcon,
   "shield-check": ShieldVerifiedIcon,
-  dashboard: DashboardIcon,
   bolt: BoltIcon,
-} as const;
+};
 
-// Production-grade signals shipping in the iOS app.
-const TRUST_ROWS = [
-  {
-    Icon: SecureLockIcon,
-    title: "אימות במפתחות חומרה",
-    detail: "סיסמאות וטוקנים נשמרים ב-iOS Keychain עם הצפנה ברמת חומרה.",
-  },
-  {
-    Icon: ShieldVerifiedIcon,
-    title: "תואם OWASP Mobile Top 10",
-    detail: "אימות מאובטח, הגנה על תקשורת ונתונים, פרטיות ברירת מחדל.",
-  },
-  {
-    Icon: TrustCheckIcon,
-    title: "אנליטיקה באירופה (GDPR)",
-    detail: "כל המדדים נשלחים לשרתי EU. תואם לתקנות פרטיות ישראליות ואירופיות.",
-  },
-] as const;
+interface FeatureContentProps {
+  icon: FeatureIcon;
+  title: string;
+  description: string;
+  compact?: boolean;
+  onDark?: boolean;
+}
+
+function FeatureContent({
+  icon,
+  title,
+  description,
+  compact = false,
+  onDark = false,
+}: FeatureContentProps) {
+  const Icon = ICON_MAP[icon] ?? BoltIcon;
+  return (
+    <div>
+      <div
+        className="mb-4 grid h-10 w-10 place-items-center rounded-[10px]"
+        style={{
+          background: onDark ? "rgba(255,255,255,0.08)" : "var(--accent-soft)",
+          color: onDark ? "#fff" : "var(--accent)",
+        }}
+      >
+        <Icon size={20} />
+      </div>
+      <h3
+        className="display m-0 font-extrabold leading-[1.2] tracking-[-0.015em]"
+        style={{
+          fontSize: compact ? 17 : 20,
+          color: onDark ? "#fff" : "var(--color-ink-900)",
+        }}
+      >
+        {title}
+      </h3>
+      <p
+        className="mt-2 max-w-[44ch] leading-[1.6]"
+        style={{
+          fontSize: compact ? 13 : 14,
+          color: onDark ? "rgba(255,255,255,0.7)" : "var(--color-ink-500)",
+        }}
+      >
+        {description}
+      </p>
+    </div>
+  );
+}
 
 export default function FeaturesSection() {
+  // FEATURES order: [0] 5 systems hero, [1] modality, [2] zoom video,
+  // [3] chat, [4] verified, [5] dashboard, [6] bolt-reminder.
+  const [hero, f1, f2, f3, f4, f5, f6] = FEATURES;
+
   return (
-    <div
-      className="section-bloom relative w-full px-6 py-20 md:py-28 md:px-16"
-      style={{ ["--bloom-x" as string]: "85%", ["--bloom-y" as string]: "50%" }}
+    <section
+      id="features"
+      className="w-full px-6 py-20 md:py-28 md:px-16"
     >
-      <div className="relative z-10">
-        <ScrollReveal>
-          <p
-            className="mb-3 text-center text-xs font-semibold uppercase tracking-[0.22em] text-brand-600"
-            dir="ltr"
-          >
-            07 - יכולות
-          </p>
-          <h2 className="text-center text-3xl font-extrabold tracking-tight text-dark-900 md:text-4xl">
-            היכולות שמייחדות את SkillUp
-          </h2>
-        </ScrollReveal>
-        <ScrollReveal delay={0.1}>
-          <p className="mx-auto mt-3 mb-12 max-w-2xl text-center text-dark-600">
-            לא עוד אפליקציה למציאת מורים. אפליקציה שעוצבה איך שלמידה צריכה להיראות ב-2026.
-          </p>
-        </ScrollReveal>
-
-        {/* 7-card grid: 3 cols on lg, last card centers; 2 cols md; 1 col mobile */}
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 [&>*:last-child]:lg:col-start-2">
-          {FEATURES.map((feature, i) => {
-            const IconComponent = ICON_MAP[feature.icon];
-
-            return (
-              <ScrollReveal key={i} delay={0.1 + (i % 3) * 0.1}>
-                <div className="cursor-default h-full rounded-2xl border border-dark-200 bg-white p-7 shadow-sm transition-all duration-300 hover:border-brand-300 hover:shadow-md">
-                  <div className="mb-3.5 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 ring-1 ring-brand-100">
-                    <IconComponent size={24} className="text-brand-600" />
-                  </div>
-                  <h3 className="text-base font-bold text-dark-900">
-                    {feature.title}
-                  </h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-dark-600">
-                    {feature.description}
-                  </p>
-                </div>
-              </ScrollReveal>
-            );
-          })}
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <ScrollReveal>
+              <Eyebrow n="06 / FEATURES">יכולות</Eyebrow>
+            </ScrollReveal>
+            <ScrollReveal delay={0.1}>
+              <h2 className="display display-lg mt-6 max-w-[16ch]">
+                היכולות שמייחדות
+                <br />
+                את <em className="not-italic grad-text">SkillUp.</em>
+              </h2>
+            </ScrollReveal>
+          </div>
+          <ScrollReveal delay={0.2}>
+            <p className="max-w-[38ch] text-[15px] leading-[1.7] text-[var(--fg-muted)]">
+              לא עוד אפליקציה למציאת מורים. אפליקציה שעוצבה איך שלמידה צריכה
+              להיראות ב-2026.
+            </p>
+          </ScrollReveal>
         </div>
 
-        {/* Security trust strip */}
-        <ScrollReveal delay={0.3}>
-          <div className="mx-auto mt-16 max-w-5xl">
-            <div className="mb-5 flex items-center justify-center gap-3">
-              <span className="h-px w-12 bg-dark-200" />
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-dark-500">
-                פרטיות ואבטחה ברמה של בנק
+        <div className="bento">
+          {/* Hero tile: 5 management systems */}
+          <ScrollReveal className="tile tile--hero">
+            <div>
+              <span
+                className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold text-white"
+                style={{
+                  background: "rgba(255,255,255,0.12)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                }}
+              >
+                <SparkleIcon size={14} />
+                הכול במקום אחד
               </span>
-              <span className="h-px w-12 bg-dark-200" />
+              <h3
+                className="display mt-6 font-black leading-[1.05] tracking-[-0.025em] text-white"
+                style={{ fontSize: 40, maxWidth: "18ch" }}
+              >
+                {hero.title}
+              </h3>
+              <p
+                className="mt-3.5 max-w-[40ch] text-[14px] leading-[1.65]"
+                style={{ color: "rgba(255,255,255,0.72)" }}
+              >
+                {hero.description}
+              </p>
             </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              {TRUST_ROWS.map((row) => (
+
+            <div className="mt-6 flex flex-wrap gap-1.5">
+              {MANAGEMENT_SYSTEMS.map((s) => (
                 <div
-                  key={row.title}
-                  className="flex items-start gap-3 rounded-xl border border-dark-200 bg-white p-4 shadow-sm"
+                  key={s.n}
+                  className="min-w-[90px] flex-1 rounded-[10px] px-2 py-2.5 text-center"
+                  style={{
+                    background: "rgba(255,255,255,0.08)",
+                    border: "1px solid rgba(255,255,255,0.14)",
+                  }}
                 >
-                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-brand-50 ring-1 ring-brand-100">
-                    <row.Icon className="h-5 w-5 text-brand-600" />
+                  <div
+                    className="font-mono-lc mb-1 text-[11px]"
+                    style={{ color: "var(--color-accent-400)" }}
+                    dir="ltr"
+                  >
+                    {s.n}
                   </div>
-                  <div>
-                    <p className="text-sm font-bold text-dark-900">{row.title}</p>
-                    <p className="mt-1 text-xs leading-relaxed text-dark-600">
-                      {row.detail}
-                    </p>
+                  <div className="text-[11px] font-bold text-white">
+                    {s.label}
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </ScrollReveal>
+          </ScrollReveal>
+
+          {/* Modality */}
+          <ScrollReveal className="tile tile--md" delay={0.1}>
+            <FeatureContent
+              icon={f1.icon}
+              title={f1.title}
+              description={f1.description}
+            />
+            <div className="mt-4 flex flex-wrap gap-1.5">
+              {["אונליין", "אצל המורה", "אצלכם"].map((t) => (
+                <span
+                  key={t}
+                  className="rounded-full bg-[var(--color-ink-100)] px-3 py-1 text-[11px] font-semibold text-[var(--color-ink-700)]"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </ScrollReveal>
+
+          {/* Zoom / video */}
+          <ScrollReveal className="tile tile--sm" delay={0.15}>
+            <FeatureContent
+              icon={f2.icon}
+              title={f2.title}
+              description={f2.description}
+              compact
+            />
+          </ScrollReveal>
+
+          {/* Verified teachers — soft trust tile */}
+          <ScrollReveal className="tile tile--sm tile--trust" delay={0.2}>
+            <FeatureContent
+              icon={f4.icon}
+              title={f4.title}
+              description={f4.description}
+              compact
+            />
+          </ScrollReveal>
+
+          {/* Chat with lock-screen reply mock */}
+          <ScrollReveal className="tile tile--wide" delay={0.1}>
+            <FeatureContent
+              icon={f3.icon}
+              title={f3.title}
+              description={f3.description}
+            />
+            <div
+              className="mt-5 max-w-[360px] rounded-[14px] p-3.5 text-white"
+              style={{ background: "var(--color-ink-1000)" }}
+            >
+              <div className="flex items-center gap-2.5">
+                <div
+                  className="h-7 w-7 rounded-lg"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, var(--color-brand-500), var(--color-accent-500))",
+                  }}
+                />
+                <div className="flex-1">
+                  <div className="text-xs font-bold">מיכל לוי</div>
+                  <div
+                    className="text-[11px]"
+                    style={{ color: "rgba(255,255,255,0.6)" }}
+                  >
+                    תודה על השיעור! מצורף דף התרגול...
+                  </div>
+                </div>
+                <div
+                  className="rounded-md px-2 py-1 text-[10px]"
+                  style={{
+                    background: "rgba(255,255,255,0.08)",
+                    color: "rgba(255,255,255,0.7)",
+                  }}
+                >
+                  השב
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* Dashboard with fake bar chart */}
+          <ScrollReveal className="tile tile--md tile--paper" delay={0.15}>
+            <FeatureContent
+              icon={f5.icon}
+              title={f5.title}
+              description={f5.description}
+            />
+            <div className="mt-4 flex h-[60px] items-end gap-1.5">
+              {[40, 55, 48, 70, 65, 85, 92].map((h, i) => (
+                <div
+                  key={i}
+                  className="flex-1 rounded"
+                  style={{
+                    height: `${h}%`,
+                    background:
+                      i === 6
+                        ? "var(--color-accent-500)"
+                        : "var(--color-brand-300)",
+                  }}
+                />
+              ))}
+            </div>
+          </ScrollReveal>
+
+          {/* Bolt reminder */}
+          <ScrollReveal className="tile tile--md" delay={0.2}>
+            <FeatureContent
+              icon={f6.icon}
+              title={f6.title}
+              description={f6.description}
+            />
+            <div className="mt-4 flex items-center gap-2">
+              <span
+                className="font-mono-lc rounded-full px-2.5 py-1 text-[11px] font-semibold"
+                style={{
+                  background: "var(--accent-soft)",
+                  color: "var(--accent)",
+                }}
+                dir="ltr"
+              >
+                -4:00
+              </span>
+              <span className="mono-sm text-[var(--fg-muted)]" dir="ltr">
+                push + email
+              </span>
+            </div>
+          </ScrollReveal>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -1,29 +1,34 @@
-import {
-  ShieldVerifiedIcon,
-  TrustCheckIcon,
-  ModalityIcon,
-} from "@/components/icons/CustomIcons";
+import { TRUST_BADGES } from "@/lib/constants";
 
-const BADGES = [
-  { Icon: TrustCheckIcon, label: "0% עמלה. אף פעם." },
-  { Icon: ShieldVerifiedIcon, label: "מורים עם תעודת זהות מאומתת" },
-  { Icon: ModalityIcon, label: "אונליין · אצל המורה · אצלכם" },
-  { Icon: TrustCheckIcon, label: "עברית מלאה · RTL" },
-];
+// Two identical tracks translated -50% together so the loop is seamless.
+function TrustTrack({ ariaHidden = false }: { ariaHidden?: boolean }) {
+  return (
+    <div
+      className="marquee__track"
+      aria-hidden={ariaHidden ? "true" : undefined}
+    >
+      {[...TRUST_BADGES, ...TRUST_BADGES].map((badge, i) => (
+        <span
+          key={i}
+          className="inline-flex items-center gap-2.5 whitespace-nowrap text-sm font-semibold text-[var(--fg-muted)]"
+        >
+          <span
+            className="inline-block h-[7px] w-[7px] rounded-full bg-[var(--color-accent-500)] shadow-[0_0_0_3px_rgba(255,112,51,0.3)]"
+            aria-hidden="true"
+          />
+          {badge}
+        </span>
+      ))}
+    </div>
+  );
+}
 
 export default function TrustBarSection() {
   return (
-    <section className="w-full border-y border-dark-200 px-6 py-6 md:px-16">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-2.5 md:gap-3">
-        {BADGES.map(({ Icon, label }) => (
-          <span
-            key={label}
-            className="inline-flex items-center gap-2 rounded-full border border-dark-200 bg-white/70 px-3.5 py-1.5 text-[13px] font-medium text-dark-700 backdrop-blur-sm"
-          >
-            <Icon className="h-4 w-4 text-brand-600" />
-            {label}
-          </span>
-        ))}
+    <section className="w-full border-y border-[var(--rule)] bg-white py-6">
+      <div className="marquee">
+        <TrustTrack />
+        <TrustTrack ariaHidden />
       </div>
     </section>
   );

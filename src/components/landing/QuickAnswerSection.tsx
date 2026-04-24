@@ -1,33 +1,28 @@
 import ScrollReveal from "@/components/animations/ScrollReveal";
+import Eyebrow from "@/components/ui/Eyebrow";
+import { QUICK_ANSWER } from "@/lib/constants";
 
 export default function QuickAnswerSection() {
   return (
     <section
       id="quick-answer"
-      className="section-bloom w-full px-6 py-14 md:py-20 md:px-16"
-      style={{ ["--bloom-x" as string]: "15%", ["--bloom-y" as string]: "80%" }}
+      className="w-full px-6 py-20 md:py-28 md:px-16"
     >
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-[880px]">
         <ScrollReveal>
-          <p
-            className="mb-4 text-center text-xs font-semibold uppercase tracking-[0.22em] text-brand-600"
-            dir="ltr"
-          >
-            01 - הסיפור הקצר
+          <Eyebrow n="01 / QUICK ANSWER">הסיפור הקצר</Eyebrow>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.1}>
+          <h2 className="display display-md mt-6 max-w-[14ch]">
+            מה זה <em className="not-italic grad-text">SkillUp</em>?
+          </h2>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.2}>
+          <p className="mt-6 max-w-[64ch] text-[19px] leading-[1.7] text-[var(--color-ink-700)]">
+            {QUICK_ANSWER}
           </p>
-          <div className="rounded-2xl border border-dark-200 bg-white p-7 shadow-sm md:p-10">
-            <h2 className="mb-4 text-center text-2xl font-extrabold tracking-tight text-dark-900 md:text-3xl">
-              מה זה SkillUp?
-            </h2>
-            <p className="text-base leading-relaxed text-dark-700 md:text-lg">
-              SkillUp היא אפליקציית מובייל ישראלית (iOS) שמחברת תלמידים, הורים
-              ומבוגרים עם מורים פרטיים מאומתים ב-9 תחומים: מתמטיקה ומדעים,
-              שפות זרות, עברית וספרות, בגרויות ופסיכומטרי, מדעי הרוח, ספורט,
-              אומנות, תכנות, ופנאי ומיומנויות חיים (בישול, נהיגה, אתיקט). 3
-              דרכי לימוד: אונליין, אצל המורה, או אצלכם בבית. ללא עמלת תיווך.
-              התשלום ביניכם לבין המורה. ביטול חינם עד 24 שעות לפני השיעור.
-            </p>
-          </div>
         </ScrollReveal>
       </div>
     </section>
