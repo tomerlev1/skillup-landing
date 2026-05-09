@@ -1,0 +1,33 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "QPZSP9F7W2.com.skillupapp.ios",
+        "paths": [
+          "/lesson/*",
+          "/chat/*",
+          "/verify-email",
+          "/verify-email?*",
+          "/settings/notifications",
+          "/policy",
+          "NOT /unsubscribe",
+          "NOT /unsubscribe?*"
+        ]
+      },
+      {
+        "appID": "QPZSP9F7W2.com.skillupapp.ios.dev",
+        "paths": [
+          "/lesson/*",
+          "/chat/*",
+          "/verify-email",
+          "/verify-email?*",
+          "/settings/notifications",
+          "/policy",
+          "NOT /unsubscribe",
+          "NOT /unsubscribe?*"
+        ]
+      }
+    ]
+  }
+}
