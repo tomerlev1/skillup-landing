@@ -3,12 +3,31 @@
     "apps": [],
     "details": [
       {
-        "appIDs": [
-          "QPZSP9F7W2.com.skillupapp.ios",
-          "QPZSP9F7W2.com.skillupapp.ios.dev"
-        ],
-        "components": [
-          { "/": "/teacher/*" }
+        "appID": "QPZSP9F7W2.com.skillupapp.ios",
+        "paths": [
+          "/lesson/*",
+          "/chat/*",
+          "/teacher/*",
+          "/verify-email",
+          "/verify-email?*",
+          "/settings/notifications",
+          "/policy",
+          "NOT /unsubscribe",
+          "NOT /unsubscribe?*"
+        ]
+      },
+      {
+        "appID": "QPZSP9F7W2.com.skillupapp.ios.dev",
+        "paths": [
+          "/lesson/*",
+          "/chat/*",
+          "/teacher/*",
+          "/verify-email",
+          "/verify-email?*",
+          "/settings/notifications",
+          "/policy",
+          "NOT /unsubscribe",
+          "NOT /unsubscribe?*"
         ]
       }
     ]
