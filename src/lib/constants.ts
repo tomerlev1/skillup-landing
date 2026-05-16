@@ -3,7 +3,13 @@ export const SITE_URL = "https://skillupwebsite.vercel.app";
 export const CONTACT_EMAIL = "skillup.team.il@gmail.com";
 
 export const APP_STORE_URL = "https://apps.apple.com/il/app/skillup/id6762197788";
-export const PLAY_STORE_URL = "#"; // TODO: Replace with real Play Store URL
+// Placeholder Android URL. The real package name may differ when Android ships.
+// When Android ships: update PLAY_STORE_URL if the package name differs, then flip
+// PLAY_STORE_AVAILABLE to true. Store CTAs across the site automatically become
+// UA-aware (iOS → App Store, Android → Play Store, else → both).
+export const PLAY_STORE_URL =
+  "https://play.google.com/store/apps/details?id=com.skillupapp.android";
+export const PLAY_STORE_AVAILABLE = false;
 
 export const NAV_LINKS = [
   { href: "#why-skillup", label: "למה SkillUp" },
