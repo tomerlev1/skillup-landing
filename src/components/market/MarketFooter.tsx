@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AppStoreButtons from "@/components/market/AppStoreButtons";
 import { APP_STORE_URL, CONTACT_EMAIL } from "@/lib/constants";
 import { categorySlug, citySlug } from "@/lib/slugs";
 import type { Category, City } from "@/lib/types";
@@ -115,6 +116,11 @@ export default function MarketFooter({ categories, majorCities }: MarketFooterPr
               SkillUp היא הדרך הפשוטה למצוא מורה פרטי בישראל: קשר ישיר עם
               המורה, בלי מתווכים.
             </p>
+
+            <p className="mt-6 mb-3 text-sm font-semibold text-[var(--mk-ink)]">
+              הורידו את האפליקציה
+            </p>
+            <AppStoreButtons size="compact" />
           </div>
         </div>
 

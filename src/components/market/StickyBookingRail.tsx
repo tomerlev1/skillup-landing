@@ -50,14 +50,14 @@ export default function StickyBookingRail({
       <div className="mk-shadow hidden rounded-3xl border border-[var(--mk-hairline)] bg-white p-6 lg:block">
         <div className="flex items-baseline justify-between gap-3">
           {fromPrice != null && (
-            <p className="text-[var(--mk-ink)]">
+            <p className="flex items-baseline gap-1.5 text-[var(--mk-ink)]">
               {hasRange && (
                 <span className="text-sm text-[var(--mk-ink-3)]">החל מ־</span>
               )}
               <span className="ltr-isolate tnum text-2xl font-bold">
                 {formatPrice(fromPrice)}
               </span>
-              <span className="text-sm text-[var(--mk-ink-3)]"> לשעה</span>
+              <span className="text-sm text-[var(--mk-ink-3)]">לשעה</span>
             </p>
           )}
           <RatingStars value={ratingAvg} count={reviewCount} />
@@ -110,14 +110,14 @@ export default function StickyBookingRail({
         <div className="mx-auto flex max-w-[640px] items-center justify-between gap-4">
           <div>
             {fromPrice != null && (
-              <p className="text-[var(--mk-ink)]">
+              <p className="flex items-baseline gap-1 text-[var(--mk-ink)]">
                 {hasRange && (
                   <span className="text-xs text-[var(--mk-ink-3)]">החל מ־</span>
                 )}
                 <span className="ltr-isolate tnum text-lg font-bold">
                   {formatPrice(fromPrice)}
                 </span>
-                <span className="text-xs text-[var(--mk-ink-3)]"> לשעה</span>
+                <span className="text-xs text-[var(--mk-ink-3)]">לשעה</span>
               </p>
             )}
             <RatingStars value={ratingAvg} count={reviewCount} size="sm" />

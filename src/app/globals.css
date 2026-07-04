@@ -629,6 +629,54 @@ body {
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
+/* ===== Hero entrance + live search (2026 motion, reduced-motion safe) ===== */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.rise-in {
+  opacity: 0;
+  animation: rise-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Soft living glow around the search submit orb. */
+@keyframes orb-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.35); }
+  50%      { box-shadow: 0 0 0 7px rgba(79, 70, 229, 0); }
+}
+.orb-glow { animation: orb-glow 2.6s ease-in-out infinite; }
+
+/* Blinking caret for the typewriter placeholder. */
+@keyframes caret-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.caret { animation: caret-blink 1s step-end infinite; }
+
+/* Slow flowing indigo gradient on the hero title — small "living" accent. */
+@keyframes grad-shift {
+  from { background-position: 0% 50%; }
+  to   { background-position: 200% 50%; }
+}
+.title-gradient {
+  background: linear-gradient(
+    100deg,
+    #4f46e5,
+    #6366f1,
+    #4338ca,
+    #6366f1,
+    #4f46e5
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: grad-shift 6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise-in { opacity: 1; animation: none; }
+  .orb-glow, .caret, .title-gradient { animation: none; }
+}
+
 /* ===== FOCUS VISIBLE ===== */
 a:focus-visible,
 button:focus-visible {

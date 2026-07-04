@@ -25,7 +25,7 @@ interface MarketNavProps {
 
 const NAV_LINKS = [
   { href: "/how-it-works", label: "איך זה עובד" },
-  { href: "/for-tutors", label: "למורים" },
+  { href: "/for-tutors", label: "מידע למורים" },
 ];
 
 // Marketplace nav: 64px, white, hairline appears on scroll. One indigo

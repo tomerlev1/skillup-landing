@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import AppStoreButtons from "@/components/market/AppStoreButtons";
 import GuestOnly from "@/components/auth/GuestOnly";
 import {
   BadgeCheck,
   BellRing,
   CalendarCheck,
   ChevronLeft,
-  HandCoins,
+  Headset,
+  LayoutDashboard,
   MessageCircle,
   Smartphone,
 } from "lucide-react";
@@ -96,22 +98,30 @@ export default async function HomePage() {
       {/* ===== Hero: search-first, listings visible above the fold ===== */}
       <section className="section-bloom border-b border-[var(--mk-hairline)] bg-[var(--mk-band)]">
         <div className="mx-auto max-w-[840px] px-4 pb-12 pt-12 text-center sm:px-6 sm:pb-16 sm:pt-20">
-          <h1 className="font-display text-[clamp(2rem,5vw,3.5rem)] font-extrabold leading-[1.1] tracking-[-0.01em] text-[var(--mk-ink)]">
-            המורה הפרטי הבא שלכם
+          <h1 className="rise-in font-display text-[clamp(2rem,5vw,3.5rem)] font-extrabold leading-[1.15] tracking-[-0.01em] text-[var(--mk-ink)]">
+            מורים פרטיים בישראל
             <br />
-            נמצא כאן
+            <span className="title-gradient">בצורה הנוחה והנגישה ביותר</span>
           </h1>
-          <p className="mx-auto mt-4 max-w-[520px] text-base leading-relaxed text-[var(--mk-ink-2)] sm:text-lg">
+          <p
+            className="rise-in mx-auto mt-4 max-w-[520px] text-base leading-relaxed text-[var(--mk-ink-2)] sm:text-lg"
+            style={{ animationDelay: "0.1s" }}
+          >
             מחפשים, משווים וקובעים שיעור ישירות מול מורים מאומתים,
             אונליין או פנים אל פנים, בכל הארץ.
           </p>
 
-          <div className="mt-8">
+          {/* z-20 so the search dropdown stacks above the chips row below
+              (both create stacking contexts via their rise-in transform) */}
+          <div className="rise-in relative z-20 mt-8" style={{ animationDelay: "0.2s" }}>
             <SearchPill categories={categories} />
           </div>
 
           {/* Category shortcuts — real links to the SEO category pages */}
-          <div className="no-scrollbar -mx-4 mt-6 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:justify-center sm:px-0">
+          <div
+            className="rise-in relative z-10 no-scrollbar -mx-4 mt-6 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:flex-wrap sm:justify-center sm:px-0"
+            style={{ animationDelay: "0.3s" }}
+          >
             {categories.map((cat) => (
               <Chip key={cat.id} href={`/categories/${categorySlug(cat)}`} size="sm">
                 <CategoryIcon
@@ -266,8 +276,26 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ===== Get the app — placed after "how it works", once the product
+          is understood; deliberately NOT in the hero so it never competes
+          with search, the primary web action ===== */}
+      <section className="mx-auto max-w-[1280px] px-4 sm:px-6">
+        <div className="flex flex-col items-center gap-6 rounded-3xl border border-[var(--mk-hairline)] bg-white p-8 text-center sm:flex-row sm:justify-between sm:p-10 sm:text-start">
+          <div className="max-w-[520px]">
+            <h2 className="font-display text-xl font-bold text-[var(--mk-ink)] sm:text-2xl">
+              קחו את SkillUp לכל מקום
+            </h2>
+            <p className="mt-2 text-[15px] leading-relaxed text-[var(--mk-ink-2)]">
+              ההודעות, השיעורים והיומן שלכם בכיס. אותו חשבון בדיוק כמו באתר,
+              עם התראות בזמן אמת על כל פעילות.
+            </p>
+          </div>
+          <AppStoreButtons className="shrink-0 justify-center sm:justify-start" />
+        </div>
+      </section>
+
       {/* ===== Cities band (SEO browse surface) ===== */}
-      <section className="bg-[var(--mk-band)] py-14">
+      <section className="mt-16 bg-[var(--mk-band)] py-14">
         <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
           <h2 className="font-display text-xl font-bold text-[var(--mk-ink)] sm:text-2xl">
             מורים פרטיים בכל הארץ
@@ -293,22 +321,23 @@ export default async function HomePage() {
         >
           <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_260px]">
             <div className="max-w-[580px]">
-              <p className="eyebrow">למורים</p>
+              <p className="eyebrow">מידע למורים</p>
               <h2 className="mt-2 font-display text-xl font-extrabold leading-tight text-[var(--mk-ink)] sm:text-2xl">
-                מלמדים? יש תלמידים שמחפשים בדיוק אתכם
+                המורים שלנו נהנים יותר!
               </h2>
               <p className="panel-muted mt-3 text-[15px] leading-relaxed">
-                תלמידים מוצאים אתכם כאן באתר ובאפליקציה, וכל הניהול, מהיומן ועד
-                הצ&apos;אט, נמצא אצלכם בכיס. פנייה חדשה? אתם יודעים עליה באותה
-                שנייה.
+                תלמידים מוצאים אתכם גם באתר וגם באפליקציה שלנו. כל התהליך, מהחשיפה,
+                קביעת שיעור, צ&apos;אט, הערות על השיעור ומעקב אם שולם או לא, הכל
+                מתבצע מהכיס שלכם באופן מיידי, מהיר וחדשני. פנייה חדשה? אתם יודעים
+                עליה באותה שנייה.
               </p>
 
               <ul className="mt-4 grid gap-2 sm:grid-cols-2">
                 {[
                   { icon: Smartphone, text: "פרופיל אחד, באתר ובאפליקציה" },
-                  { icon: BellRing, text: "התראה בזמן אמת על כל פנייה" },
-                  { icon: CalendarCheck, text: "יומן וצ'אט מהכיס" },
-                  { icon: HandCoins, text: "בלי עמלות על השיעורים" },
+                  { icon: BellRing, text: "התראות בזמן האמת על כל פעילות" },
+                  { icon: LayoutDashboard, text: "כלי ניהול מהמכשיר הנייד שלך" },
+                  { icon: Headset, text: "שירות לקוחות זמין ומהיר" },
                 ].map(({ icon: Icon, text }) => (
                   <li key={text} className="flex items-center gap-2 text-sm font-medium text-[var(--mk-ink)]">
                     <Icon size={15} className="shrink-0 text-brand-700" />

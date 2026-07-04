@@ -15,6 +15,56 @@ interface Suggestion {
   iconName?: string | null;
 }
 
+const TYPEWRITER_WORDS = [
+  "מתמטיקה",
+  "אנגלית",
+  "גיטרה",
+  "פסיכומטרי",
+  "תכנות",
+  "בישול",
+  "פיזיקה",
+];
+
+// Typewriter that types a word, holds, deletes, moves on — while `active`.
+// Returns "" when paused or when the user prefers reduced motion.
+function useTypewriter(words: string[], active: boolean): string {
+  const [text, setText] = useState("");
+  useEffect(() => {
+    if (!active) {
+      setText("");
+      return;
+    }
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+    let word = 0;
+    let char = 0;
+    let deleting = false;
+    let timer: ReturnType<typeof setTimeout>;
+    const tick = () => {
+      const w = words[word];
+      char += deleting ? -1 : 1;
+      setText(w.slice(0, char));
+      if (!deleting && char === w.length) {
+        deleting = true;
+        timer = setTimeout(tick, 2400); // hold the full word longer
+      } else if (deleting && char === 0) {
+        deleting = false;
+        word = (word + 1) % words.length;
+        timer = setTimeout(tick, 550); // calm gap before the next word
+      } else {
+        timer = setTimeout(tick, deleting ? 55 : 110);
+      }
+    };
+    timer = setTimeout(tick, 900);
+    return () => clearTimeout(timer);
+  }, [active, words]);
+  return text;
+}
+
 interface SearchPillProps {
   categories: Category[];
   /** Compact variant for non-hero placements. */
@@ -45,6 +95,15 @@ export default function SearchPill({
   const [onlineOnly, setOnlineOnly] = useState(false);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [highlighted, setHighlighted] = useState(-1);
+
+  // Live typewriter placeholder — cycles subjects when the field is idle so
+  // the search feels alive. Pauses on focus / once the user types.
+  // Typewriter runs only while the "what" field is idle and empty.
+  const typewriterOn = active !== "what" && what === "";
+  const typed = useTypewriter(TYPEWRITER_WORDS, typewriterOn);
+  // Never flash the base question mid-cycle — keep the "מורה ל" prefix while
+  // the typewriter is running; show the plain prompt only when it's off.
+  const whatPlaceholder = typewriterOn ? `מורה ל${typed}‏` : "מה תרצו ללמוד?";
 
   // Typing invalidates a previously picked suggestion.
   const onWhatChange = (v: string) => {
@@ -225,7 +284,7 @@ export default function SearchPill({
             onChange={(e) => onWhatChange(e.target.value)}
             onFocus={() => setActive("what")}
             onKeyDown={onKeyDown}
-            placeholder="מה תרצו ללמוד?"
+            placeholder={whatPlaceholder}
             autoFocus={autoFocus}
             autoComplete="off"
             className="w-full min-w-0 bg-transparent text-sm font-medium text-[var(--mk-ink)] outline-none placeholder:font-normal placeholder:text-[var(--mk-ink-3)] sm:text-[15px]"
@@ -255,7 +314,7 @@ export default function SearchPill({
             type="button"
             onClick={submit}
             aria-label="חיפוש מורים"
-            className={`grid ${compact ? "h-9 w-9" : "h-10 w-10 sm:h-12 sm:w-12"} shrink-0 cursor-pointer place-items-center rounded-full bg-brand-600 text-white transition-colors hover:bg-brand-700`}
+            className={`orb-glow grid ${compact ? "h-9 w-9" : "h-10 w-10 sm:h-12 sm:w-12"} shrink-0 cursor-pointer place-items-center rounded-full bg-brand-600 text-white transition-colors hover:bg-brand-700`}
           >
             <Search size={compact ? 16 : 19} />
           </button>

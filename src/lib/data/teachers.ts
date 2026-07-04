@@ -66,32 +66,19 @@ export const getTeacherProfile = cache(
 );
 
 /**
- * Subjects a specific teacher offers, with category ids for linking and
- * per-subject experience years (from teacher_subject_experience) when set.
+ * Subjects a specific teacher offers, with category ids for linking and the
+ * per-subject experience years (teacher_subjects.experience_years).
  */
 export const getTeacherSubjects = cache(async (teacherId: string) => {
   const supabase = createPublicClient();
-  const [subjectsRes, experienceRes] = await Promise.all([
-    supabase
-      .from("teacher_subjects")
-      .select("subject_id, subjects(id, name_he, category_id, icon)")
-      .eq("teacher_id", teacherId),
-    supabase
-      .from("teacher_subject_experience")
-      .select("subject_id, experience_years")
-      .eq("teacher_id", teacherId),
-  ]);
+  const { data, error } = await supabase
+    .from("teacher_subjects")
+    .select("subject_id, experience_years, subjects(id, name_he, category_id, icon)")
+    .eq("teacher_id", teacherId);
 
-  if (subjectsRes.error)
-    throw new Error(`teacher_subjects fetch failed: ${subjectsRes.error.message}`);
+  if (error) throw new Error(`teacher_subjects fetch failed: ${error.message}`);
 
-  const yearsBySubject = new Map<string, number>();
-  for (const row of experienceRes.data ?? []) {
-    if (row.experience_years != null)
-      yearsBySubject.set(row.subject_id as string, row.experience_years as number);
-  }
-
-  return (subjectsRes.data ?? [])
+  return (data ?? [])
     .map((row) => {
       const subject = row.subjects as unknown as {
         id: string;
@@ -100,7 +87,7 @@ export const getTeacherSubjects = cache(async (teacherId: string) => {
         icon: string | null;
       };
       return subject
-        ? { ...subject, experience_years: yearsBySubject.get(subject.id) ?? null }
+        ? { ...subject, experience_years: (row.experience_years as number | null) ?? null }
         : null;
     })
     .filter((s): s is NonNullable<typeof s> => Boolean(s))
