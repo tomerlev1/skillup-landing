@@ -565,6 +565,70 @@ body {
 .animate-float-y { animation: float-y 6s ease-in-out infinite; }
 .animate-glow-pulse { animation: glow-pulse 4s ease-in-out infinite alternate; }
 
+/* ===================================================================
+   MARKETPLACE LAYER (skillup-web)
+   Web-native browse/booking surfaces. Discipline per the 2026 brief:
+   monochrome ink base, ONE hairline value, ONE shadow tier (hover/
+   overlay only — cards are borderless + shadowless at rest), indigo
+   reserved for the primary action / focus / selected states.
+   =================================================================== */
+:root {
+  --mk-ink: #111827;
+  --mk-ink-2: #4B5563;
+  --mk-ink-3: #6B7280;
+  --mk-hairline: #E5E7EB;
+  --mk-band: #F8F9FC;          /* cool 1–2% indigo-tinted section band */
+  --mk-shadow: 0 0 0 1px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 0, 0, 0.04),
+    0 4px 8px rgba(0, 0, 0, 0.1);
+  --mk-shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Financial-grade numerals: prices, ratings, counters never jitter. */
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* LTR isolation for numbers/prices/phones inside RTL text. */
+.ltr-isolate { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+
+.mk-shadow { box-shadow: var(--mk-shadow); }
+.mk-hairline-b { border-bottom: 1px solid var(--mk-hairline); }
+.mk-hairline-t { border-top: 1px solid var(--mk-hairline); }
+
+/* Listing card: borderless at rest; elevation + image zoom on hover only. */
+.mk-card .mk-card-img {
+  transition: transform 0.3s ease-out;
+}
+@media (hover: hover) {
+  .mk-card:hover .mk-card-img { transform: scale(1.04); }
+}
+
+/* Skeleton shimmer (~1.5s cycle), layout-matching, CLS-free. */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-ink-100);
+  border-radius: 12px;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.65),
+    transparent
+  );
+  animation: skeleton-sweep 1.5s ease-in-out infinite;
+}
+@keyframes skeleton-sweep {
+  100% { transform: translateX(100%); }
+}
+
+/* Hide scrollbars on chip rows / rails while keeping them scrollable. */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
 /* ===== FOCUS VISIBLE ===== */
 a:focus-visible,
 button:focus-visible {

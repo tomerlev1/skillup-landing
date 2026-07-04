@@ -1,41 +1,56 @@
 # SkillUp
 
-> SkillUp is the Israeli mobile app for finding verified private tutors (מורים פרטיים) and booking private lessons (שיעורים פרטיים) anywhere in Israel. It connects students, parents, and adult learners directly with verified tutors, with no middlemen. Hebrew-first, full RTL.
+> SkillUp is the Israeli marketplace for finding verified private tutors (מורים פרטיים) and booking private lessons (שיעורים פרטיים) anywhere in Israel — on the web at skillupwebsite.vercel.app and in the SkillUp iOS app. It connects students, parents, and adult learners directly with verified tutors, with no middlemen and no brokerage fees. Hebrew-first, full RTL.
 
-## What SkillUp does
+## What you can do on the website
 
-- Find a private tutor in Israel by subject, level, area, and real-time availability.
-- 9 subject categories: Math & Science, Foreign Languages (incl. English), Hebrew Language & Literature, Exam Prep (Bagrut/בגרות, Psychometric/פסיכומטרי, SAT), Humanities & Social Studies, Sports & Fitness, Arts & Creativity, Programming & Technology, and Leisure & Life Skills (cooking, driving, personal finance).
-- 3 lesson modes: online (automatic Zoom link), at the tutor's place, or at the student's home.
-- Every tutor is verified: identity check, education credentials, and background approval before appearing in search.
-- Real student reviews and ratings on tutor profiles.
-- Built-in chat (with file attachments), live availability calendar, booking wizard, and automatic lesson reminders (push + email).
-- Direct student-tutor connection: students contact tutors directly through the app.
+- Search and compare private tutors by subject, category, city, price, rating, and lesson mode — no signup needed to browse: https://skillupwebsite.vercel.app/search
+- View full tutor profiles: real student reviews, experience, education, transparent prices per lesson mode, intro video, and live availability.
+- Book a lesson directly from the tutor's real calendar (free account required). First lesson with a new tutor is confirmed by the tutor within 24 hours.
+- Message tutors directly in a built-in chat (free account required).
+- The same account works on the website and in the iOS app.
+
+## Subject categories (each has a landing page under /categories/)
+
+Mathematics & Sciences, Foreign Languages (incl. English), Hebrew & Language Arts, Exams & Test Prep (Bagrut/בגרות, Psychometric/פסיכומטרי, SAT), Humanities & Social Sciences, Sports & Fitness, Arts & Creativity, Programming & Technology, Leisure & Life Skills (cooking, driving, chess, and more).
+
+## Cities
+
+Tutor pages per city under /cities/ — including Tel Aviv, Jerusalem, Haifa, Beer Sheva, Rishon LeZion, Petah Tikva, Netanya, Ramat Gan, Holon, Ashdod, Raanana, and Herzliya. Online lessons are available nationwide.
+
+## Trust & privacy
+
+- Verified tutors: identity, education credentials, and background approval before appearing in search.
+- Reviews are written only by students who actually studied with the tutor through SkillUp.
+- Personal contact details (phone, email, exact address) are never public; a tutor's address is revealed only after a lesson at their place is confirmed.
+- Direct student–tutor connection with no brokerage fees.
 
 ## For tutors
 
-- The app goes with you everywhere: calendar, students, and messages in your pocket.
-- Real-time push notification the moment a student sends an inquiry or books a lesson.
-- New students find you: your profile appears in search by subject, area, and availability.
-- Nationwide visibility and accumulating student reviews that work for you.
-- Income dashboard with trends and goals.
+- Join via the SkillUp iOS app: build a profile, set subjects, prices, and availability — the profile appears on the website and in the app.
+- Real-time notifications for new inquiries and bookings; students nationwide can find you.
+- Tutors can log in on the website to view messages and upcoming lessons.
 
 ## Key facts
 
-- Geography: Israel (nationwide; online lessons available everywhere).
+- Geography: Israel (nationwide; online lessons everywhere).
 - Language: Hebrew (full RTL). Many tutors also teach in English.
-- Platform: iOS (iPhone). Android coming soon.
-- Category: Education.
+- Platforms: Web (this site) + iOS app. Android coming soon.
+- Category: Education / Tutoring marketplace.
 
 ## Links
 
 - Website: https://skillupwebsite.vercel.app
+- Find a tutor: https://skillupwebsite.vercel.app/search
+- How it works: https://skillupwebsite.vercel.app/how-it-works
+- For tutors: https://skillupwebsite.vercel.app/for-tutors
+- FAQ: https://skillupwebsite.vercel.app/faq
+- Guides & articles: https://skillupwebsite.vercel.app/articles
 - App Store: https://apps.apple.com/il/app/skillup/id6762197788
-- FAQ: https://skillupwebsite.vercel.app/#faq
 - Privacy: https://skillupwebsite.vercel.app/privacy
 - Terms: https://skillupwebsite.vercel.app/terms
 - Contact: skillup.team.il@gmail.com
 
 ## בעברית
 
-SkillUp היא האפליקציה הישראלית למציאת מורה פרטי מאומת ולקביעת שיעורים פרטיים: אונליין, אצל המורה או אצלכם בבית. 9 תחומי לימוד, ביקורות אמיתיות מתלמידים, צ׳אט מובנה, יומן זמינות חי ותזכורות אוטומטיות. הקשר בין התלמיד למורה ישיר, בלי מתווכים. למורים: התראות בזמן אמת על פניות חדשות, חשיפה ארצית וניהול כל הקריירה מהטלפון.
+SkillUp היא המרקטפלייס הישראלי למציאת מורה פרטי מאומת ולקביעת שיעורים פרטיים — באתר ובאפליקציה. מחפשים לפי מקצוע, עיר, מחיר ודירוג, משווים פרופילים עם ביקורות אמיתיות של תלמידים, וקובעים שיעור ישירות מול המורה: אונליין, אצל המורה או אצלכם בבית. החיפוש פתוח לכולם בלי הרשמה; קביעת שיעור ושליחת הודעה דורשות חשבון חינמי, שמשותף לאתר ולאפליקציה. הקשר בין התלמיד למורה ישיר, בלי מתווכים ובלי עמלות. למורים: פרופיל שמופיע מול תלמידים בכל הארץ, יומן זמינות, צ'אט ישיר והתראות בזמן אמת.

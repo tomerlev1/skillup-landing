@@ -1,6 +1,22 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Teacher avatars / card images live in Supabase Storage public buckets
+  // (dev + prod projects). next/image needs the hosts allow-listed.
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "hjgumjfrljoietbzciyl.supabase.co",
+        pathname: "/storage/v1/object/**",
+      },
+      {
+        protocol: "https",
+        hostname: "ntofcpjwulypvjcsytqv.supabase.co",
+        pathname: "/storage/v1/object/**",
+      },
+    ],
+  },
   // Apple's AASA file is required to be served as application/json (or
   // application/octet-stream, but JSON is the recommended type) without
   // any redirects. The file lives at public/.well-known/apple-app-site-

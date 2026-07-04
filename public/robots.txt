@@ -1,4 +1,39 @@
+# SkillUp — https://skillupwebsite.vercel.app
+# Marketplace pages (home, search, categories, cities, tutors, articles)
+# are open to all crawlers, including AI assistants. Private account areas
+# and transactional flows are excluded.
+
 User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+Disallow: /messages
+Disallow: /bookings
+Disallow: /saved
+Disallow: /login
+Disallow: /signup
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verify-email
+Disallow: /unsubscribe
+Disallow: /settings/
+Disallow: /dev/
+Disallow: /tutors/*/book
+
+# AI/LLM crawlers — explicitly welcome (see /llms.txt)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
 Allow: /
 
 Sitemap: https://skillupwebsite.vercel.app/sitemap.xml
