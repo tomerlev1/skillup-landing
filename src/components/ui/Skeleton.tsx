@@ -26,7 +26,7 @@ export function TeacherCardSkeleton() {
 
 export function TeacherGridSkeleton({ count = 8 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-6 sm:grid-cols-[repeat(auto-fill,minmax(225px,1fr))] lg:gap-x-6">
+    <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:gap-x-6">
       {Array.from({ length: count }, (_, i) => (
         <TeacherCardSkeleton key={i} />
       ))}

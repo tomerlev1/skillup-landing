@@ -233,7 +233,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
                   priority
                 />
               ) : (
-                <div className="grid h-full w-full place-items-center bg-brand-50 font-display text-6xl font-bold text-brand-300">
+                <div className="grid h-full w-full place-items-center bg-gradient-to-br from-brand-50 via-paper-25 to-accent-50 font-display text-5xl font-bold text-brand-500">
                   {teacher.display_name.slice(0, 1)}
                 </div>
               )}

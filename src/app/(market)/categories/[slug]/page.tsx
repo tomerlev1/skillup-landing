@@ -181,7 +181,7 @@ export default async function CategoryLandingPage({ params }: PageProps) {
         </div>
 
         {result.items.length > 0 ? (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-6 sm:grid-cols-[repeat(auto-fill,minmax(225px,1fr))] lg:gap-x-6">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
             {result.items.map((t, i) => (
               <TeacherCard key={t.id} teacher={t} priority={i < 4} />
             ))}

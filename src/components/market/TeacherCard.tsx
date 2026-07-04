@@ -44,8 +44,10 @@ export default function TeacherCard({ teacher, priority = false }: TeacherCardPr
               priority={priority}
             />
           ) : (
-            <div className="grid h-full w-full place-items-center bg-brand-50 font-display text-5xl font-bold text-brand-300">
-              {teacher.display_name.slice(0, 1)}
+            <div className="grid h-full w-full place-items-center bg-gradient-to-br from-brand-50 via-paper-25 to-accent-50">
+              <span className="grid h-20 w-20 place-items-center rounded-full bg-white/75 font-display text-3xl font-bold text-brand-500 shadow-sm ring-1 ring-black/[0.03]">
+                {teacher.display_name.slice(0, 1)}
+              </span>
             </div>
           )}
 
