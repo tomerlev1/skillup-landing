@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
+  Award,
   BadgeCheck,
   CalendarCheck,
   ChevronLeft,
@@ -10,11 +11,13 @@ import {
   GraduationCap,
   Languages,
   MapPin,
+  Sparkles,
   Users,
 } from "lucide-react";
 import RecordView from "@/components/market/RecordView";
 import ReviewsSection from "@/components/market/ReviewsSection";
 import SaveButton from "@/components/market/SaveButton";
+import ShareButton from "@/components/market/ShareButton";
 import StickyBookingRail from "@/components/market/StickyBookingRail";
 import TeacherRail from "@/components/market/TeacherRail";
 import Chip from "@/components/ui/Chip";
@@ -65,13 +68,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     getCityName(teacher.city_id),
   ]);
   const subjectNames = subjects.slice(0, 3).map((s) => s.name_he);
-  const title = `${teacher.display_name} — מורה ל${subjectNames[0] ?? "שיעורים פרטיים"}${cityName ? ` ב${cityName}` : ""} | SkillUp`;
+  const title = `${teacher.display_name} | מורה ל${subjectNames[0] ?? "שיעורים פרטיים"}${cityName ? ` ב${cityName}` : ""} | SkillUp`;
 
   return {
     title,
     description:
       teacher.bio?.slice(0, 155) ??
-      `שיעורים פרטיים עם ${teacher.display_name} — פרופיל, ביקורות תלמידים, מחירים וזמינות ב-SkillUp.`,
+      `שיעורים פרטיים עם ${teacher.display_name}: פרופיל, ביקורות של תלמידים, מחירים וזמינות ב-SkillUp.`,
     alternates: { canonical: `/tutors/${id}` },
     openGraph: {
       title,
@@ -115,7 +118,9 @@ export default async function TutorProfilePage({ params }: PageProps) {
   }
 
   const lessonModes = (teacher.lesson_modes ?? []) as LessonMode[];
-  const heroImage = teacher.avatar_url ?? teacher.card_image_url;
+  // Face photo for identity; cover/background only as the page header banner.
+  const avatarImage = teacher.avatar_url;
+  const coverImage = teacher.background_url ?? teacher.card_image_url;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -169,7 +174,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
         teacher={{
           id,
           display_name: teacher.display_name,
-          image: heroImage,
+          image: avatarImage,
           subject: subjects[0]?.name_he ?? null,
           city_name: cityName,
           hourly_rate: teacher.hourly_rate,
@@ -198,15 +203,29 @@ export default async function TutorProfilePage({ params }: PageProps) {
         <span className="text-[var(--mk-ink)]">{teacher.display_name}</span>
       </nav>
 
+      {/* Cover banner (background image belongs here, not on cards) */}
+      {coverImage && (
+        <div className="relative mb-8 h-40 w-full overflow-hidden rounded-3xl bg-paper-50 sm:h-56">
+          <Image
+            src={coverImage}
+            alt=""
+            fill
+            sizes="(max-width: 1120px) 100vw, 1120px"
+            className="object-cover"
+            priority
+          />
+        </div>
+      )}
+
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_340px]">
         {/* ===== Content column ===== */}
         <div className="min-w-0 space-y-12">
           {/* Identity header */}
           <header className="flex flex-col gap-6 sm:flex-row sm:items-start">
             <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-3xl bg-paper-50 sm:h-40 sm:w-40">
-              {heroImage ? (
+              {avatarImage ? (
                 <Image
-                  src={heroImage}
+                  src={avatarImage}
                   alt={teacher.display_name}
                   fill
                   sizes="160px"
@@ -225,12 +244,15 @@ export default async function TutorProfilePage({ params }: PageProps) {
                 <h1 className="font-display text-2xl font-extrabold text-[var(--mk-ink)] sm:text-3xl">
                   {teacher.display_name}
                 </h1>
-                <SaveButton teacherId={id} teacherName={teacher.display_name} />
+                <div className="flex shrink-0 items-center gap-2">
+                  <ShareButton teacherName={teacher.display_name} />
+                  <SaveButton teacherId={id} teacherName={teacher.display_name} />
+                </div>
               </div>
 
               {teacher.is_verified && (
                 <p className="mt-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--mk-ink)]">
-                  <BadgeCheck size={16} />
+                  <BadgeCheck size={16} className="text-emerald-600" />
                   מורה מאומת על ידי SkillUp
                 </p>
               )}
@@ -279,7 +301,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
             </div>
           </header>
 
-          {/* Subjects */}
+          {/* Subjects — each with its own experience-years pill when known */}
           {subjects.length > 0 && (
             <section aria-label="מקצועות">
               <h2 className="font-display text-xl font-bold text-[var(--mk-ink)]">
@@ -287,9 +309,18 @@ export default async function TutorProfilePage({ params }: PageProps) {
               </h2>
               <div className="mt-4 flex flex-wrap gap-2">
                 {subjects.map((s) => (
-                  <Chip key={s.id} href={searchHref({ subjectIds: [s.id] })} size="sm">
+                  <Link
+                    key={s.id}
+                    href={searchHref({ subjectIds: [s.id] })}
+                    className="inline-flex items-center gap-2 rounded-full border border-[var(--mk-hairline)] bg-white py-1.5 ps-3.5 pe-2.5 text-sm font-medium text-[var(--mk-ink)] transition-colors hover:border-[var(--mk-ink)]"
+                  >
                     {s.name_he}
-                  </Chip>
+                    {s.experience_years != null && s.experience_years > 0 && (
+                      <span className="tnum rounded-full bg-brand-50 px-2 py-0.5 text-[11px] font-semibold text-brand-700">
+                        {s.experience_years} שנ׳ ניסיון
+                      </span>
+                    )}
+                  </Link>
                 ))}
               </div>
             </section>
@@ -322,34 +353,86 @@ export default async function TutorProfilePage({ params }: PageProps) {
             </section>
           )}
 
-          {/* Credentials */}
+          {/* Credentials — subheadings + subtly tinted icons */}
           {((teacher.education?.length ?? 0) > 0 ||
-            (teacher.languages?.length ?? 0) > 0) && (
+            (teacher.languages?.length ?? 0) > 0 ||
+            (teacher.experience_years ?? 0) > 0) && (
             <section
-              aria-label="השכלה ושפות"
-              className="rounded-3xl border border-[var(--mk-hairline)] bg-white p-6"
+              aria-label="השכלה ורקע"
+              className="rounded-3xl border border-[var(--mk-hairline)] bg-white p-6 sm:p-7"
             >
-              <h2 className="text-base font-semibold text-[var(--mk-ink)]">
+              <h2 className="font-display text-lg font-bold text-[var(--mk-ink)]">
                 השכלה ורקע
               </h2>
-              <ul className="mt-4 space-y-3">
-                {(teacher.education ?? []).map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm text-[var(--mk-ink)]">
-                    <GraduationCap size={17} className="mt-0.5 shrink-0 text-[var(--mk-ink-3)]" />
-                    {item}
-                  </li>
-                ))}
-                {(teacher.languages?.length ?? 0) > 0 && (
-                  <li className="flex items-start gap-3 text-sm text-[var(--mk-ink)]">
-                    <Languages size={17} className="mt-0.5 shrink-0 text-[var(--mk-ink-3)]" />
-                    {teacher.languages!.join(" · ")}
-                  </li>
+
+              <div className="mt-5 grid gap-6 sm:grid-cols-2">
+                {(teacher.education?.length ?? 0) > 0 && (
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="grid h-8 w-8 place-items-center rounded-lg bg-indigo-50 text-brand-600">
+                        <GraduationCap size={17} />
+                      </span>
+                      <h3 className="text-sm font-semibold text-[var(--mk-ink)]">השכלה</h3>
+                    </div>
+                    <ul className="mt-3 space-y-1.5 ps-1">
+                      {teacher.education!.map((item) => (
+                        <li key={item} className="text-sm leading-relaxed text-[var(--mk-ink-2)]">
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 )}
-              </ul>
+
+                {(teacher.languages?.length ?? 0) > 0 && (
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-50 text-emerald-600">
+                        <Languages size={17} />
+                      </span>
+                      <h3 className="text-sm font-semibold text-[var(--mk-ink)]">שפות הוראה</h3>
+                    </div>
+                    <p className="mt-3 ps-1 text-sm text-[var(--mk-ink-2)]">
+                      {teacher.languages!.join(" · ")}
+                    </p>
+                  </div>
+                )}
+
+                {(teacher.experience_years ?? 0) > 0 && (
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="grid h-8 w-8 place-items-center rounded-lg bg-amber-50 text-amber-600">
+                        <Award size={17} />
+                      </span>
+                      <h3 className="text-sm font-semibold text-[var(--mk-ink)]">ניסיון</h3>
+                    </div>
+                    <p className="mt-3 ps-1 text-sm text-[var(--mk-ink-2)]">
+                      <span className="tnum font-semibold text-[var(--mk-ink)]">
+                        {teacher.experience_years}
+                      </span>{" "}
+                      שנות הוראה
+                    </p>
+                  </div>
+                )}
+
+                {teacher.teaching_style && (
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="grid h-8 w-8 place-items-center rounded-lg bg-rose-50 text-rose-500">
+                        <Sparkles size={17} />
+                      </span>
+                      <h3 className="text-sm font-semibold text-[var(--mk-ink)]">סגנון הוראה</h3>
+                    </div>
+                    <p className="mt-3 ps-1 text-sm leading-relaxed text-[var(--mk-ink-2)]">
+                      {teacher.teaching_style}
+                    </p>
+                  </div>
+                )}
+              </div>
 
               {/* Social links are intentionally public (teachers_public projects them) */}
               {(teacher.instagram_url || teacher.facebook_url || teacher.website_url) && (
-                <div className="mk-hairline-t mt-5 flex flex-wrap items-center gap-2 pt-4">
+                <div className="mk-hairline-t mt-6 flex flex-wrap items-center gap-2 pt-5">
                   {(
                     [
                       { href: teacher.instagram_url, label: "אינסטגרם" },

@@ -112,13 +112,13 @@ export default function MarketFooter({ categories, majorCities }: MarketFooterPr
             </ul>
 
             <p className="mt-6 max-w-[26ch] text-sm leading-relaxed text-[var(--mk-ink-3)]">
-              SkillUp היא הדרך הישראלית למצוא מורה פרטי — קשר ישיר עם המורה,
-              בלי מתווכים.
+              SkillUp היא הדרך הפשוטה למצוא מורה פרטי בישראל: קשר ישיר עם
+              המורה, בלי מתווכים.
             </p>
           </div>
         </div>
 
-        <div className="mk-hairline-t mt-12 flex flex-col items-start justify-between gap-3 pt-6 sm:flex-row sm:items-center">
+        <div className="mk-hairline-t mt-12 flex flex-col items-center gap-3 pt-6 text-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/SkillUpLoginLogo-Light.svg" alt="SkillUp" className="h-7 w-auto" />
           <p className="text-[13px] text-[var(--mk-ink-3)]">

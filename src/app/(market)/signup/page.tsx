@@ -12,7 +12,7 @@ export default function SignupPage() {
   return (
     <AuthShell
       title="נעים להכיר"
-      subtitle="חשבון אחד לאתר ולאפליקציה — קביעת שיעורים, הודעות למורים ומעקב אחרי הלמידה."
+      subtitle="חשבון אחד לאתר ולאפליקציה: קובעים שיעורים, מדברים עם מורים ועוקבים אחרי ההתקדמות."
     >
       <Suspense>
         <SignupForm />

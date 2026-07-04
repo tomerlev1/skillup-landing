@@ -7,12 +7,13 @@ import {
   UserCheck,
   Wallet,
 } from "lucide-react";
+import GuestOnly from "@/components/auth/GuestOnly";
 import { APP_STORE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "למורים — הצטרפות ל-SkillUp והגעה לתלמידים חדשים | SkillUp",
+  title: "למורים | איך מצטרפים ל-SkillUp ומגיעים לתלמידים חדשים",
   description:
-    "מלמדים? פתחו פרופיל מורה ב-SkillUp: תלמידים מוצאים אתכם באתר ובאפליקציה, קובעים שיעורים מהיומן שלכם ויוצרים קשר ישיר — בלי עמלות תיווך על הידע שלכם.",
+    "מלמדים? פתחו פרופיל מורה ב-SkillUp: תלמידים מוצאים אתכם באתר ובאפליקציה, קובעים שיעורים מהיומן שלכם ויוצרים איתכם קשר ישיר. בלי עמלות תיווך על הידע שלכם.",
   alternates: { canonical: "/for-tutors" },
 };
 
@@ -20,7 +21,7 @@ const BENEFITS = [
   {
     icon: UserCheck,
     title: "פרופיל שעובד בשבילכם",
-    text: "פרופיל מקצועי עם ביקורות, סרטון היכרות ומחירים שקופים — מופיע בחיפוש באתר ובאפליקציה מול תלמידים שמחפשים בדיוק את מה שאתם מלמדים.",
+    text: "פרופיל מקצועי עם ביקורות, סרטון היכרות ומחירים שקופים, שמופיע בחיפוש מול תלמידים שמחפשים בדיוק את מה שאתם מלמדים.",
   },
   {
     icon: CalendarClock,
@@ -34,8 +35,8 @@ const BENEFITS = [
   },
   {
     icon: Wallet,
-    title: "הידע שלכם שווה כסף — לכם",
-    text: "אין עמלות תיווך על שיעורים. המחיר שקבעתם הוא המחיר שאתם מקבלים.",
+    title: "המחיר שקבעתם הוא המחיר שתקבלו",
+    text: "אנחנו לא לוקחים עמלה על השיעורים שלכם. מה שהתלמיד משלם מגיע אליכם, עד השקל האחרון.",
   },
 ];
 
@@ -44,17 +45,18 @@ export default function ForTutorsPage() {
     <div className="mx-auto max-w-[840px] px-4 py-12 sm:px-6">
       <p className="eyebrow">למורים</p>
       <h1 className="mt-3 font-display text-3xl font-extrabold leading-tight text-[var(--mk-ink)] sm:text-4xl">
-        התלמידים הבאים שלכם כבר מחפשים אתכם
+        יש תלמידים שמחפשים בדיוק מורה כמוכם
       </h1>
       <p className="mt-4 max-w-[560px] text-base leading-relaxed text-[var(--mk-ink-2)]">
-        SkillUp מחברת אתכם לתלמידים בכל הארץ — בלי לרדוף אחרי לידים בקבוצות
-        פייסבוק ובלי לשלם על פרסום. אתם מלמדים; אנחנו דואגים שימצאו אתכם.
+        SkillUp מחברת ביניכם לבין תלמידים מכל הארץ, בלי לרדוף אחרי המלצות
+        בקבוצות פייסבוק ובלי לשלם על פרסום. אתם מתרכזים בללמד, ואנחנו
+        דואגים שימצאו אתכם.
       </p>
 
       <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2">
         {BENEFITS.map(({ icon: Icon, title, text }) => (
           <div key={title} className="flex items-start gap-4">
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--mk-band)] text-[var(--mk-ink)]">
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700">
               <Icon size={20} />
             </span>
             <div>
@@ -73,10 +75,10 @@ export default function ForTutorsPage() {
         </h2>
         <ol className="mt-5 space-y-4">
           {[
-            "מורידים את אפליקציית SkillUp ל-iPhone ופותחים חשבון מורה.",
-            "בונים פרופיל: מקצועות, ניסיון, מחירים, אזורי לימוד וזמינות ביומן.",
-            "עוברים אימות קצר של צוות SkillUp — תג האימות מגדיל משמעותית את הפניות.",
-            "הפרופיל עולה לאוויר — באפליקציה וכאן באתר — ותלמידים מתחילים להגיע.",
+            "פותחים חשבון מורה, כאן באתר או באפליקציית SkillUp. אותו חשבון עובד בשניהם.",
+            "בונים פרופיל: תיאור, מחיר, עיר, מקצועות וזמינות (מקצועות ויומן דרך האפליקציה).",
+            "עוברים אימות דרך אישור באימייל. תג האימות מגדיל משמעותית את כמות הפניות.",
+            "הפרופיל עולה לאוויר באפליקציה וכאן באתר, תלמידים חדשים יהיו חשופים אליכם ותלמידים קיימים יוכלו להזמין שיעור בקלות.",
           ].map((step, i) => (
             <li key={i} className="flex items-start gap-3.5 text-[15px] leading-relaxed text-[var(--mk-ink)]">
               <span className="tnum grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--mk-band)] text-[13px] font-bold">
@@ -87,18 +89,29 @@ export default function ForTutorsPage() {
           ))}
         </ol>
         <div className="mt-7 flex flex-wrap gap-3">
-          <a
-            href={APP_STORE_URL}
-            className="inline-flex h-12 items-center rounded-full bg-brand-600 px-6 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+          <GuestOnly
+            fallback={
+              <Link
+                href="/account"
+                className="inline-flex h-12 items-center rounded-full bg-brand-600 px-6 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+              >
+                לפרופיל שלי
+              </Link>
+            }
           >
-            הורדת האפליקציה והצטרפות
-          </a>
-          <Link
-            href="/login"
-            className="inline-flex h-12 items-center rounded-full border border-[var(--mk-ink)] px-6 text-sm font-semibold text-[var(--mk-ink)] transition-colors hover:bg-paper-25"
-          >
-            כבר מורה ב-SkillUp? התחברות
-          </Link>
+            <Link
+              href="/signup?role=teacher"
+              className="inline-flex h-12 items-center rounded-full bg-brand-600 px-6 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+            >
+              פתיחת חשבון מורה
+            </Link>
+            <Link
+              href="/login"
+              className="inline-flex h-12 items-center rounded-full border border-[var(--mk-ink)] px-6 text-sm font-semibold text-[var(--mk-ink)] transition-colors hover:bg-paper-25"
+            >
+              כבר מורה ב-SkillUp? התחברות
+            </Link>
+          </GuestOnly>
         </div>
         <p className="mt-4 text-[13px] leading-relaxed text-[var(--mk-ink-3)]">
           מורים מחוברים יכולים לצפות כאן באתר בהודעות מתלמידים ובשיעורים

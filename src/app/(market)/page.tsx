@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
+import GuestOnly from "@/components/auth/GuestOnly";
 import {
   BadgeCheck,
+  BellRing,
   CalendarCheck,
   ChevronLeft,
+  HandCoins,
   MessageCircle,
+  Smartphone,
 } from "lucide-react";
 import CategoryIcon from "@/components/market/CategoryIcon";
 import RecentlyViewedRail from "@/components/market/RecentlyViewedRail";
@@ -18,9 +23,9 @@ import { categorySlug, citySlug } from "@/lib/slugs";
 export const revalidate = 1800; // ISR — teacher rails refresh every 30 min
 
 export const metadata: Metadata = {
-  title: "SkillUp | מורה פרטי בכל תחום — חיפוש, השוואה וקביעת שיעור אונליין",
+  title: "SkillUp | מורה פרטי לכל מקצוע: חיפוש, השוואה וקביעת שיעור",
   description:
-    "מוצאים מורה פרטי מאומת ב-9 תחומים: מתמטיקה, אנגלית, בגרויות, תכנות, מוזיקה ועוד. משווים מחירים וביקורות אמיתיות, וקובעים שיעור ישירות מול המורה — אונליין או פנים אל פנים, בכל הארץ, בלי מתווכים.",
+    "מוצאים מורה פרטי מאומת ב-9 תחומים: מתמטיקה, אנגלית, בגרויות, תכנות, מוזיקה ועוד. משווים מחירים וביקורות אמיתיות וקובעים שיעור ישירות מול המורה, אונליין או פנים אל פנים, בכל הארץ ובלי מתווכים.",
   alternates: { canonical: "/" },
 };
 
@@ -28,7 +33,7 @@ const HOW_IT_WORKS = [
   {
     step: "01",
     title: "מחפשים לפי מקצוע ועיר",
-    text: "מסננים לפי תחום, מחיר, דירוג ואופן הלימוד — אונליין, אצל המורה או אצלכם.",
+    text: "מסננים לפי תחום, מחיר, דירוג ואופן הלימוד: אונליין, אצל המורה או אצלכם בבית.",
   },
   {
     step: "02",
@@ -50,11 +55,11 @@ const HOW_IT_WORKS = [
 const HOME_FAQ = [
   {
     q: "כמה עולה שיעור פרטי דרך SkillUp?",
-    a: "כל מורה קובע את המחיר שלו, והוא מוצג בפרופיל באופן שקוף — כולל הבדלי מחיר בין שיעור אונליין, שיעור אצל המורה ושיעור אצלכם בבית. אין עמלות תיווך ואין עלויות נסתרות.",
+    a: "כל מורה קובע את המחיר שלו, והוא מוצג בפרופיל בצורה שקופה, כולל ההבדל בין שיעור אונליין, שיעור אצל המורה ושיעור אצלכם בבית. אין עמלות ואין עלויות נסתרות.",
   },
   {
     q: "איך אני יודע שהמורה טוב?",
-    a: "כל פרופיל מציג ביקורות אמיתיות של תלמידים שלמדו אצל המורה, דירוג מצטבר, שנות ניסיון והשכלה. מורים עם תג \"מורה מאומת\" עברו תהליך אימות של SkillUp.",
+    a: "כל פרופיל מציג ביקורות אמיתיות של תלמידים שלמדו אצל המורה, דירוג מצטבר, שנות ניסיון והשכלה. מורים עם תג ״מורה מאומת״ עברו תהליך אימות של הצוות שלנו.",
   },
   {
     q: "האם אפשר ללמוד אונליין?",
@@ -62,15 +67,15 @@ const HOME_FAQ = [
   },
   {
     q: "איך קובעים שיעור?",
-    a: "נכנסים לפרופיל המורה, בוחרים מקצוע, אופן לימוד ומועד פנוי מתוך היומן שלו — והבקשה נשלחת ישירות למורה לאישור. אפשר גם לשלוח הודעה קודם ולשאול כל שאלה.",
+    a: "נכנסים לפרופיל של המורה, בוחרים מקצוע, אופן לימוד ומועד פנוי מתוך היומן שלו, והבקשה עוברת אליו לאישור. אפשר גם לשלוח הודעה קודם ולשאול כל מה שחשוב לכם.",
   },
   {
     q: "האם החיפוש חינם?",
     a: "לגמרי. אפשר לחפש, להשוות מורים ולקרוא ביקורות בלי להירשם. הרשמה נדרשת רק כשרוצים לקבוע שיעור או לשלוח הודעה למורה.",
   },
   {
-    q: "אני מורה — איך מצטרפים?",
-    a: "מורידים את אפליקציית SkillUp, פותחים פרופיל מורה ומגדירים מקצועות, מחירים וזמינות. הפרופיל שלכם יופיע כאן באתר ובאפליקציה מול אלפי תלמידים.",
+    q: "אני מורה, איך מצטרפים?",
+    a: "נרשמים כמורה כאן באתר או באפליקציית SkillUp, ממלאים את פרטי הפרופיל, ומאותו רגע תלמידים מוצאים אתכם בשני המקומות. אותו חשבון עובד בכל מקום.",
   },
 ];
 
@@ -89,7 +94,7 @@ export default async function HomePage() {
   return (
     <>
       {/* ===== Hero: search-first, listings visible above the fold ===== */}
-      <section className="border-b border-[var(--mk-hairline)] bg-[var(--mk-band)]">
+      <section className="section-bloom border-b border-[var(--mk-hairline)] bg-[var(--mk-band)]">
         <div className="mx-auto max-w-[840px] px-4 pb-12 pt-12 text-center sm:px-6 sm:pb-16 sm:pt-20">
           <h1 className="font-display text-[clamp(2rem,5vw,3.5rem)] font-extrabold leading-[1.1] tracking-[-0.01em] text-[var(--mk-ink)]">
             המורה הפרטי הבא שלכם
@@ -97,7 +102,7 @@ export default async function HomePage() {
             נמצא כאן
           </h1>
           <p className="mx-auto mt-4 max-w-[520px] text-base leading-relaxed text-[var(--mk-ink-2)] sm:text-lg">
-            מחפשים, משווים וקובעים שיעור ישירות מול מורים מאומתים —
+            מחפשים, משווים וקובעים שיעור ישירות מול מורים מאומתים,
             אונליין או פנים אל פנים, בכל הארץ.
           </p>
 
@@ -112,6 +117,7 @@ export default async function HomePage() {
                 <CategoryIcon
                   iconName={cat.icon_name}
                   size={14}
+                  color={cat.color_hex}
                   className="text-[var(--mk-ink-3)]"
                 />
                 {cat.name_he}
@@ -144,7 +150,7 @@ export default async function HomePage() {
             מה תרצו ללמוד היום?
           </h2>
           <p className="mt-1.5 text-sm text-[var(--mk-ink-3)]">
-            9 תחומים, יותר מ-120 מקצועות — משיעורי מתמטיקה ועד גיטרה ובישול.
+            9 תחומים ויותר מ-120 מקצועות, משיעור מתמטיקה ועד גיטרה ובישול.
           </p>
 
           <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -155,8 +161,20 @@ export default async function HomePage() {
                 className="group rounded-2xl bg-white p-5 transition-all hover:-translate-y-0.5 hover:shadow-[var(--mk-shadow)]"
               >
                 <div className="flex items-start gap-4">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-paper-50 text-[var(--mk-ink)]">
-                    <CategoryIcon iconName={cat.icon_name} size={20} />
+                  <span
+                    className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-paper-50"
+                    style={
+                      cat.color_hex
+                        ? { backgroundColor: `${cat.color_hex}1a` }
+                        : undefined
+                    }
+                  >
+                    <CategoryIcon
+                      iconName={cat.icon_name}
+                      size={20}
+                      color={cat.color_hex}
+                      className="text-[var(--mk-ink)]"
+                    />
                   </span>
                   <span className="min-w-0">
                     <span className="flex items-center gap-1.5 text-base font-semibold text-[var(--mk-ink)]">
@@ -223,7 +241,7 @@ export default async function HomePage() {
             {
               icon: MessageCircle,
               title: "קשר ישיר עם המורה",
-              text: "צ'אט ישיר לתיאום ושאלות — בלי מתווכים באמצע.",
+              text: "מתאמים ושואלים בצ'אט ישיר, בלי מתווכים באמצע.",
             },
             {
               icon: CalendarCheck,
@@ -232,7 +250,7 @@ export default async function HomePage() {
             },
           ].map(({ icon: Icon, title, text }) => (
             <div key={title} className="flex items-start gap-3.5">
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-paper-50 text-[var(--mk-ink)]">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700">
                 <Icon size={19} />
               </span>
               <span>
@@ -267,31 +285,65 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ===== For tutors ===== */}
-      <section className="mx-auto max-w-[1280px] px-4 py-20 sm:px-6">
-        <div className="final-cta">
-          <div className="max-w-[560px]">
-            <p className="eyebrow">למורים</p>
-            <h2 className="mt-3 font-display text-2xl font-extrabold leading-tight text-[var(--mk-ink)] sm:text-3xl">
-              מלמדים? התלמידים הבאים שלכם כבר מחפשים אתכם
-            </h2>
-            <p className="panel-muted mt-4 text-base leading-relaxed">
-              פרופיל מקצועי, יומן זמינות, צ'אט ישיר עם תלמידים וניהול שיעורים —
-              הכול במקום אחד, בלי עמלות תיווך על הידע שלכם.
-            </p>
-            <div className="mt-7 flex flex-wrap items-center gap-3">
-              <Link
-                href="/for-tutors"
-                className="inline-flex h-12 items-center rounded-full bg-brand-600 px-6 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
-              >
-                איך מצטרפים כמורה
-              </Link>
-              <Link
-                href="/how-it-works"
-                className="inline-flex h-12 items-center rounded-full border border-[var(--panel-rule)] px-6 text-sm font-semibold text-[var(--mk-ink)] transition-colors hover:bg-white/60"
-              >
-                עוד על SkillUp
-              </Link>
+      {/* ===== For tutors — compact cross-platform pitch ===== */}
+      <section className="mx-auto max-w-[1280px] px-4 py-14 sm:px-6">
+        <div
+          className="final-cta"
+          style={{ padding: "clamp(28px, 4vw, 48px) clamp(24px, 4vw, 48px)" }}
+        >
+          <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_260px]">
+            <div className="max-w-[580px]">
+              <p className="eyebrow">למורים</p>
+              <h2 className="mt-2 font-display text-xl font-extrabold leading-tight text-[var(--mk-ink)] sm:text-2xl">
+                מלמדים? יש תלמידים שמחפשים בדיוק אתכם
+              </h2>
+              <p className="panel-muted mt-3 text-[15px] leading-relaxed">
+                תלמידים מוצאים אתכם כאן באתר ובאפליקציה, וכל הניהול, מהיומן ועד
+                הצ&apos;אט, נמצא אצלכם בכיס. פנייה חדשה? אתם יודעים עליה באותה
+                שנייה.
+              </p>
+
+              <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                {[
+                  { icon: Smartphone, text: "פרופיל אחד, באתר ובאפליקציה" },
+                  { icon: BellRing, text: "התראה בזמן אמת על כל פנייה" },
+                  { icon: CalendarCheck, text: "יומן וצ'אט מהכיס" },
+                  { icon: HandCoins, text: "בלי עמלות על השיעורים" },
+                ].map(({ icon: Icon, text }) => (
+                  <li key={text} className="flex items-center gap-2 text-sm font-medium text-[var(--mk-ink)]">
+                    <Icon size={15} className="shrink-0 text-brand-700" />
+                    {text}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-6 flex flex-wrap items-center gap-3">
+                <GuestOnly>
+                  <Link
+                    href="/signup?role=teacher"
+                    className="inline-flex h-11 items-center rounded-full bg-brand-600 px-6 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+                  >
+                    פתיחת חשבון מורה
+                  </Link>
+                </GuestOnly>
+                <Link
+                  href="/for-tutors"
+                  className="inline-flex h-11 items-center rounded-full border border-[var(--panel-rule)] px-6 text-sm font-semibold text-[var(--mk-ink)] transition-colors hover:bg-white/60"
+                >
+                  עוד על SkillUp למורים
+                </Link>
+              </div>
+            </div>
+
+            {/* Emotional illustration (hidden on mobile) */}
+            <div className="hidden justify-center lg:flex">
+              <Image
+                src="/images/illustrations/teacher-student.png"
+                alt="מורה ותלמיד לומדים יחד"
+                width={260}
+                height={260}
+                className="w-[260px] rounded-3xl"
+              />
             </div>
           </div>
         </div>

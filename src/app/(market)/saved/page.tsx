@@ -90,8 +90,8 @@ export default function SavedTutorsPage() {
             עדיין לא שמרתם מורים
           </h2>
           <p className="mx-auto mt-2 max-w-[360px] text-sm leading-relaxed text-[var(--mk-ink-2)]">
-            לחיצה על הלב בכל כרטיס מורה שומרת אותו כאן — נוח להשוות ולחזור
-            אליהם אחר כך.
+            לחצו על הלב בכרטיס של מורה כדי לשמור אותו כאן. ככה קל להשוות
+            ולחזור אליו אחר כך.
           </p>
           <Link
             href="/search"
@@ -101,7 +101,7 @@ export default function SavedTutorsPage() {
           </Link>
         </div>
       ) : (
-        <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+        <div className="mt-8 grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-6 sm:grid-cols-[repeat(auto-fill,minmax(225px,1fr))] lg:gap-x-6">
           {teachers.map((t) => (
             <TeacherCard key={t.id} teacher={t} />
           ))}

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "SkillUp — שיעורים פרטיים בישראל",
+    name: "SkillUp | שיעורים פרטיים בישראל",
     short_name: "SkillUp",
     description:
       "האפליקציה הישראלית למציאת מורים פרטיים מאומתים ולקביעת שיעורים פרטיים בכל הארץ.",

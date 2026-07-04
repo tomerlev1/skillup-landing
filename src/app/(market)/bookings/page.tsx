@@ -238,7 +238,7 @@ export default async function BookingsPage() {
           {profile.role === "student" && (
             <>
               <p className="mx-auto mt-2 max-w-[360px] text-sm leading-relaxed text-[var(--mk-ink-2)]">
-                השיעור הראשון שלכם במרחק כמה קליקים — מצאו מורה וקבעו מועד.
+                השיעור הראשון שלכם קרוב מתמיד. מצאו מורה שמתאים לכם וקבעו מועד.
               </p>
               <Link
                 href="/search"

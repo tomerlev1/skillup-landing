@@ -65,23 +65,45 @@ export const getTeacherProfile = cache(
   },
 );
 
-/** Subjects a specific teacher offers, with category ids for linking. */
+/**
+ * Subjects a specific teacher offers, with category ids for linking and
+ * per-subject experience years (from teacher_subject_experience) when set.
+ */
 export const getTeacherSubjects = cache(async (teacherId: string) => {
   const supabase = createPublicClient();
-  const { data, error } = await supabase
-    .from("teacher_subjects")
-    .select("subject_id, subjects(id, name_he, category_id, icon)")
-    .eq("teacher_id", teacherId);
+  const [subjectsRes, experienceRes] = await Promise.all([
+    supabase
+      .from("teacher_subjects")
+      .select("subject_id, subjects(id, name_he, category_id, icon)")
+      .eq("teacher_id", teacherId),
+    supabase
+      .from("teacher_subject_experience")
+      .select("subject_id, experience_years")
+      .eq("teacher_id", teacherId),
+  ]);
 
-  if (error) throw new Error(`teacher_subjects fetch failed: ${error.message}`);
-  return (data ?? [])
-    .map((row) => row.subjects as unknown as {
-      id: string;
-      name_he: string;
-      category_id: string;
-      icon: string | null;
+  if (subjectsRes.error)
+    throw new Error(`teacher_subjects fetch failed: ${subjectsRes.error.message}`);
+
+  const yearsBySubject = new Map<string, number>();
+  for (const row of experienceRes.data ?? []) {
+    if (row.experience_years != null)
+      yearsBySubject.set(row.subject_id as string, row.experience_years as number);
+  }
+
+  return (subjectsRes.data ?? [])
+    .map((row) => {
+      const subject = row.subjects as unknown as {
+        id: string;
+        name_he: string;
+        category_id: string;
+        icon: string | null;
+      };
+      return subject
+        ? { ...subject, experience_years: yearsBySubject.get(subject.id) ?? null }
+        : null;
     })
-    .filter(Boolean)
+    .filter((s): s is NonNullable<typeof s> => Boolean(s))
     .sort((a, b) => a.name_he.localeCompare(b.name_he, "he"));
 });
 

@@ -2,7 +2,7 @@ import TeacherDeepLinkContent from "@/components/layout/TeacherDeepLinkContent";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "פרופיל המורה — SkillUp",
+  title: "פרופיל המורה | SkillUp",
   description: "פתחו את אפליקציית SkillUp כדי לראות את פרופיל המורה.",
   robots: { index: false, follow: false },
 };

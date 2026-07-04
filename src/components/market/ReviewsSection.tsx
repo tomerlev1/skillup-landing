@@ -1,6 +1,6 @@
 import { Star } from "lucide-react";
 import { formatDateShort, formatRating } from "@/lib/format";
-import type { Review } from "@/lib/types";
+import type { PublicReview } from "@/lib/data/reviews";
 
 interface ReviewsSectionProps {
   stats: {
@@ -8,7 +8,7 @@ interface ReviewsSectionProps {
     count: number;
     distribution: { star: number; count: number }[];
   };
-  reviews: Review[];
+  reviews: PublicReview[];
 }
 
 // Reviews per Baymard: graphical distribution bars (only above ~5 ratings —
@@ -30,12 +30,16 @@ export default function ReviewsSection({ stats, reviews }: ReviewsSectionProps) 
           <p className="tnum font-display text-5xl font-extrabold text-[var(--mk-ink)]">
             {formatRating(stats.avg)}
           </p>
-          <div className="mt-1 flex justify-center gap-0.5 text-[var(--mk-ink)]">
+          <div className="mt-1 flex justify-center gap-0.5">
             {[1, 2, 3, 4, 5].map((i) => (
               <Star
                 key={i}
                 size={14}
-                className={i <= Math.round(stats.avg) ? "fill-current" : "text-ink-300"}
+                className={
+                  i <= Math.round(stats.avg)
+                    ? "fill-amber-400 text-amber-400"
+                    : "text-ink-300"
+                }
               />
             ))}
           </div>
@@ -74,20 +78,34 @@ export default function ReviewsSection({ stats, reviews }: ReviewsSectionProps) 
               key={review.id}
               className="rounded-2xl border border-[var(--mk-hairline)] bg-white p-5"
             >
-              <div className="flex items-center gap-1 text-[var(--mk-ink)]">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <Star
-                    key={i}
-                    size={12}
-                    className={i <= review.rating ? "fill-current" : "text-ink-300"}
-                  />
-                ))}
+              <div className="flex items-center gap-3">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-50 text-sm font-bold text-brand-700">
+                  {review.reviewer_name.slice(0, 1)}
+                </span>
+                <div>
+                  <p className="text-sm font-semibold text-[var(--mk-ink)]">
+                    {review.reviewer_name}
+                  </p>
+                  <div className="mt-0.5 flex items-center gap-1">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <Star
+                        key={i}
+                        size={12}
+                        className={
+                          i <= review.rating
+                            ? "fill-amber-400 text-amber-400"
+                            : "text-ink-300"
+                        }
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
               <p className="mt-3 text-sm leading-relaxed text-[var(--mk-ink)]">
                 {review.text}
               </p>
               <footer className="mt-3 text-xs text-[var(--mk-ink-3)]">
-                תלמיד/ה ב-SkillUp · {formatDateShort(review.written_at)}
+                {formatDateShort(review.written_at)}
               </footer>
             </blockquote>
           ))}

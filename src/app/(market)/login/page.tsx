@@ -12,7 +12,7 @@ export default function LoginPage() {
   return (
     <AuthShell
       title="טוב לראות אתכם שוב"
-      subtitle="מתחברים עם אותו החשבון של אפליקציית SkillUp."
+      subtitle="מתחברים עם אותו חשבון כמו באפליקציית SkillUp."
     >
       <Suspense>
         <LoginForm />

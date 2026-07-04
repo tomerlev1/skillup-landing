@@ -2,7 +2,7 @@ import AppLinkShell from "@/components/layout/AppLinkShell";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "הודעה חדשה — SkillUp",
+  title: "הודעה חדשה | SkillUp",
   description: "פתחו את אפליקציית SkillUp כדי לקרוא את ההודעה.",
   robots: { index: false, follow: false },
 };

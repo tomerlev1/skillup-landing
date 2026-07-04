@@ -5,15 +5,19 @@ import { usePathname } from "next/navigation";
 import { Headset, SendHorizontal, UserRound, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/components/auth/AuthProvider";
-import { QUICK_TOPICS } from "@/lib/support/knowledge";
+import { MAIN_MENU_LABEL, QUICK_TOPICS } from "@/lib/support/knowledge";
 
 type WidgetMessage =
   | { kind: "bot" | "user"; text: string; linkHref?: string; linkLabel?: string }
   | { kind: "system"; text: string };
 
+// After every answer the bot offers a way to continue: either topic-specific
+// follow-ups or the full menu. "menu" = show all topics.
+type Suggestions = "menu" | string[];
+
 const GREETING: WidgetMessage = {
   kind: "bot",
-  text: "שלום! אני העוזר של SkillUp. אפשר לבחור נושא, או פשוט לכתוב לי שאלה.",
+  text: "היי, כאן העוזר של SkillUp. במה אפשר לעזור? אפשר לבחור נושא מהרשימה או פשוט לכתוב לי.",
 };
 
 // Floating support bot. Launcher sits on the inline-end side (visual LEFT
@@ -26,6 +30,7 @@ export default function SupportWidget() {
 
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<WidgetMessage[]>([GREETING]);
+  const [suggestions, setSuggestions] = useState<Suggestions>("menu");
   const [draft, setDraft] = useState("");
   const [thinking, setThinking] = useState(false);
   const [escalating, setEscalating] = useState(false);
@@ -59,6 +64,7 @@ export default function SupportWidget() {
         linkLabel: topic.linkLabel,
       },
     ]);
+    setSuggestions(topic.followUps);
   }
 
   async function sendFreeText() {
@@ -67,6 +73,7 @@ export default function SupportWidget() {
     setDraft("");
     const nextMessages: WidgetMessage[] = [...messages, { kind: "user", text }];
     setMessages(nextMessages);
+    setSuggestions([]);
     setThinking(true);
 
     try {
@@ -89,12 +96,13 @@ export default function SupportWidget() {
 
       if (data.reply) {
         setMessages((prev) => [...prev, { kind: "bot", text: data.reply! }]);
+        setSuggestions([]);
       } else {
         setMessages((prev) => [
           ...prev,
           {
             kind: "bot",
-            text: "אני לא בטוח שאדע לענות על זה כרגע. אפשר להשאיר הודעה לנציג ונחזור אליכם בהקדם.",
+            text: "את זה כדאי לברר מול נציג אנושי. השאירו הודעה ונחזור אליכם בהקדם.",
           },
         ]);
         setEscalating(true);
@@ -104,7 +112,7 @@ export default function SupportWidget() {
         ...prev,
         {
           kind: "bot",
-          text: "משהו השתבש אצלי. אפשר להשאיר הודעה לנציג ונחזור אליכם.",
+          text: "משהו השתבש אצלי רגע. אפשר לנסות שוב, או להשאיר הודעה לנציג ונחזור אליכם.",
         },
       ]);
       setEscalating(true);
@@ -147,9 +155,10 @@ export default function SupportWidget() {
       ...prev,
       {
         kind: "bot",
-        text: `תודה ${contactName.trim()}! הפנייה נקלטה, ונציג SkillUp יחזור אליכם בהקדם דרך ${contactDetail.trim()}.`,
+        text: `תודה, ${contactName.trim()}! הפנייה התקבלה אצלנו ונציג יחזור אליכם בהקדם דרך ${contactDetail.trim()}. בינתיים, אם יש עוד משהו, אני כאן.`,
       },
     ]);
+    setSuggestions("menu");
   }
 
   return (
@@ -232,10 +241,14 @@ export default function SupportWidget() {
               </div>
             )}
 
-            {/* Quick topics (before any user message) */}
-            {messages.length === 1 && !escalating && (
+            {/* Continuous conversation loop: after every answer the user
+                gets follow-up chips or the full menu — never a dead end. */}
+            {!escalating && !thinking && (
               <div className="flex flex-wrap gap-1.5 pt-1">
-                {QUICK_TOPICS.map((t) => (
+                {(suggestions === "menu"
+                  ? QUICK_TOPICS
+                  : QUICK_TOPICS.filter((t) => suggestions.includes(t.id))
+                ).map((t) => (
                   <button
                     key={t.id}
                     type="button"
@@ -245,6 +258,15 @@ export default function SupportWidget() {
                     {t.question}
                   </button>
                 ))}
+                {suggestions !== "menu" && (
+                  <button
+                    type="button"
+                    onClick={() => setSuggestions("menu")}
+                    className="cursor-pointer rounded-full border border-[var(--mk-ink)] bg-white px-3 py-1.5 text-[13px] font-semibold text-[var(--mk-ink)] transition-colors hover:bg-paper-25"
+                  >
+                    {MAIN_MENU_LABEL}
+                  </button>
+                )}
               </div>
             )}
 

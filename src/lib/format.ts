@@ -78,3 +78,23 @@ export const LESSON_MODE_LABELS: Record<string, string> = {
 export function lessonModeLabel(mode: string): string {
   return LESSON_MODE_LABELS[mode] ?? mode;
 }
+
+// lesson_mode_prices holds a per-mode SURCHARGE (delta) on the base hourly
+// rate — the DB (create_booking) adds it: total = hourly_rate + surcharge.
+// iOS stores surcharges under legacy keys too (teacher_location/student_location).
+const MODE_PRICE_KEYS: Record<string, string> = {
+  online: "online",
+  teacher_home: "teacher_location",
+  student_home: "student_location",
+};
+
+export function lessonModePrice(
+  mode: string,
+  hourlyRate: number | null,
+  prices: Partial<Record<string, number>> | null,
+): number | null {
+  if (hourlyRate == null) return null;
+  const p = prices ?? {};
+  const surcharge = p[mode] ?? p[MODE_PRICE_KEYS[mode] ?? mode] ?? 0;
+  return hourlyRate + surcharge;
+}

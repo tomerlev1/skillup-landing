@@ -1,21 +1,28 @@
 import { createPublicClient } from "@/lib/supabase/public";
-import type { Review } from "@/lib/types";
 
-/** Published reviews for a teacher, newest first. */
+export interface PublicReview {
+  id: string;
+  rating: number;
+  text: string | null;
+  written_at: string;
+  reviewer_name: string;
+}
+
+/**
+ * Published reviews for a teacher, with the reviewer's FIRST name (anon-safe
+ * RPC — no other student PII is exposed). Falls back to "תלמיד/ה".
+ */
 export async function getTeacherReviews(
   teacherId: string,
   limit = 10,
   offset = 0,
-): Promise<Review[]> {
+): Promise<PublicReview[]> {
   const supabase = createPublicClient();
-  const { data, error } = await supabase
-    .from("reviews")
-    .select("id, teacher_id, student_id, rating, text, written_at")
-    .eq("teacher_id", teacherId)
-    .eq("status", 1)
-    .order("written_at", { ascending: false })
-    .range(offset, offset + limit - 1);
-
+  const { data, error } = await supabase.rpc("get_teacher_reviews_public", {
+    p_teacher_id: teacherId,
+    p_limit: limit,
+    p_offset: offset,
+  });
   if (error) throw new Error(`reviews fetch failed: ${error.message}`);
-  return (data ?? []) as Review[];
+  return (data ?? []) as PublicReview[];
 }

@@ -107,8 +107,8 @@ export default async function ArticlePage({ params }: PageProps) {
           מוכנים למצוא את המורה שלכם?
         </h2>
         <p className="mx-auto mt-2 max-w-[380px] text-sm leading-relaxed text-[var(--mk-ink-2)]">
-          מאות מורים מאומתים עם ביקורות אמיתיות — משווים, בוחרים וקובעים שיעור
-          בכמה דקות.
+          מורים מנוסים עם ביקורות אמיתיות מחכים כאן. משווים, בוחרים וקובעים
+          שיעור בכמה דקות.
         </p>
         <Link
           href="/search"

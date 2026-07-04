@@ -48,6 +48,11 @@ export default async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  // Logged-in users have no business on auth pages — send them home.
+  if (user && (pathname === "/login" || pathname === "/signup")) {
+    return NextResponse.redirect(new URL("/", request.url));
+  }
+
   return response;
 }
 

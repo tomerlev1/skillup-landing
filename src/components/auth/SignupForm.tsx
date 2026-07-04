@@ -4,26 +4,45 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { authErrorHe, ensureStudentRow } from "@/lib/auth/ensure-role-row";
+import { authErrorHe, ensureRoleRow } from "@/lib/auth/ensure-role-row";
+import { useAuth } from "@/components/auth/AuthProvider";
 import GoogleButton from "@/components/auth/GoogleButton";
-import { APP_STORE_URL } from "@/lib/constants";
+import type { UserRole } from "@/lib/types";
 
-// Student signup. Mirrors the iOS flow: auth signup with role metadata,
-// then the client creates the `students` row itself (no DB trigger).
-// Teachers onboard in the app; here they only log in.
+// Signup collects the same fields as the iOS app (role, name, phone, email,
+// password; metadata: role + display_name + phone), and creates the same
+// role row — so the account works identically in the app and on the web.
 export default function SignupForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = useMemo(() => createClient(), []);
   const next = searchParams.get("next") || "/";
 
+  const [role, setRole] = useState<UserRole>(
+    searchParams.get("role") === "teacher" ? "teacher" : "student",
+  );
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [confirmEmailSent, setConfirmEmailSent] = useState(false);
+  const { user: currentUser } = useAuth();
+
+  // Middleware already redirects logged-in users away; this covers client
+  // navigations that never touch the server.
+  if (currentUser && !pending && !confirmEmailSent) {
+    return (
+      <p className="rounded-2xl bg-[var(--mk-band)] p-6 text-center text-sm leading-relaxed text-[var(--mk-ink-2)]">
+        אתם כבר מחוברים לחשבון SkillUp.{" "}
+        <Link href="/account" className="font-semibold text-brand-700 hover:underline">
+          לפרופיל שלי
+        </Link>
+      </p>
+    );
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -36,10 +55,11 @@ export default function SignupForm() {
       password,
       options: {
         data: {
-          role: "student",
+          role,
           display_name: displayName,
           first_name: firstName.trim(),
           last_name: lastName.trim(),
+          phone: phone.trim(),
         },
       },
     });
@@ -51,8 +71,10 @@ export default function SignupForm() {
     }
 
     if (data.session && data.user) {
-      await ensureStudentRow(supabase, data.user);
-      router.push(next);
+      await ensureRoleRow(supabase, data.user);
+      // New teachers land on their profile page to complete it; students
+      // resume whatever they were doing.
+      router.push(role === "teacher" ? "/account?welcome=1" : next);
       router.refresh();
       return;
     }
@@ -76,8 +98,40 @@ export default function SignupForm() {
     );
   }
 
+  const inputClass =
+    "h-12 w-full rounded-xl border border-[var(--mk-hairline)] bg-white px-4 text-[15px] outline-none transition-colors focus:border-[var(--mk-ink)]";
+
   return (
     <div className="space-y-5">
+      {/* Role selection — same first step as the app */}
+      <div
+        role="radiogroup"
+        aria-label="סוג החשבון"
+        className="grid grid-cols-2 gap-1 rounded-full border border-[var(--mk-hairline)] bg-paper-25 p-1"
+      >
+        {(
+          [
+            { value: "student", label: "תלמיד/ה" },
+            { value: "teacher", label: "מורה" },
+          ] as const
+        ).map((opt) => (
+          <button
+            key={opt.value}
+            type="button"
+            role="radio"
+            aria-checked={role === opt.value}
+            onClick={() => setRole(opt.value)}
+            className={`h-10 cursor-pointer rounded-full text-sm font-semibold transition-colors ${
+              role === opt.value
+                ? "bg-white text-[var(--mk-ink)] shadow-sm"
+                : "text-[var(--mk-ink-3)] hover:text-[var(--mk-ink)]"
+            }`}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+
       <form onSubmit={onSubmit} className="space-y-3.5">
         <div className="grid grid-cols-2 gap-3">
           <div>
@@ -90,7 +144,7 @@ export default function SignupForm() {
               autoComplete="given-name"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="h-12 w-full rounded-xl border border-[var(--mk-hairline)] bg-white px-4 text-[15px] outline-none transition-colors focus:border-[var(--mk-ink)]"
+              className={inputClass}
             />
           </div>
           <div>
@@ -103,9 +157,26 @@ export default function SignupForm() {
               autoComplete="family-name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              className="h-12 w-full rounded-xl border border-[var(--mk-hairline)] bg-white px-4 text-[15px] outline-none transition-colors focus:border-[var(--mk-ink)]"
+              className={inputClass}
             />
           </div>
+        </div>
+        <div>
+          <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-[var(--mk-ink)]">
+            טלפון
+          </label>
+          <input
+            id="phone"
+            type="tel"
+            dir="ltr"
+            required
+            pattern="0[0-9]{8,9}"
+            title="מספר טלפון ישראלי, למשל 0501234567"
+            autoComplete="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className={`${inputClass} text-start`}
+          />
         </div>
         <div>
           <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-[var(--mk-ink)]">
@@ -119,7 +190,7 @@ export default function SignupForm() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="h-12 w-full rounded-xl border border-[var(--mk-hairline)] bg-white px-4 text-start text-[15px] outline-none transition-colors focus:border-[var(--mk-ink)]"
+            className={`${inputClass} text-start`}
           />
         </div>
         <div>
@@ -135,7 +206,7 @@ export default function SignupForm() {
             autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="h-12 w-full rounded-xl border border-[var(--mk-hairline)] bg-white px-4 text-start text-[15px] outline-none transition-colors focus:border-[var(--mk-ink)]"
+            className={`${inputClass} text-start`}
           />
           <p className="mt-1 text-xs text-[var(--mk-ink-3)]">לפחות 8 תווים</p>
         </div>
@@ -151,8 +222,19 @@ export default function SignupForm() {
           disabled={pending}
           className="h-12 w-full cursor-pointer rounded-full bg-brand-600 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
         >
-          {pending ? "נרשמים..." : "יצירת חשבון"}
+          {pending
+            ? "נרשמים..."
+            : role === "teacher"
+              ? "פתיחת חשבון מורה"
+              : "יצירת חשבון"}
         </button>
+
+        {role === "teacher" && (
+          <p className="rounded-xl bg-[var(--mk-band)] px-4 py-3 text-center text-[13px] leading-relaxed text-[var(--mk-ink-2)]">
+            אחרי ההרשמה ממלאים את פרטי הפרופיל, והוא יופיע מול תלמידים באתר
+            ובאפליקציה. אותו חשבון עובד בשניהם.
+          </p>
+        )}
 
         <p className="text-center text-xs leading-relaxed text-[var(--mk-ink-3)]">
           ההרשמה מהווה הסכמה{" "}
@@ -183,14 +265,6 @@ export default function SignupForm() {
         >
           התחברות
         </Link>
-      </p>
-
-      <p className="rounded-2xl bg-[var(--mk-band)] px-4 py-3 text-center text-[13px] leading-relaxed text-[var(--mk-ink-2)]">
-        מלמדים ורוצים להצטרף כמורים?{" "}
-        <a href={APP_STORE_URL} className="font-semibold text-brand-700 hover:underline">
-          נרשמים דרך אפליקציית SkillUp
-        </a>{" "}
-        — והפרופיל שלכם יופיע גם כאן באתר.
       </p>
     </div>
   );

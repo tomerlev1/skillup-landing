@@ -8,20 +8,25 @@ interface RatingProps {
   className?: string;
 }
 
-// Calm, ink-colored rating (Airbnb-style: "★ 4.9 (127)"), tabular numerals.
-// Teachers with no reviews yet read "חדש" instead of an empty zero.
+// Golden filled star + bold value ("★ 4.9 (127)"), tabular numerals.
+// Fill is set inline on the SVG so it can never be lost to CSS generation.
+// Teachers with no reviews yet read "חדש" as a soft brand chip.
+const GOLD = "#F5A623";
+
 export default function RatingStars({
   value,
   count,
   size = "sm",
   className = "",
 }: RatingProps) {
-  const starSize = size === "sm" ? 14 : 16;
+  const starSize = size === "sm" ? 15 : 17;
   const textSize = size === "sm" ? "text-sm" : "text-base";
 
   if (count === 0) {
     return (
-      <span className={`${textSize} font-medium text-[var(--mk-ink-2)] ${className}`}>
+      <span
+        className={`rounded-full bg-brand-50 px-2 py-0.5 text-xs font-semibold text-brand-700 ${className}`}
+      >
         חדש
       </span>
     );
@@ -31,8 +36,12 @@ export default function RatingStars({
     <span
       className={`inline-flex items-center gap-1 ${textSize} text-[var(--mk-ink)] ${className}`}
     >
-      <Star size={starSize} className="fill-current" aria-hidden="true" />
-      <span className="tnum font-medium">{formatRating(value)}</span>
+      <Star
+        size={starSize}
+        style={{ fill: GOLD, color: GOLD }}
+        aria-hidden="true"
+      />
+      <span className="tnum font-bold">{formatRating(value)}</span>
       <span className="tnum text-[var(--mk-ink-3)]">({count})</span>
     </span>
   );

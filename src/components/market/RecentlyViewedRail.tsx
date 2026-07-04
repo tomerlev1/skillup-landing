@@ -57,7 +57,7 @@ export default function RecentlyViewedRail() {
               <span className="mt-0.5 flex items-center gap-2 text-xs text-[var(--mk-ink-2)]">
                 {t.review_count > 0 && (
                   <span className="inline-flex items-center gap-0.5">
-                    <Star size={11} className="fill-current" />
+                    <Star size={11} style={{ fill: "#F5A623", color: "#F5A623" }} />
                     <span className="tnum">{formatRating(t.rating_avg)}</span>
                   </span>
                 )}

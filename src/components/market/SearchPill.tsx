@@ -213,7 +213,7 @@ export default function SearchPill({
       >
         {/* What segment */}
         <label
-          className={`flex min-w-0 flex-[1.3] cursor-text items-center gap-3 rounded-full ps-6 pe-4 ${
+          className={`flex min-w-0 flex-[1.3] cursor-text items-center gap-2 rounded-full ps-4 pe-2 sm:gap-3 sm:ps-6 sm:pe-4 ${
             active === "what" ? "bg-white" : ""
           }`}
         >
@@ -228,14 +228,14 @@ export default function SearchPill({
             placeholder="מה תרצו ללמוד?"
             autoFocus={autoFocus}
             autoComplete="off"
-            className="w-full min-w-0 bg-transparent text-[15px] font-medium text-[var(--mk-ink)] outline-none placeholder:font-normal placeholder:text-[var(--mk-ink-3)]"
+            className="w-full min-w-0 bg-transparent text-sm font-medium text-[var(--mk-ink)] outline-none placeholder:font-normal placeholder:text-[var(--mk-ink-3)] sm:text-[15px]"
           />
         </label>
 
         <span className="my-3 w-px shrink-0 bg-[var(--mk-hairline)]" aria-hidden="true" />
 
         {/* Where segment */}
-        <label className="flex min-w-0 flex-1 cursor-text items-center gap-3 ps-5 pe-2">
+        <label className="flex min-w-0 flex-1 cursor-text items-center gap-2 ps-3 pe-1 sm:gap-3 sm:ps-5 sm:pe-2">
           <MapPin size={18} className="shrink-0 text-[var(--mk-ink-3)]" />
           <span className="sr-only">איפה? עיר או אונליין</span>
           <input
@@ -245,7 +245,7 @@ export default function SearchPill({
             onKeyDown={onKeyDown}
             placeholder="עיר או אונליין"
             autoComplete="off"
-            className="w-full min-w-0 bg-transparent text-[15px] font-medium text-[var(--mk-ink)] outline-none placeholder:font-normal placeholder:text-[var(--mk-ink-3)]"
+            className="w-full min-w-0 bg-transparent text-sm font-medium text-[var(--mk-ink)] outline-none placeholder:font-normal placeholder:text-[var(--mk-ink-3)] sm:text-[15px]"
           />
         </label>
 

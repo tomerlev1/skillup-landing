@@ -130,7 +130,7 @@ export default async function SearchPage({
                 </h2>
                 <p className="mx-auto mt-2 max-w-[380px] text-sm leading-relaxed text-[var(--mk-ink-2)]">
                   נסו להסיר חלק מהסינונים, לחפש בעיר אחרת או לבחור שיעורים
-                  אונליין — מורים רבים מלמדים מרחוק מכל מקום בארץ.
+                  אונליין. הרבה מורים מלמדים מרחוק, מכל מקום בארץ.
                 </p>
                 <div className="mt-6 flex flex-wrap justify-center gap-2">
                   <Chip href="/search" size="sm">

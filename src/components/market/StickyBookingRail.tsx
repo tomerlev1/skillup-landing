@@ -3,7 +3,7 @@
 import { MessageCircle, ShieldCheck } from "lucide-react";
 import GatedLink from "@/components/market/GatedLink";
 import RatingStars from "@/components/ui/RatingStars";
-import { formatPrice, lessonModeLabel } from "@/lib/format";
+import { formatPrice, lessonModeLabel, lessonModePrice } from "@/lib/format";
 import type { LessonMode } from "@/lib/types";
 
 interface StickyBookingRailProps {
@@ -29,26 +29,33 @@ export default function StickyBookingRail({
   const bookHref = `/tutors/${teacherId}/book`;
   const messageHref = `/messages/new?teacher=${teacherId}`;
 
-  // iOS stores mode prices under legacy keys (teacher_location/student_location).
-  const modePrice = (mode: LessonMode): number | null => {
-    const p = lessonModePrices ?? {};
-    const legacy: Record<LessonMode, string> = {
-      online: "online",
-      teacher_home: "teacher_location",
-      student_home: "student_location",
-    };
-    return p[mode] ?? p[legacy[mode]] ?? null;
-  };
+  // Full per-mode price = base hourly rate + mode surcharge.
+  const modePrice = (mode: LessonMode): number | null =>
+    lessonModePrice(mode, hourlyRate, lessonModePrices);
+
+  // Headline "from" price = cheapest available mode (falls back to base).
+  const modeFullPrices = lessonModes
+    .map(modePrice)
+    .filter((p): p is number => p != null);
+  const fromPrice = modeFullPrices.length
+    ? Math.min(...modeFullPrices)
+    : hourlyRate;
+  const hasRange =
+    modeFullPrices.length > 1 &&
+    Math.min(...modeFullPrices) !== Math.max(...modeFullPrices);
 
   return (
     <>
       {/* Desktop rail */}
       <div className="mk-shadow hidden rounded-3xl border border-[var(--mk-hairline)] bg-white p-6 lg:block">
         <div className="flex items-baseline justify-between gap-3">
-          {hourlyRate != null && (
+          {fromPrice != null && (
             <p className="text-[var(--mk-ink)]">
+              {hasRange && (
+                <span className="text-sm text-[var(--mk-ink-3)]">החל מ־</span>
+              )}
               <span className="ltr-isolate tnum text-2xl font-bold">
-                {formatPrice(hourlyRate)}
+                {formatPrice(fromPrice)}
               </span>
               <span className="text-sm text-[var(--mk-ink-3)]"> לשעה</span>
             </p>
@@ -102,10 +109,13 @@ export default function StickyBookingRail({
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--mk-hairline)] bg-white px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))] lg:hidden">
         <div className="mx-auto flex max-w-[640px] items-center justify-between gap-4">
           <div>
-            {hourlyRate != null && (
+            {fromPrice != null && (
               <p className="text-[var(--mk-ink)]">
+                {hasRange && (
+                  <span className="text-xs text-[var(--mk-ink-3)]">החל מ־</span>
+                )}
                 <span className="ltr-isolate tnum text-lg font-bold">
-                  {formatPrice(hourlyRate)}
+                  {formatPrice(fromPrice)}
                 </span>
                 <span className="text-xs text-[var(--mk-ink-3)]"> לשעה</span>
               </p>

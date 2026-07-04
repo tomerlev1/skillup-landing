@@ -2,7 +2,7 @@ import AppLinkShell from "@/components/layout/AppLinkShell";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "מדיניות ותנאי שימוש — SkillUp",
+  title: "מדיניות ותנאי שימוש | SkillUp",
   description: "מסמכי המדיניות זמינים באפליקציית SkillUp.",
   robots: { index: false, follow: false },
 };

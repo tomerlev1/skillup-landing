@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BadgeCheck, CalendarCheck, MessageCircle, Search, Star } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "איך זה עובד — מציאת מורה פרטי וקביעת שיעור | SkillUp",
+  title: "איך זה עובד | מציאת מורה פרטי וקביעת שיעור ב-SkillUp",
   description:
     "כך מוצאים מורה פרטי ב-SkillUp בארבעה שלבים: חיפוש לפי מקצוע ועיר, השוואת פרופילים וביקורות, קביעת שיעור מהיומן של המורה, ולמידה עם קשר ישיר.",
   alternates: { canonical: "/how-it-works" },
@@ -14,7 +14,7 @@ const STEPS = [
     icon: Search,
     step: "01",
     title: "מחפשים לפי מקצוע ועיר",
-    text: "בוחרים מה רוצים ללמוד — ממתמטיקה ועד גיטרה — ואיפה: אונליין, אצל המורה או אצלכם בבית. מסננים לפי מחיר, דירוג וזמינות. החיפוש פתוח לכולם, בלי הרשמה ובלי התחייבות.",
+    text: "בוחרים מה רוצים ללמוד, ממתמטיקה ועד גיטרה, ואיפה נוח לכם: אונליין, אצל המורה או אצלכם בבית. מסננים לפי מחיר, דירוג וזמינות. החיפוש פתוח לכולם, בלי הרשמה ובלי התחייבות.",
   },
   {
     icon: Star,
@@ -26,13 +26,13 @@ const STEPS = [
     icon: CalendarCheck,
     step: "03",
     title: "קובעים שיעור מהיומן האמיתי",
-    text: "בוחרים מועד פנוי מתוך היומן המתעדכן של המורה ושולחים בקשה. המורה מאשר — ואתם מקבלים עדכון במייל ובאזור האישי. שיעור ראשון עם מורה חדש מאושר בתוך 24 שעות.",
+    text: "בוחרים מועד פנוי מתוך היומן המתעדכן של המורה ושולחים בקשה. ברגע שהמורה מאשר, תקבלו עדכון במייל ובאזור האישי. שיעור ראשון אצל מורה חדש מאושר בדרך כלל תוך 24 שעות.",
   },
   {
     icon: MessageCircle,
     step: "04",
     title: "בקשר ישיר, בלי מתווכים",
-    text: "מרגע שנוצר קשר, הצ'אט עם המורה פתוח: מתאמים, שואלים, קובעים שיעורי המשך. אין נציגי מכירות באמצע ואין עמלות תיווך — רק אתם והמורה.",
+    text: "מרגע שנוצר קשר, הצ'אט עם המורה פתוח: מתאמים, שואלים וקובעים שיעורי המשך. אין נציגי מכירות באמצע ואין עמלות תיווך. רק אתם והמורה.",
   },
 ];
 
@@ -43,14 +43,14 @@ export default function HowItWorksPage() {
         איך עובד SkillUp
       </h1>
       <p className="mt-4 max-w-[560px] text-base leading-relaxed text-[var(--mk-ink-2)]">
-        מהחיפוש הראשון ועד השיעור הראשון — ככה זה נראה, שלב אחר שלב.
+        מהחיפוש הראשון ועד השיעור הראשון, ככה זה עובד, שלב אחר שלב.
       </p>
 
       <div className="mt-12 space-y-10">
         {STEPS.map(({ icon: Icon, step, title, text }) => (
           <div key={step} className="flex gap-5">
             <div className="flex flex-col items-center">
-              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[var(--mk-band)] text-[var(--mk-ink)]">
+              <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand-50 text-brand-700">
                 <Icon size={21} />
               </span>
               <span className="mt-2 font-display text-sm font-bold text-ink-300">{step}</span>
@@ -70,9 +70,9 @@ export default function HowItWorksPage() {
           <BadgeCheck size={22} className="mt-0.5 shrink-0 text-[var(--mk-ink)]" />
           <p className="max-w-[560px] text-[15px] leading-[1.75] text-[var(--mk-ink-2)]">
             <strong className="text-[var(--mk-ink)]">הפרטיות שלכם שמורה.</strong>{" "}
-            פרטי קשר אישיים — טלפון, אימייל וכתובת מדויקת — לעולם לא מוצגים
-            בפומבי. כתובת המורה נחשפת רק אחרי ששיעור אצלו אושר, והקשר הראשוני
-            נעשה בצ&apos;אט מאובטח בתוך הפלטפורמה.
+            פרטי קשר אישיים כמו טלפון, אימייל וכתובת מדויקת לעולם לא מוצגים
+            בפומבי. כתובת המורה נחשפת רק אחרי שהשיעור אצלו אושר, והקשר
+            הראשוני נעשה בצ&apos;אט מאובטח בתוך הפלטפורמה.
           </p>
         </div>
       </div>

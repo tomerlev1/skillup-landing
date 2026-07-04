@@ -261,7 +261,7 @@ export default function ChatThread({
                 {(m.image_url || m.file_url || m.attachment_path) && (
                   <p className={`mt-1 inline-flex items-center gap-1.5 text-[13px] ${mine ? "text-white/85" : "text-[var(--mk-ink-3)]"}`}>
                     <Paperclip size={13} />
-                    {m.file_name ?? "קובץ מצורף — זמין באפליקציה"}
+                    {m.file_name ?? "קובץ מצורף (זמין באפליקציה)"}
                   </p>
                 )}
                 <p

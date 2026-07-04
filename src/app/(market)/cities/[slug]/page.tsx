@@ -27,8 +27,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!city) return { title: "לא נמצא | SkillUp" };
   const shortName = city.name_he.split(" - ")[0];
   return {
-    title: `מורה פרטי ב${shortName} — שיעורים פרטיים בכל המקצועות | SkillUp`,
-    description: `מחפשים מורה פרטי ב${shortName}? השוואת מורים מאומתים באזור ${shortName} לפי מקצוע, מחיר ודירוג — שיעורים אצל המורה, אצלכם בבית או אונליין. ביקורות אמיתיות וקביעת שיעור ישירה.`,
+    title: `מורה פרטי ב${shortName} | שיעורים פרטיים בכל המקצועות`,
+    description: `מחפשים מורה פרטי ב${shortName}? משווים מורים מאומתים באזור ${shortName} לפי מקצוע, מחיר ודירוג. שיעורים אצל המורה, אצלכם בבית או אונליין, עם ביקורות אמיתיות וקביעת שיעור ישירה.`,
     alternates: { canonical: `/cities/${slug}` },
     other: {
       "geo.region": "IL",
@@ -93,7 +93,7 @@ export default async function CityLandingPage({ params }: PageProps) {
         </h1>
         <p className="mt-5 text-base leading-[1.75] text-[var(--mk-ink-2)]">
           מחפשים שיעורים פרטיים ב{shortName} והסביבה? ב-SkillUp תמצאו מורים
-          מאומתים שמלמדים באזור {shortName} — אצל המורה, אצלכם בבית או אונליין.
+          מאומתים שמלמדים באזור {shortName}, אצל המורה, אצלכם בבית או אונליין.
           משווים מחירים, קוראים ביקורות אמיתיות של תלמידים וקובעים שיעור ישירות
           מול המורה, בלי מתווכים ובלי עמלות.
         </p>
@@ -116,15 +116,15 @@ export default async function CityLandingPage({ params }: PageProps) {
         </div>
 
         {inCity.items.length > 0 ? (
-          <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-6 sm:grid-cols-[repeat(auto-fill,minmax(225px,1fr))] lg:gap-x-6">
             {inCity.items.map((t, i) => (
               <TeacherCard key={t.id} teacher={t} priority={i < 4} />
             ))}
           </div>
         ) : (
           <p className="rounded-2xl bg-[var(--mk-band)] px-5 py-8 text-sm leading-relaxed text-[var(--mk-ink-2)]">
-            עדיין אין מורים שמלמדים פרונטלית ב{shortName} — אבל מורים מעולים
-            מלמדים אונליין מכל מקום בארץ. הנה כמה מהם:
+            עדיין אין מורים שמלמדים פרונטלית ב{shortName}, אבל יש מורים מעולים
+            שמלמדים אונליין מכל מקום בארץ. הנה כמה מהם:
           </p>
         )}
       </div>
@@ -133,9 +133,9 @@ export default async function CityLandingPage({ params }: PageProps) {
       {onlineExtra.length > 0 && (
         <div className="mt-14">
           <h2 className="mb-5 font-display text-xl font-bold text-[var(--mk-ink)]">
-            מורים אונליין — זמינים גם ל{shortName}
+            מורים אונליין שזמינים גם ל{shortName}
           </h2>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-8 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-4 gap-y-6 sm:grid-cols-[repeat(auto-fill,minmax(225px,1fr))] lg:gap-x-6">
             {onlineExtra.slice(0, 4).map((t) => (
               <TeacherCard key={t.id} teacher={t} />
             ))}

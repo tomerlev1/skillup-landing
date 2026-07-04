@@ -10,7 +10,7 @@ import {
   LogOut,
   Menu,
   MessageCircle,
-  Search,
+  UserRound,
   X,
 } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
@@ -83,7 +83,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
   }, [mobileOpen]);
 
   const linkClass = (href: string) =>
-    `text-sm font-medium transition-colors ${
+    `inline-flex h-16 items-center text-sm font-medium transition-colors ${
       pathname === href
         ? "text-[var(--mk-ink)]"
         : "text-[var(--mk-ink-2)] hover:text-[var(--mk-ink)]"
@@ -97,7 +97,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
     >
       <nav className="mx-auto flex h-16 max-w-[1280px] items-center gap-6 px-4 sm:px-6">
         {/* Logo (start side = right in RTL) */}
-        <Link href="/" className="flex shrink-0 items-center" aria-label="SkillUp — דף הבית">
+        <Link href="/" className="flex shrink-0 items-center" aria-label="SkillUp, דף הבית">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/SkillUpLoginLogo-Light.svg"
@@ -112,13 +112,13 @@ export default function MarketNav({ categories }: MarketNavProps) {
             מציאת מורה
           </Link>
 
-          <div className="relative" ref={subjectsRef}>
+          <div className="relative flex h-16 items-center" ref={subjectsRef}>
             <button
               type="button"
               onClick={() => setSubjectsOpen((v) => !v)}
               aria-expanded={subjectsOpen}
               aria-haspopup="menu"
-              className="inline-flex cursor-pointer items-center gap-1 text-sm font-medium text-[var(--mk-ink-2)] transition-colors hover:text-[var(--mk-ink)]"
+              className="inline-flex h-16 cursor-pointer items-center gap-1 text-sm font-medium text-[var(--mk-ink-2)] transition-colors hover:text-[var(--mk-ink)]"
             >
               מקצועות
               <ChevronDown
@@ -130,7 +130,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
             {subjectsOpen && (
               <div
                 role="menu"
-                className="mk-shadow absolute top-full start-0 z-50 mt-2 grid w-[420px] grid-cols-2 gap-1 rounded-2xl border border-[var(--mk-hairline)] bg-white p-3"
+                className="mk-shadow absolute top-full start-0 z-50 mt-1 grid w-[420px] grid-cols-2 gap-1 rounded-2xl border border-[var(--mk-hairline)] bg-white p-3"
               >
                 {categories.map((cat) => (
                   <Link
@@ -142,6 +142,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
                     <CategoryIcon
                       iconName={cat.icon_name}
                       size={17}
+                      color={cat.color_hex}
                       className="shrink-0 text-[var(--mk-ink-3)]"
                     />
                     {cat.name_he}
@@ -166,16 +167,6 @@ export default function MarketNav({ categories }: MarketNavProps) {
         </div>
 
         <div className="ms-auto flex items-center gap-2 sm:gap-3">
-          {/* Compact search entry (all viewports; icon-only on mobile) */}
-          <Link
-            href="/search"
-            className="inline-flex h-10 items-center gap-2 rounded-full border border-[var(--mk-hairline)] bg-white px-3 text-sm text-[var(--mk-ink-2)] transition-colors hover:border-[var(--mk-ink)] sm:px-4"
-            aria-label="חיפוש מורים"
-          >
-            <Search size={15} />
-            <span className="hidden sm:inline">חיפוש מורה...</span>
-          </Link>
-
           {user && profile ? (
             <div className="relative" ref={accountRef}>
               <button
@@ -204,9 +195,16 @@ export default function MarketNav({ categories }: MarketNavProps) {
                     </p>
                   </div>
                   {[
+                    { href: "/account", label: "הפרופיל שלי", icon: UserRound },
+                    ...(profile.role === "teacher"
+                      ? [{ href: "/account/schedule", label: "ניהול זמינות", icon: Calendar }]
+                      : []),
                     { href: "/messages", label: "הודעות", icon: MessageCircle },
                     { href: "/bookings", label: "השיעורים שלי", icon: Calendar },
-                    { href: "/saved", label: "מורים ששמרתי", icon: Heart },
+                    // Saved tutors is a student feature only
+                    ...(profile.role === "student"
+                      ? [{ href: "/saved", label: "מורים ששמרתי", icon: Heart }]
+                      : []),
                   ].map(({ href, label, icon: Icon }) => (
                     <Link
                       key={href}
@@ -282,6 +280,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
                   <CategoryIcon
                     iconName={cat.icon_name}
                     size={16}
+                    color={cat.color_hex}
                     className="shrink-0 text-[var(--mk-ink-3)]"
                   />
                   {cat.name_he}

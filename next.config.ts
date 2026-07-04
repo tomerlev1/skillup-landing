@@ -15,6 +15,11 @@ const nextConfig: NextConfig = {
         hostname: "ntofcpjwulypvjcsytqv.supabase.co",
         pathname: "/storage/v1/object/**",
       },
+      // Dev seed data uses stock photos; harmless to allow in prod too.
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
     ],
   },
   // Apple's AASA file is required to be served as application/json (or

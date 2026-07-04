@@ -30,7 +30,7 @@ export default async function MessagesPage() {
           </h2>
           <p className="mx-auto mt-2 max-w-[360px] text-sm leading-relaxed text-[var(--mk-ink-2)]">
             {profile.role === "teacher"
-              ? "כשתלמידים יפנו אליכם — השיחות יופיעו כאן."
+              ? "כשתלמידים יפנו אליכם, השיחות יופיעו כאן."
               : "מצאתם מורה מעניין? שלחו הודעה מהפרופיל שלו והשיחה תופיע כאן."}
           </p>
           {profile.role === "student" && (

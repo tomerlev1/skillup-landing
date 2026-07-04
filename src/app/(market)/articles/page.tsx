@@ -18,8 +18,8 @@ export default function ArticlesPage() {
         מדריכים ומאמרים
       </h1>
       <p className="mt-3 max-w-[520px] text-base leading-relaxed text-[var(--mk-ink-2)]">
-        כל מה שכדאי לדעת לפני שבוחרים מורה פרטי — כתוב בגובה העיניים, בלי
-        אינטרסים ובלי סיסמאות.
+        כל מה שכדאי לדעת לפני שבוחרים מורה פרטי, כתוב בגובה העיניים ובלי
+        סיסמאות שיווקיות.
       </p>
 
       <div className="mt-10 space-y-4">

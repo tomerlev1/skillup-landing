@@ -35,8 +35,8 @@ export default function ForgotPasswordPage() {
     >
       {sent ? (
         <p className="rounded-2xl bg-[var(--mk-band)] p-5 text-center text-sm leading-relaxed text-[var(--mk-ink-2)]">
-          אם קיים חשבון עם האימייל הזה — קישור לאיפוס כבר בדרך לתיבת הדואר
-          שלכם.
+          אם קיים אצלנו חשבון עם האימייל הזה, קישור לאיפוס כבר בדרך לתיבת
+          הדואר שלכם.
         </p>
       ) : (
         <form onSubmit={onSubmit} className="space-y-4">

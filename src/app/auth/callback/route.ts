@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { ensureStudentRow } from "@/lib/auth/ensure-role-row";
+import { ensureRoleRow } from "@/lib/auth/ensure-role-row";
 
 // OAuth / email-confirmation landing: exchange the code for a session,
 // make sure a role row exists (web default: student), resume `next`.
@@ -18,7 +18,7 @@ export async function GET(request: Request) {
       const {
         data: { user },
       } = await supabase.auth.getUser();
-      if (user) await ensureStudentRow(supabase, user);
+      if (user) await ensureRoleRow(supabase, user);
       return NextResponse.redirect(`${origin}${next}`);
     }
   }
