@@ -236,7 +236,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
               </Link>
               <Link
                 href="/signup"
-                className="inline-flex h-10 items-center rounded-pill bg-ink px-4 text-sm font-semibold text-surface transition-colors hover:bg-ink-2 sm:px-5"
+                className="hit-44 inline-flex h-10 items-center rounded-pill bg-ink px-4 text-sm font-semibold text-surface transition-colors hover:bg-ink-2 sm:px-5"
               >
                 הרשמה
               </Link>
@@ -248,6 +248,8 @@ export default function MarketNav({ categories }: MarketNavProps) {
             type="button"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label={mobileOpen ? "סגירת תפריט" : "פתיחת תפריט"}
+            aria-expanded={mobileOpen}
+            aria-controls="market-mobile-menu"
             className="grid h-11 w-11 cursor-pointer place-items-center rounded-pill text-ink transition-colors hover:bg-action-soft md:hidden"
           >
             {mobileOpen ? <X strokeWidth={1.75} size={20} /> : <Menu strokeWidth={1.75} size={20} />}
@@ -257,7 +259,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
 
       {/* Mobile panel */}
       {mobileOpen && (
-        <div className="border-t border-line bg-surface md:hidden">
+        <div id="market-mobile-menu" className="border-t border-line bg-surface md:hidden">
           <div className="max-h-[calc(100dvh-64px)] space-y-1 overflow-y-auto px-4 py-4">
             <Link
               href="/search"

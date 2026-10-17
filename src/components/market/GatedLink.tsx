@@ -12,6 +12,8 @@ interface GatedLinkProps {
   allowTeachers?: boolean;
   /** Render the wrapper inline-block (pills in a flex/inline row) instead of block. */
   inline?: boolean;
+  /** Accessible name when the visible text alone is ambiguous (e.g. a bare time). */
+  ariaLabel?: string;
 }
 
 const TEACHER_MESSAGE =
@@ -26,6 +28,7 @@ export default function GatedLink({
   children,
   allowTeachers = false,
   inline = false,
+  ariaLabel,
 }: GatedLinkProps) {
   const router = useRouter();
   const { user, profile, loading } = useAuth();
@@ -63,7 +66,7 @@ export default function GatedLink({
 
   return (
     <span ref={wrapRef} className={`relative ${inline ? "inline-block" : "block"}`}>
-      <button type="button" onClick={onClick} className={className}>
+      <button type="button" onClick={onClick} className={className} aria-label={ariaLabel}>
         {children}
       </button>
       {notice && (

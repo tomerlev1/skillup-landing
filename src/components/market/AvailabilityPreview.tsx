@@ -56,6 +56,7 @@ export default function AvailabilityPreview({ teacherId, slots }: AvailabilityPr
                   key={slot.id}
                   inline
                   href={bookHref(teacherId, slot.id)}
+                  ariaLabel={`${jerusalemWeekday(slot.start_at)} ${jerusalemDateShort(slot.start_at)} בשעה ${availabilityTime(slot.start_at)}`}
                   className="tnum inline-flex h-11 min-w-[72px] cursor-pointer items-center justify-center rounded-[var(--r-pill)] border border-line bg-surface px-4 text-sm font-medium text-ink transition-colors hover:border-action hover:bg-action-soft"
                 >
                   {availabilityTime(slot.start_at)}

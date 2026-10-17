@@ -38,7 +38,7 @@ export default function SignupForm() {
     return (
       <p className="rounded-[var(--r-md)] bg-canvas p-6 text-center text-sm leading-relaxed text-ink-2">
         אתם כבר מחוברים לחשבון SkillUp.{" "}
-        <Link href="/account" className="font-semibold text-action hover:underline">
+        <Link href="/account" className="inline-block py-0.5 font-semibold text-action hover:underline">
           לפרופיל שלי
         </Link>
       </p>
@@ -221,7 +221,7 @@ export default function SignupForm() {
         </div>
 
         {error && (
-          <p role="alert" className="rounded-[var(--r-sm)] bg-danger/10 px-4 py-3 text-sm text-danger">
+          <p role="alert" className="rounded-[var(--r-sm)] bg-danger/10 px-4 py-3 text-sm text-danger-text">
             {error}
           </p>
         )}
@@ -247,11 +247,11 @@ export default function SignupForm() {
 
         <p className="text-center text-sm leading-relaxed text-ink-3">
           ההרשמה מהווה הסכמה{" "}
-          <Link href="/terms" className="underline hover:text-ink">
+          <Link href="/terms" className="inline-block py-0.5 underline hover:text-ink">
             לתנאי השימוש
           </Link>{" "}
           ו
-          <Link href="/privacy" className="underline hover:text-ink">
+          <Link href="/privacy" className="inline-block py-0.5 underline hover:text-ink">
             למדיניות הפרטיות
           </Link>
           .
@@ -262,7 +262,7 @@ export default function SignupForm() {
         כבר יש לכם חשבון?{" "}
         <Link
           href={`/login${next !== "/" ? `?next=${encodeURIComponent(next)}` : ""}`}
-          className="font-semibold text-action hover:underline"
+          className="inline-block py-0.5 font-semibold text-action hover:underline"
         >
           התחברות
         </Link>

@@ -71,7 +71,7 @@ export default function LoginForm() {
             </label>
             <Link
               href="/forgot-password"
-              className="text-sm text-ink-3 hover:text-ink hover:underline"
+              className="inline-block py-0.5 text-sm text-ink-3 hover:text-ink hover:underline"
             >
               שכחתם סיסמה?
             </Link>
@@ -89,7 +89,7 @@ export default function LoginForm() {
         </div>
 
         {error && (
-          <p role="alert" className="rounded-[var(--r-sm)] bg-danger/10 px-4 py-3 text-sm text-danger">
+          <p role="alert" className="rounded-[var(--r-sm)] bg-danger/10 px-4 py-3 text-sm text-danger-text">
             {error}
           </p>
         )}
@@ -107,7 +107,7 @@ export default function LoginForm() {
         עדיין אין לכם חשבון?{" "}
         <Link
           href={`/signup${next !== "/" ? `?next=${encodeURIComponent(next)}` : ""}`}
-          className="font-semibold text-action hover:underline"
+          className="inline-block py-0.5 font-semibold text-action hover:underline"
         >
           הרשמה
         </Link>

@@ -18,6 +18,9 @@
   --color-ok-text: var(--c-ok-text);
   --color-warn: var(--c-warn);
   --color-danger: var(--c-danger);
+  --color-warn-text: var(--c-warn-text);
+  --color-danger-text: var(--c-danger-text);
+  --color-spark-text: var(--c-spark-text);
   --color-star: var(--c-star);
   --radius-pill: 999px;
 
@@ -46,6 +49,9 @@
   --c-ok-text: #0B7A55;
   --c-warn: #B86E00;
   --c-danger: #E11D48;
+  --c-warn-text: #8F5600;
+  --c-danger-text: #BE123C;
+  --c-spark-text: #C2410C;
   --c-star: #F5A623;
 
   --r-sm: 10px;
@@ -76,6 +82,9 @@
   --c-ok-text: #34D399;
   --c-warn: #F5B44A;
   --c-danger: #FB7185;
+  --c-warn-text: #F5B44A;
+  --c-danger-text: #FB7185;
+  --c-spark-text: #FB923C;
   --c-star: #F5A623;
 
   color-scheme: dark;
@@ -98,6 +107,9 @@
     --c-ok-text: #34D399;
     --c-warn: #F5B44A;
     --c-danger: #FB7185;
+    --c-warn-text: #F5B44A;
+    --c-danger-text: #FB7185;
+    --c-spark-text: #FB923C;
     --c-star: #F5A623;
 
     color-scheme: dark;

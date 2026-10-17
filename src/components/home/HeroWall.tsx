@@ -32,7 +32,7 @@ export default function HeroWall({ categories, stats, wall, nextSlots }: HeroWal
       >
         <div>
           <h1 className="font-ed text-[clamp(36px,5vw,56px)] font-black leading-[1.1] text-balance text-ink">
-            ללמוד עם הטובים <span className="text-spark">באמת.</span>
+            ללמוד עם הטובים <span className="text-spark-text">באמת.</span>
           </h1>
           <p
             className={`mt-4 max-w-[520px] text-base leading-relaxed text-ink-2 sm:text-lg ${

@@ -201,7 +201,7 @@ export default function ScheduleManager({
               aria-pressed={open}
               className={`tnum inline-flex h-11 items-center justify-center gap-1.5 rounded-[var(--r-sm)] border text-sm font-medium transition-colors ${
                 booked
-                  ? "cursor-not-allowed border-warn/30 bg-warn/10 text-warn"
+                  ? "cursor-not-allowed border-warn/30 bg-warn/10 text-warn-text"
                   : open
                     ? "border-ok bg-ok/10 text-ok-text hover:bg-ok/15"
                     : past

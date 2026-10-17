@@ -50,7 +50,7 @@ export default function ResetPasswordPage() {
           <p className="mt-1 text-sm text-ink-3">לפחות 8 תווים</p>
         </div>
         {error && (
-          <p role="alert" className="rounded-[var(--r-sm)] bg-danger/10 px-4 py-3 text-sm text-danger">
+          <p role="alert" className="rounded-[var(--r-sm)] bg-danger/10 px-4 py-3 text-sm text-danger-text">
             {error}
           </p>
         )}

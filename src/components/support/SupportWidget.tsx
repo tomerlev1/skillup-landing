@@ -206,7 +206,7 @@ export default function SupportWidget() {
           <div className="min-h-0 flex-1 space-y-3 overflow-y-auto bg-canvas px-4 py-4">
             {messages.map((m, i) =>
               m.kind === "system" ? (
-                <p key={i} className="text-center text-sm text-danger">
+                <p key={i} className="text-center text-sm text-danger-text">
                   {m.text}
                 </p>
               ) : (

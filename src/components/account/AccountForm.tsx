@@ -146,7 +146,7 @@ export default function AccountForm({
       </p>
 
       {isTeacher && !initial.profile_completed && (
-        <p className="mt-4 flex items-start gap-2 rounded-[var(--r-md)] bg-warn/10 px-4 py-3 text-sm leading-relaxed text-warn">
+        <p className="mt-4 flex items-start gap-2 rounded-[var(--r-md)] bg-warn/10 px-4 py-3 text-sm leading-relaxed text-warn-text">
           <BadgeCheck strokeWidth={1.75} size={16} className="mt-0.5 shrink-0" />
           הפרופיל עדיין לא מוצג בחיפוש. מילוי שם תצוגה, תיאור, מחיר ועיר יפרסם
           אותו אוטומטית.
@@ -238,7 +238,7 @@ export default function AccountForm({
         </div>
 
         {error && (
-          <p role="alert" className="rounded-[var(--r-sm)] bg-danger/10 px-4 py-3 text-sm text-danger">
+          <p role="alert" className="rounded-[var(--r-sm)] bg-danger/10 px-4 py-3 text-sm text-danger-text">
             {error}
           </p>
         )}

@@ -32,8 +32,8 @@ export default function RatingStars({
           // #FFF1E6 in light; a warm tint of the surface in dark.
           background:
             "light-dark(#FFF1E6, color-mix(in srgb, var(--c-spark) 14%, var(--c-surface)))",
-          // Spark, deepened toward ink so 12px text stays readable (AA).
-          color: "color-mix(in srgb, var(--c-spark) 78%, var(--c-ink))",
+          // Spark text token: AA on the warm tint in both themes.
+          color: "var(--c-spark-text)",
         }}
       >
         חדש ב-SkillUp

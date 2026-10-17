@@ -25,8 +25,8 @@ interface AppLinkShellProps {
 
 const TONE: Record<Tone, { Icon: LucideIcon; className: string }> = {
   ok: { Icon: Check, className: "bg-ok/15 text-ok-text" },
-  warn: { Icon: CircleAlert, className: "bg-warn/15 text-warn" },
-  err: { Icon: X, className: "bg-danger/15 text-danger" },
+  warn: { Icon: CircleAlert, className: "bg-warn/15 text-warn-text" },
+  err: { Icon: X, className: "bg-danger/15 text-danger-text" },
 };
 
 export default function AppLinkShell({

@@ -27,7 +27,7 @@ export default function MarketFooter({ categories, majorCities }: MarketFooterPr
                 <li key={cat.id}>
                   <Link
                     href={`/categories/${categorySlug(cat)}`}
-                    className="text-sm text-ink-2 hover:text-ink hover:underline"
+                    className="inline-flex min-h-6 items-center text-sm text-ink-2 hover:text-ink hover:underline"
                   >
                     מורים ל{cat.name_he}
                   </Link>
@@ -45,7 +45,7 @@ export default function MarketFooter({ categories, majorCities }: MarketFooterPr
                 <li key={city.id}>
                   <Link
                     href={`/cities/${citySlug(city)}`}
-                    className="text-sm text-ink-2 hover:text-ink hover:underline"
+                    className="inline-flex min-h-6 items-center text-sm text-ink-2 hover:text-ink hover:underline"
                   >
                     מורה פרטי ב{city.name_he.split(" - ")[0]}
                   </Link>
@@ -68,7 +68,7 @@ export default function MarketFooter({ categories, majorCities }: MarketFooterPr
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-ink-2 hover:text-ink hover:underline"
+                    className="inline-flex min-h-6 items-center text-sm text-ink-2 hover:text-ink hover:underline"
                   >
                     {l.label}
                   </Link>
@@ -77,7 +77,7 @@ export default function MarketFooter({ categories, majorCities }: MarketFooterPr
               <li>
                 <a
                   href={APP_STORE_URL}
-                  className="text-sm text-ink-2 hover:text-ink hover:underline"
+                  className="inline-flex min-h-6 items-center text-sm text-ink-2 hover:text-ink hover:underline"
                 >
                   הורדת האפליקציה ל-iPhone
                 </a>
@@ -85,7 +85,7 @@ export default function MarketFooter({ categories, majorCities }: MarketFooterPr
               <li>
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
-                  className="text-sm text-ink-2 hover:text-ink hover:underline"
+                  className="inline-flex min-h-6 items-center text-sm text-ink-2 hover:text-ink hover:underline"
                 >
                   יצירת קשר
                 </a>
@@ -107,7 +107,7 @@ export default function MarketFooter({ categories, majorCities }: MarketFooterPr
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-sm text-ink-2 hover:text-ink hover:underline"
+                    className="inline-flex min-h-6 items-center text-sm text-ink-2 hover:text-ink hover:underline"
                   >
                     {l.label}
                   </Link>

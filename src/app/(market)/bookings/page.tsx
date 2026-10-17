@@ -18,9 +18,9 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-const WARN = "bg-warn/10 text-warn";
+const WARN = "bg-warn/10 text-warn-text";
 const OK = "bg-ok/10 text-ok-text";
-const DANGER = "bg-danger/10 text-danger";
+const DANGER = "bg-danger/10 text-danger-text";
 const NEUTRAL = "bg-canvas text-ink-3";
 
 // `awaiting_payment` is a legacy status that should not occur (SkillUp never
