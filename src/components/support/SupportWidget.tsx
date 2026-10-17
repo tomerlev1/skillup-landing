@@ -217,7 +217,7 @@ export default function SupportWidget() {
                   <div
                     className={`max-w-[85%] rounded-[var(--r-md)] px-3.5 py-2.5 text-sm leading-relaxed ${
                       m.kind === "user"
-                        ? "rounded-ee-md bg-action text-white"
+                        ? "rounded-ee-md bg-action text-on-action"
                         : "rounded-es-md border border-line bg-surface text-ink"
                     }`}
                   >
@@ -308,7 +308,7 @@ export default function SupportWidget() {
                   <button
                     type="submit"
                     disabled={sendingEscalation}
-                    className="h-10 flex-1 cursor-pointer rounded-pill bg-action text-sm font-semibold text-white transition-colors hover:bg-action-hover disabled:opacity-60"
+                    className="h-10 flex-1 cursor-pointer rounded-pill bg-action text-sm font-semibold text-on-action transition-colors hover:bg-action-hover disabled:opacity-60"
                   >
                     {sendingEscalation ? "שולחים..." : "שליחה לנציג"}
                   </button>
@@ -346,7 +346,7 @@ export default function SupportWidget() {
                 type="submit"
                 disabled={!draft.trim() || thinking}
                 aria-label="שליחה"
-                className="grid h-11 w-11 shrink-0 cursor-pointer place-items-center rounded-pill bg-action text-white transition-colors hover:bg-action-hover disabled:opacity-40"
+                className="grid h-11 w-11 shrink-0 cursor-pointer place-items-center rounded-pill bg-action text-on-action transition-colors hover:bg-action-hover disabled:opacity-40"
               >
                 <SendHorizontal size={16} className="-scale-x-100" />
               </button>

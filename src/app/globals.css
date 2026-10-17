@@ -117,6 +117,7 @@
   --color-action: var(--c-action);
   --color-action-hover: var(--c-action-hover);
   --color-action-soft: var(--c-action-soft);
+  --color-on-action: var(--c-on-action);
   --color-spark: var(--c-spark);
   --color-ink: var(--c-ink);
   --color-ink-2: var(--c-ink-2);
@@ -144,6 +145,7 @@
   --c-action: #4F46E5;
   --c-action-hover: #4338CA;
   --c-action-soft: #EEEDFD;
+  --c-on-action: #FFFFFF;
   --c-spark: #F97316;
   --c-ink: #14131F;
   --c-ink-2: #4B4A5C;
@@ -173,6 +175,7 @@
   --c-action: #8B85FF;
   --c-action-hover: #A5A0FF;
   --c-action-soft: #25224F;
+  --c-on-action: #100E22;
   --c-spark: #FB923C;
   --c-ink: #F2F1FA;
   --c-ink-2: #C4C2D6;
@@ -194,6 +197,7 @@
     --c-action: #8B85FF;
     --c-action-hover: #A5A0FF;
     --c-action-soft: #25224F;
+    --c-on-action: #100E22;
     --c-spark: #FB923C;
     --c-ink: #F2F1FA;
     --c-ink-2: #C4C2D6;
@@ -369,7 +373,8 @@ body {
 }
 .faq details[open] summary .chev { transform: rotate(180deg); }
 .faq details p {
-  margin: 14px 0 0 58px;
+  margin: 14px 0 0;
+  padding-inline-start: 58px;
   color: var(--fg-muted);
   font-size: 14px;
   line-height: 1.65;

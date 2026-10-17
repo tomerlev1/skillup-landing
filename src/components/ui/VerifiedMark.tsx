@@ -22,7 +22,7 @@ export default function VerifiedMark({ size = 16, className = "" }: VerifiedMark
         height={Math.round(size * 0.6)}
         aria-hidden="true"
         fill="none"
-        stroke="var(--c-surface)"
+        stroke="var(--c-on-action)"
         strokeWidth={2.5}
         strokeLinecap="round"
         strokeLinejoin="round"

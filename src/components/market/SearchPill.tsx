@@ -264,19 +264,15 @@ export default function SearchPill({
     <div ref={rootRef} className="relative w-full">
       <div
         role="search"
-        className={`flex ${height} w-full items-stretch rounded-full border bg-white transition-shadow ${
-          active
-            ? "mk-shadow border-[var(--mk-hairline)]"
-            : "border-[var(--mk-hairline)] shadow-[var(--mk-shadow-soft)]"
+        className={`flex ${height} w-full items-stretch rounded-[var(--r-pill)] border bg-surface transition-[box-shadow,border-color] duration-200 ease-[var(--ease)] ${
+          active ? "border-line shadow-[var(--shadow-lift)]" : "border-line hover:border-ink-3"
         }`}
       >
         {/* What segment */}
         <label
-          className={`flex min-w-0 flex-[1.3] cursor-text items-center gap-2 rounded-full ps-4 pe-2 sm:gap-3 sm:ps-6 sm:pe-4 ${
-            active === "what" ? "bg-white" : ""
-          }`}
+          className="flex min-w-0 flex-[1.3] cursor-text items-center gap-2 rounded-[var(--r-pill)] ps-4 pe-2 sm:gap-3 sm:ps-6 sm:pe-4"
         >
-          <GraduationCap size={18} className="shrink-0 text-[var(--mk-ink-3)]" />
+          <GraduationCap size={20} strokeWidth={1.75} aria-hidden="true" className="shrink-0 text-ink-3" />
           <span className="sr-only">מה תרצו ללמוד?</span>
           <input
             ref={whatRef}
@@ -287,15 +283,15 @@ export default function SearchPill({
             placeholder={whatPlaceholder}
             autoFocus={autoFocus}
             autoComplete="off"
-            className="w-full min-w-0 bg-transparent text-sm font-medium text-[var(--mk-ink)] outline-none placeholder:font-normal placeholder:text-[var(--mk-ink-3)] sm:text-[15px]"
+            className="w-full min-w-0 bg-transparent text-base font-medium text-ink outline-none placeholder:font-normal placeholder:text-ink-3"
           />
         </label>
 
-        <span className="my-3 w-px shrink-0 bg-[var(--mk-hairline)]" aria-hidden="true" />
+        <span className="my-3 w-px shrink-0 bg-line" aria-hidden="true" />
 
         {/* Where segment */}
         <label className="flex min-w-0 flex-1 cursor-text items-center gap-2 ps-3 pe-1 sm:gap-3 sm:ps-5 sm:pe-2">
-          <MapPin size={18} className="shrink-0 text-[var(--mk-ink-3)]" />
+          <MapPin size={20} strokeWidth={1.75} aria-hidden="true" className="shrink-0 text-ink-3" />
           <span className="sr-only">איפה? עיר או אונליין</span>
           <input
             value={where}
@@ -304,7 +300,7 @@ export default function SearchPill({
             onKeyDown={onKeyDown}
             placeholder="עיר או אונליין"
             autoComplete="off"
-            className="w-full min-w-0 bg-transparent text-sm font-medium text-[var(--mk-ink)] outline-none placeholder:font-normal placeholder:text-[var(--mk-ink-3)] sm:text-[15px]"
+            className="w-full min-w-0 bg-transparent text-base font-medium text-ink outline-none placeholder:font-normal placeholder:text-ink-3"
           />
         </label>
 
@@ -314,9 +310,9 @@ export default function SearchPill({
             type="button"
             onClick={submit}
             aria-label="חיפוש מורים"
-            className={`orb-glow grid ${compact ? "h-9 w-9" : "h-10 w-10 sm:h-12 sm:w-12"} shrink-0 cursor-pointer place-items-center rounded-full bg-brand-600 text-white transition-colors hover:bg-brand-700`}
+            className={`grid ${compact ? "size-11" : "size-11 sm:size-12"} shrink-0 cursor-pointer place-items-center rounded-[var(--r-pill)] bg-action text-on-action transition-colors duration-200 ease-[var(--ease)] hover:bg-action-hover`}
           >
-            <Search size={compact ? 16 : 19} />
+            <Search size={20} strokeWidth={1.75} aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -325,10 +321,10 @@ export default function SearchPill({
       {open && (
         <div
           role="listbox"
-          className="mk-shadow absolute top-full inset-x-0 z-40 mt-2 overflow-hidden rounded-2xl border border-[var(--mk-hairline)] bg-white py-2"
+          className="absolute top-full inset-x-0 z-40 mt-2 overflow-hidden rounded-[var(--r-md)] border border-line bg-surface py-2 text-start shadow-[var(--shadow-lift)]"
         >
           {active === "what" && what.trim().length < 1 && (
-            <p className="px-5 pb-1 pt-2 text-xs font-semibold text-[var(--mk-ink-3)]">
+            <p className="eyebrow px-5 pb-1 pt-2">
               תחומים פופולריים
             </p>
           )}
@@ -340,27 +336,27 @@ export default function SearchPill({
               aria-selected={i === highlighted}
               onClick={() => pick(s)}
               onMouseEnter={() => setHighlighted(i)}
-              className={`flex w-full cursor-pointer items-center gap-3 px-5 py-2.5 text-start ${
-                i === highlighted ? "bg-paper-25" : ""
+              className={`flex min-h-11 w-full cursor-pointer items-center gap-3 px-5 py-2.5 text-start ${
+                i === highlighted ? "bg-action-soft" : ""
               }`}
             >
-              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-paper-50 text-[var(--mk-ink-2)]">
+              <span className="grid size-9 shrink-0 place-items-center rounded-[var(--r-sm)] bg-canvas text-ink">
                 {s.kind === "category" ? (
-                  <CategoryIcon iconName={s.iconName ?? null} size={17} />
+                  <CategoryIcon iconName={s.iconName ?? null} size={18} />
                 ) : s.kind === "subject" ? (
-                  <GraduationCap size={17} />
+                  <GraduationCap size={18} strokeWidth={1.75} />
                 ) : s.kind === "teacher" ? (
-                  <User size={17} />
+                  <User size={18} strokeWidth={1.75} />
                 ) : (
-                  <MapPin size={17} />
+                  <MapPin size={18} strokeWidth={1.75} />
                 )}
               </span>
               <span className="min-w-0">
-                <span className="block truncate text-sm font-medium text-[var(--mk-ink)]">
+                <span className="block truncate text-[15px] font-medium text-ink">
                   {s.label}
                 </span>
                 {s.sublabel && (
-                  <span className="block truncate text-xs text-[var(--mk-ink-3)]">
+                  <span className="block truncate text-sm text-ink-3">
                     {s.sublabel}
                   </span>
                 )}
