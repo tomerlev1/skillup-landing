@@ -7,27 +7,26 @@ export function Skeleton({ className = "", style }: SkeletonProps) {
   return <div className={`skeleton ${className}`} style={style} aria-hidden="true" />;
 }
 
-// Layout-matches TeacherCard variant="auto" (the results grid): a compact
-// row below md (96x120 photo beside the text), the 4:5 card from md up.
+// Layout-matches TeacherCard variant="list": photo beside text, CTA column
+// from md up.
 export function TeacherCardSkeleton() {
   return (
     <div
       aria-hidden="true"
-      className="flex h-full overflow-hidden rounded-[var(--r-md)] border border-line bg-surface max-md:gap-3 max-md:p-2.5 md:flex-col"
+      className="flex gap-4 rounded-[var(--r-lg)] bg-surface p-4 shadow-[var(--shadow-card)] ring-1 ring-line/60 sm:gap-5 sm:p-5"
     >
-      <Skeleton className="aspect-[4/5] w-full shrink-0 rounded-none max-md:aspect-auto max-md:h-[120px] max-md:w-24 max-md:rounded-[var(--r-sm)]" />
-      <div className="flex min-w-0 flex-1 flex-col px-4 pb-4 pt-3.5 max-md:p-0 max-md:py-0.5">
-        <div className="flex items-center justify-between gap-2">
-          <Skeleton className="h-[18px] w-1/2" />
-          <Skeleton className="h-4 w-12" />
+      <Skeleton className="size-[88px] shrink-0 rounded-[var(--r-md)] sm:size-[132px]" />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <Skeleton className="h-5 w-1/3" />
+        <Skeleton className="mt-2 h-4 w-20" />
+        <div className="mt-3 flex gap-1.5">
+          <Skeleton className="h-6 w-20 rounded-[var(--r-pill)]" />
+          <Skeleton className="h-6 w-16 rounded-[var(--r-pill)]" />
         </div>
-        <Skeleton className="mt-2 h-3.5 w-3/4" />
-        <Skeleton className="mt-2 h-3.5 w-1/2" />
-        <div className="min-h-3 flex-1 max-md:min-h-1" />
-        <div className="flex items-center justify-between gap-2 border-t border-line pt-3 max-md:border-t-0 max-md:pt-1">
-          <Skeleton className="h-3.5 w-2/5" />
-          <Skeleton className="h-[18px] w-1/4" />
-        </div>
+        <Skeleton className="mt-3 hidden h-4 w-5/6 sm:block" />
+      </div>
+      <div className="hidden w-[150px] shrink-0 flex-col justify-end border-s border-line ps-5 md:flex">
+        <Skeleton className="h-11 rounded-[var(--r-pill)]" />
       </div>
     </div>
   );
@@ -36,7 +35,7 @@ export function TeacherCardSkeleton() {
 // Same grid as the search results / saved / city / category grids.
 export function TeacherGridSkeleton({ count = 8 }: { count?: number }) {
   return (
-    <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-x-4 md:gap-y-8 lg:gap-x-6 xl:grid-cols-4">
+    <div className="flex flex-col gap-4">
       {Array.from({ length: count }, (_, i) => (
         <TeacherCardSkeleton key={i} />
       ))}

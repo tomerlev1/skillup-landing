@@ -122,12 +122,12 @@ export default async function CityLandingPage({ params }: PageProps) {
         </div>
 
         {inCity.items.length > 0 ? (
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-x-4 md:gap-y-8 xl:grid-cols-4 lg:gap-x-6">
+          <div className="flex max-w-[960px] flex-col gap-4">
             {inCity.items.map((t, i) => (
               <TeacherCard
                 key={t.id}
                 teacher={t}
-                variant="auto"
+                variant="list"
                 nextSlot={nextSlots[t.id]}
                 priority={i < 4}
               />
@@ -147,12 +147,12 @@ export default async function CityLandingPage({ params }: PageProps) {
           <h2 className="mb-5 font-ed text-[22px] font-bold leading-tight text-balance text-ink sm:text-[28px]">
             מורים אונליין שזמינים גם ל{shortName}
           </h2>
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-x-4 md:gap-y-8 xl:grid-cols-4 lg:gap-x-6">
+          <div className="flex max-w-[960px] flex-col gap-4">
             {onlineExtra.slice(0, 4).map((t) => (
               <TeacherCard
                 key={t.id}
                 teacher={t}
-                variant="auto"
+                variant="list"
                 nextSlot={nextSlots[t.id]}
               />
             ))}

@@ -28,12 +28,12 @@ export default function GoalTiles({ goals }: { goals: GoalTile[] }) {
       <h2 className="font-ed mt-1 text-[28px] font-extrabold leading-tight text-balance text-ink sm:text-[36px]">
         מה המטרה שלכם?
       </h2>
-      <ul className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 lg:gap-4">
+      <ul className="mt-7 grid grid-cols-2 gap-3 min-[900px]:grid-cols-5 lg:gap-4">
         {goals.map((g, i) => {
           const s = STYLE[g.label] ?? { icon: Lightbulb, tone: "bg-tint-indigo text-tint-indigo-fg", sub: "" };
           const Icon = s.icon;
           return (
-            <li key={g.label} className={i === goals.length - 1 ? "max-sm:col-span-2" : ""}>
+            <li key={g.label} className={i === goals.length - 1 ? "max-[899px]:col-span-2" : ""}>
               <Link
                 href={g.href}
                 className="group flex h-full flex-col gap-4 rounded-[var(--r-lg)] bg-surface p-4 shadow-[var(--shadow-card)] ring-1 ring-line/60 transition-[transform,box-shadow] duration-200 ease-[var(--ease)] hover:-translate-y-1 hover:shadow-[var(--shadow-lift)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action sm:p-5 motion-reduce:transition-none motion-reduce:hover:translate-y-0"

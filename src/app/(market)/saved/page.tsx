@@ -105,12 +105,12 @@ export default function SavedTutorsPage() {
           </Link>
         </div>
       ) : (
-        <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-x-4 md:gap-y-8 xl:grid-cols-4 lg:gap-x-6">
+        <div className="mt-8 flex max-w-[960px] flex-col gap-4">
           {teachers.map((t) => (
             <TeacherCard
               key={t.id}
               teacher={t}
-              variant="auto"
+              variant="list"
               nextSlot={nextSlots[t.id]}
             />
           ))}

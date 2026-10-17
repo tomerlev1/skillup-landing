@@ -73,12 +73,12 @@ export default function ResultsGrid({
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-5 xl:grid-cols-3 xl:gap-6">
+      <div className="flex flex-col gap-4">
         {items.map((t, i) => (
           <TeacherCard
             key={t.id}
             teacher={t}
-            variant="auto"
+            variant="list"
             nextSlot={nextSlots[t.id]}
             priority={i < 4}
           />
@@ -91,7 +91,7 @@ export default function ResultsGrid({
             type="button"
             onClick={loadMore}
             disabled={pending}
-            className="inline-flex h-12 cursor-pointer items-center rounded-full border border-ink px-8 text-sm font-semibold text-ink transition-colors hover:bg-canvas disabled:opacity-50"
+            className="inline-flex h-12 cursor-pointer items-center rounded-full bg-tint-indigo px-8 text-sm font-bold text-tint-indigo-fg transition-colors hover:bg-brand-100 disabled:opacity-50"
           >
             {pending ? "טוען..." : "הצגת מורים נוספים"}
           </button>

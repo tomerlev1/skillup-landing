@@ -37,17 +37,17 @@ export default function TeacherRail({
         {moreHref && (
           <Link
             href={moreHref}
-            className="inline-flex min-h-11 shrink-0 items-center gap-1 text-sm font-medium text-ink-2 hover:text-ink hover:underline"
+            className="inline-flex min-h-11 shrink-0 items-center gap-1 text-[15px] font-bold text-action hover:underline"
           >
             {moreLabel}
-            <ChevronLeft size={16} strokeWidth={1.75} aria-hidden="true" />
+            <ChevronLeft size={18} strokeWidth={2.25} aria-hidden="true" />
           </Link>
         )}
       </div>
 
       <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-4 lg:gap-5">
         {teachers.slice(0, 8).map((t, i) => (
-          <div key={t.id} className="w-[72vw] max-w-[280px] shrink-0 snap-start sm:w-auto sm:max-w-none">
+          <div key={t.id} className={`w-[72vw] max-w-[280px] shrink-0 snap-start sm:w-auto sm:max-w-none ${i >= 4 ? "sm:hidden" : i === 3 ? "sm:max-lg:hidden" : ""}`}>
             <TeacherCard
               teacher={t}
               variant="card"

@@ -111,20 +111,38 @@ export default function HeroWall({ categories, stats, wall, nextSlots }: HeroWal
         </div>
 
         {hasWall && (
-          <div className="no-scrollbar -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-4 lg:mx-0 lg:grid lg:w-full lg:max-w-[460px] lg:grid-cols-2 lg:gap-4 lg:justify-self-end lg:overflow-visible lg:px-0 lg:pb-[28px]">
-            {wall.map((t, i) => (
-              <div
-                key={t.id}
-                className="w-[46vw] max-w-[220px] shrink-0 snap-start lg:w-auto lg:max-w-none lg:even:translate-y-[28px]"
-              >
-                <TeacherCard
-                  teacher={t}
-                  variant="wall"
-                  nextSlot={nextSlots[t.id] ?? null}
-                  priority={i < 2}
-                />
-              </div>
-            ))}
+          <div className="relative mx-auto w-full max-w-[460px] lg:me-0">
+            {/* Brand disc behind the floating cards */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-6 top-6 bottom-6 -z-10 rounded-[40px] bg-gradient-to-br from-[#6D63F2] via-[#5B50EE] to-[#8B7CF8] shadow-[var(--shadow-lift)] lg:inset-x-10"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute -top-3 end-10 -z-10 size-16 rounded-[var(--r-md)] bg-tint-peach rotate-12"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute -bottom-3 start-8 -z-10 size-12 rounded-full bg-tint-mint"
+            />
+            <ul className="flex flex-col gap-3 pt-12 pb-[68px]">
+              {wall.map((t, i) => (
+                <li
+                  key={t.id}
+                  className={`w-[88%] ${i % 2 === 0 ? "self-start" : "self-end"}`}
+                >
+                  <TeacherCard
+                    teacher={t}
+                    variant="wall"
+                    nextSlot={nextSlots[t.id] ?? null}
+                    priority={i < 2}
+                  />
+                </li>
+              ))}
+            </ul>
+            <p className="absolute inset-x-0 bottom-[30px] text-center text-[13px] font-semibold text-white/90">
+              חלק מהמורים שמחכים לכם
+            </p>
           </div>
         )}
       </div>
