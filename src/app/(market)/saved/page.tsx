@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { Heart } from "lucide-react";
+import { Heart, Search } from "lucide-react";
+import AccountHeader from "@/components/page/AccountHeader";
 import TeacherCard from "@/components/market/TeacherCard";
 import { TeacherGridSkeleton } from "@/components/ui/Skeleton";
 import { createClient } from "@/lib/supabase/client";
@@ -78,19 +79,42 @@ export default function SavedTutorsPage() {
   }, [ids, supabase]);
 
   return (
-    <div className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6">
-      <h1 className="font-ed text-[30px] font-black leading-tight text-ink sm:text-[38px]">
-        מורים ששמרתי
-      </h1>
+    <>
+      <AccountHeader
+        icon={Heart}
+        tone="bg-tint-rose text-tint-rose-fg"
+        title="מורים ששמרתי"
+        subtitle={
+          loading
+            ? "טוענים את הרשימה שלכם…"
+            : teachers.length
+              ? `${teachers.length} ${teachers.length === 1 ? "מורה שמור" : "מורים שמורים"} · קל להשוות ולחזור`
+              : "הרשימה הקצרה שלכם, במקום אחד"
+        }
+        aside={
+          teachers.length > 0 && (
+            <Link
+              href="/search"
+              className="inline-flex min-h-10 items-center gap-2 rounded-pill bg-surface px-4 text-sm font-bold text-ink shadow-[var(--shadow-card)] ring-1 ring-line/60 transition-colors hover:text-action"
+            >
+              <Search size={16} strokeWidth={2} aria-hidden="true" />
+              למורים נוספים
+            </Link>
+          )
+        }
+      />
+    <div className="mx-auto max-w-[960px] px-4 pb-16 sm:px-6">
 
       {loading ? (
-        <div className="mt-8">
+        <div>
           <TeacherGridSkeleton count={4} />
         </div>
       ) : teachers.length === 0 ? (
-        <div className="mt-10 rounded-[var(--r-lg)] bg-surface shadow-[var(--shadow-card)] ring-1 ring-line/60 px-6 py-16 text-center">
-          <Heart strokeWidth={1.75} size={24} className="mx-auto text-ink-3" />
-          <h2 className="mt-4 text-lg font-semibold text-ink">
+        <div className="rounded-[var(--r-lg)] bg-surface px-6 py-16 text-center shadow-[var(--shadow-card)] ring-1 ring-line/60">
+          <span className="float-y mx-auto grid size-16 place-items-center rounded-[var(--r-lg)] bg-tint-rose text-tint-rose-fg">
+            <Heart strokeWidth={2} size={30} fill="currentColor" />
+          </span>
+          <h2 className="mt-5 text-xl font-extrabold text-ink">
             עדיין לא שמרתם מורים
           </h2>
           <p className="mx-auto mt-2 max-w-[360px] text-sm leading-relaxed text-ink-2">
@@ -105,7 +129,7 @@ export default function SavedTutorsPage() {
           </Link>
         </div>
       ) : (
-        <div className="mt-8 flex max-w-[960px] flex-col gap-4">
+        <div className="flex flex-col gap-4">
           {teachers.map((t) => (
             <TeacherCard
               key={t.id}
@@ -117,5 +141,6 @@ export default function SavedTutorsPage() {
         </div>
       )}
     </div>
+    </>
   );
 }

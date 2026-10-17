@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { CalendarX2, MapPin, Video } from "lucide-react";
+import { CalendarDays, CalendarX2, MapPin, MessageCircle, Video } from "lucide-react";
+import AccountHeader from "@/components/page/AccountHeader";
 import Avatar from "@/components/ui/Avatar";
 import { getSessionProfile } from "@/lib/data/session";
 import { createClient } from "@/lib/supabase/server";
@@ -22,6 +23,9 @@ const WARN = "bg-warn/10 text-warn-text";
 const OK = "bg-ok/10 text-ok-text";
 const DANGER = "bg-danger/10 text-danger-text";
 const NEUTRAL = "bg-canvas text-ink-3";
+
+const DAY_NUM = new Intl.DateTimeFormat("he-IL", { day: "numeric", timeZone: "Asia/Jerusalem" });
+const MONTH = new Intl.DateTimeFormat("he-IL", { month: "short", timeZone: "Asia/Jerusalem" });
 
 // `awaiting_payment` is a legacy status that should not occur (SkillUp never
 // charges students); it reads as waiting on the teacher. `refunded` reads as
@@ -144,7 +148,7 @@ export default async function BookingsPage() {
     .sort((a, b) => a.start_at.localeCompare(b.start_at));
   const past = bookings.filter((b) => !upcoming.includes(b));
 
-  function BookingCard({ booking }: { booking: BookingRow }) {
+  function BookingCard({ booking, highlight = false }: { booking: BookingRow; highlight?: boolean }) {
     const peerId = profile!.role === "teacher" ? booking.student_id : booking.teacher_id;
     const peer = peerMap.get(peerId);
     const status = STATUS_LABELS[booking.status] ?? {
@@ -155,20 +159,31 @@ export default async function BookingsPage() {
       booking.mode === "teacher_location" ? addressMap.get(booking.teacher_id) : null;
 
     return (
-      <article className="rounded-[var(--r-lg)] bg-surface shadow-[var(--shadow-card)] ring-1 ring-line/60 p-5">
+      <article className="flex gap-4 rounded-[var(--r-lg)] bg-surface p-4 shadow-[var(--shadow-card)] ring-1 ring-line/60 transition-shadow hover:shadow-[var(--shadow-lift)] sm:gap-5 sm:p-5">
+        {/* Calendar date tile */}
+        <div
+          className={`flex w-16 shrink-0 flex-col items-center justify-center rounded-[var(--r-md)] py-2 sm:w-[76px] ${
+            highlight ? "bg-[linear-gradient(160deg,#6457F0,#4F46E5)] text-white shadow-[0_10px_22px_-12px_rgba(79,70,229,0.9)]" : "bg-tint-indigo text-tint-indigo-fg"
+          }`}
+        >
+          <span className="text-[12px] font-bold opacity-85">{formatWeekday(booking.start_at)}</span>
+          <span className="tnum text-[28px] font-black leading-none">{DAY_NUM.format(new Date(booking.start_at))}</span>
+          <span className="text-[12px] font-bold opacity-85">{MONTH.format(new Date(booking.start_at))}</span>
+        </div>
+        <div className="min-w-0 flex-1">
         <div className="flex items-start justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">
-            <Avatar src={peer?.avatar} name={peer?.name ?? ""} size={42} />
+            <Avatar src={peer?.avatar} name={peer?.name ?? ""} size={40} />
             <div className="min-w-0">
               {profile!.role === "student" ? (
                 <Link
                   href={`/tutors/${booking.teacher_id}`}
-                  className="block truncate text-[15px] font-semibold text-ink hover:underline"
+                  className="block truncate text-base font-extrabold text-ink hover:underline"
                 >
                   {peer?.name ?? "מורה"}
                 </Link>
               ) : (
-                <p className="truncate text-[15px] font-semibold text-ink">
+                <p className="truncate text-base font-extrabold text-ink">
                   {peer?.name ?? "לומד"}
                 </p>
               )}
@@ -183,22 +198,22 @@ export default async function BookingsPage() {
             </div>
           </div>
           <span
-            className={`shrink-0 rounded-[var(--r-pill)] px-3 py-1 text-sm font-semibold ${status.tone}`}
+            className={`shrink-0 rounded-[var(--r-pill)] px-3 py-1 text-[13px] font-bold ${status.tone}`}
           >
             {status.label}
           </span>
         </div>
 
-        <div className="border-t border-line mt-4 flex flex-wrap items-center justify-between gap-3 pt-3.5 text-sm">
-          <p className="text-ink">
-            {formatWeekday(booking.start_at)}, {formatDateFull(booking.start_at)}
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-dashed border-line pt-3 text-sm">
+          <p className="font-semibold text-ink">
+            {formatDateFull(booking.start_at)}
             {" · "}
             <span className="tnum">
               {formatTime(booking.start_at)}–{formatTime(booking.end_at)}
             </span>
           </p>
           {booking.total_price != null && (
-            <p className="ltr-isolate tnum font-semibold text-ink">
+            <p className="ltr-isolate tnum text-base font-extrabold text-brand-800">
               {formatPrice(booking.total_price)}
             </p>
           )}
@@ -209,10 +224,10 @@ export default async function BookingsPage() {
             href={booking.meeting_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-action hover:underline"
+            className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-pill bg-action px-4 text-sm font-bold text-on-action shadow-[0_8px_18px_-10px_rgba(79,70,229,0.9)] hover:bg-action-hover"
           >
-            <Video strokeWidth={1.75} size={16} />
-            קישור לשיעור אונליין
+            <Video strokeWidth={2} size={16} />
+            הצטרפות לשיעור אונליין
           </a>
         )}
         {revealed && (
@@ -227,19 +242,38 @@ export default async function BookingsPage() {
             {booking.location}
           </p>
         )}
+        {!["cancelled", "refunded"].includes(booking.status) && (
+          <div className="mt-3 flex flex-wrap gap-2">
+            <Link
+              href={profile!.role === "student" ? `/messages/new?teacher=${booking.teacher_id}` : "/messages"}
+              className="inline-flex min-h-9 items-center gap-1.5 rounded-pill bg-tint-indigo px-3.5 text-[13px] font-bold text-tint-indigo-fg transition-colors hover:bg-brand-100"
+            >
+              <MessageCircle strokeWidth={2} size={15} />
+              הודעה
+            </Link>
+          </div>
+        )}
+        </div>
       </article>
     );
   }
 
   return (
-    <div className="mx-auto max-w-[760px] px-4 py-8 sm:px-6">
-      <h1 className="font-ed text-[30px] font-black leading-tight text-ink sm:text-[38px]">
-        השיעורים שלי
-      </h1>
+    <>
+      <AccountHeader
+        icon={CalendarDays}
+        title="השיעורים שלי"
+        subtitle={
+          bookings.length
+            ? `${upcoming.length} קרובים · ${past.filter((b) => b.status === "completed").length} הושלמו`
+            : "כל השיעורים שלכם במקום אחד"
+        }
+      />
+    <div className="mx-auto max-w-[960px] px-4 pb-16 sm:px-6">
 
       {bookings.length === 0 ? (
-        <div className="mt-10 rounded-[var(--r-md)] bg-canvas px-6 py-16 text-center">
-          <CalendarX2 strokeWidth={1.75} size={24} className="mx-auto text-ink-3" />
+        <div className="mt-4 rounded-[var(--r-lg)] bg-surface px-6 py-16 text-center shadow-[var(--shadow-card)] ring-1 ring-line/60">
+          <span className="mx-auto grid size-16 place-items-center rounded-[var(--r-lg)] bg-tint-indigo text-tint-indigo-fg"><CalendarX2 strokeWidth={2} size={30} /></span>
           <h2 className="mt-4 text-lg font-semibold text-ink">
             עדיין אין שיעורים
           </h2>
@@ -261,19 +295,20 @@ export default async function BookingsPage() {
         <div className="mt-6 space-y-10">
           {upcoming.length > 0 && (
             <section aria-label="שיעורים קרובים">
-              <h2 className="mb-4 text-base font-semibold text-ink">
+              <h2 className="mb-4 flex items-center gap-2 text-lg font-extrabold text-ink">
+                <span className="size-2.5 rounded-full bg-ok" aria-hidden="true" />
                 שיעורים קרובים
               </h2>
               <div className="space-y-3">
-                {upcoming.map((b) => (
-                  <BookingCard key={b.id} booking={b} />
+                {upcoming.map((b, i) => (
+                  <BookingCard key={b.id} booking={b} highlight={i === 0} />
                 ))}
               </div>
             </section>
           )}
           {past.length > 0 && (
             <section aria-label="שיעורים קודמים">
-              <h2 className="mb-4 text-base font-semibold text-ink">
+              <h2 className="mb-4 text-lg font-extrabold text-ink">
                 היסטוריה
               </h2>
               <div className="space-y-3">
@@ -286,5 +321,6 @@ export default async function BookingsPage() {
         </div>
       )}
     </div>
+    </>
   );
 }
