@@ -115,7 +115,7 @@ export default function HeroWall({ categories, stats, wall, nextSlots }: HeroWal
             {/* Brand disc behind the floating cards */}
             <div
               aria-hidden="true"
-              className="absolute inset-x-6 top-6 bottom-6 -z-10 rounded-[40px] bg-gradient-to-br from-[#6D63F2] via-[#5B50EE] to-[#8B7CF8] shadow-[var(--shadow-lift)] lg:inset-x-10"
+              className="absolute inset-x-6 top-6 bottom-6 -z-10 rounded-[var(--r-lg)] bg-gradient-to-br from-[#6D63F2] via-[#5B50EE] to-[#8B7CF8] shadow-[var(--shadow-lift)] lg:inset-x-10"
             />
             <div
               aria-hidden="true"
