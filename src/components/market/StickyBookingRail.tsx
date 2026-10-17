@@ -1,9 +1,11 @@
 "use client";
 
-import { MessageCircle, ShieldCheck } from "lucide-react";
+import { useEffect } from "react";
+import { MessageCircle } from "lucide-react";
 import GatedLink from "@/components/market/GatedLink";
 import RatingStars from "@/components/ui/RatingStars";
 import { formatPrice, lessonModeLabel, lessonModePrice } from "@/lib/format";
+import { bookHref } from "@/lib/booking";
 import type { LessonMode } from "@/lib/types";
 
 interface StickyBookingRailProps {
@@ -26,8 +28,16 @@ export default function StickyBookingRail({
   ratingAvg,
   reviewCount,
 }: StickyBookingRailProps) {
-  const bookHref = `/tutors/${teacherId}/book`;
+  const bookUrl = bookHref(teacherId);
   const messageHref = `/messages/new?teacher=${teacherId}`;
+
+  // Lift the support launcher above the mobile bottom bar while it exists.
+  useEffect(() => {
+    document.body.style.setProperty("--sticky-bar-h", "76px");
+    return () => {
+      document.body.style.removeProperty("--sticky-bar-h");
+    };
+  }, []);
 
   // Full per-mode price = base hourly rate + mode surcharge.
   const modePrice = (mode: LessonMode): number | null =>
@@ -47,34 +57,34 @@ export default function StickyBookingRail({
   return (
     <>
       {/* Desktop rail */}
-      <div className="mk-shadow hidden rounded-3xl border border-[var(--mk-hairline)] bg-white p-6 lg:block">
+      <div className="hidden rounded-[var(--r-md)] border border-line bg-surface p-6 shadow-[var(--shadow-lift)] lg:block">
         <div className="flex items-baseline justify-between gap-3">
           {fromPrice != null && (
-            <p className="flex items-baseline gap-1.5 text-[var(--mk-ink)]">
+            <p className="flex items-baseline gap-1.5 text-ink">
               {hasRange && (
-                <span className="text-sm text-[var(--mk-ink-3)]">החל מ־</span>
+                <span className="text-sm text-ink-3">החל מ־</span>
               )}
               <span className="ltr-isolate tnum text-2xl font-bold">
                 {formatPrice(fromPrice)}
               </span>
-              <span className="text-sm text-[var(--mk-ink-3)]">לשעה</span>
+              <span className="text-sm text-ink-3">לשעה</span>
             </p>
           )}
           <RatingStars value={ratingAvg} count={reviewCount} />
         </div>
 
         {lessonModes.length > 0 && (
-          <ul className="mk-hairline-t mt-4 space-y-2 pt-4">
+          <ul className="mt-4 space-y-2 border-t border-line pt-4">
             {lessonModes.map((mode) => {
               const price = modePrice(mode);
               return (
                 <li
                   key={mode}
-                  className="flex items-center justify-between text-sm text-[var(--mk-ink-2)]"
+                  className="flex items-center justify-between text-sm text-ink-2"
                 >
                   <span>{lessonModeLabel(mode)}</span>
                   {price != null && (
-                    <span className="ltr-isolate tnum font-medium text-[var(--mk-ink)]">
+                    <span className="ltr-isolate tnum font-medium text-ink">
                       {formatPrice(price)}
                     </span>
                   )}
@@ -85,39 +95,37 @@ export default function StickyBookingRail({
         )}
 
         <GatedLink
-          href={bookHref}
-          className="mt-5 h-12 w-full cursor-pointer rounded-full bg-brand-600 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+          href={bookUrl}
+          className="mt-5 h-12 w-full cursor-pointer rounded-[var(--r-pill)] bg-action text-sm font-semibold text-on-action transition-colors hover:bg-action-hover"
         >
-          הזמנת שיעור
+          קביעת שיעור
         </GatedLink>
         <GatedLink
           href={messageHref}
-          className="mt-2.5 inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-[var(--mk-ink)] text-sm font-semibold text-[var(--mk-ink)] transition-colors hover:bg-paper-25"
+          className="mt-2.5 inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-[var(--r-pill)] border border-ink text-sm font-semibold text-ink transition-colors hover:bg-action-soft"
         >
           <MessageCircle size={16} />
           שליחת הודעה
         </GatedLink>
 
-        <p className="mt-4 flex items-start gap-2 text-[13px] leading-relaxed text-[var(--mk-ink-3)]">
-          <ShieldCheck size={15} className="mt-0.5 shrink-0" aria-hidden="true" />
-          התיאום נעשה ישירות מול המורה. המורה מאשר כל בקשת שיעור לפני שהיא
-          נסגרת.
+        <p className="mt-4 text-[13px] leading-relaxed text-ink-3">
+          התשלום והביטול נקבעים ישירות מול המורה. SkillUp לא גובה מכם כלום.
         </p>
       </div>
 
       {/* Mobile bottom bar */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--mk-hairline)] bg-white px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))] lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface px-4 py-3 pb-[max(12px,env(safe-area-inset-bottom))] lg:hidden">
         <div className="mx-auto flex max-w-[640px] items-center justify-between gap-4">
           <div>
             {fromPrice != null && (
-              <p className="flex items-baseline gap-1 text-[var(--mk-ink)]">
+              <p className="flex items-baseline gap-1 text-ink">
                 {hasRange && (
-                  <span className="text-xs text-[var(--mk-ink-3)]">החל מ־</span>
+                  <span className="text-xs text-ink-3">החל מ־</span>
                 )}
                 <span className="ltr-isolate tnum text-lg font-bold">
                   {formatPrice(fromPrice)}
                 </span>
-                <span className="text-xs text-[var(--mk-ink-3)]">לשעה</span>
+                <span className="text-xs text-ink-3">לשעה</span>
               </p>
             )}
             <RatingStars value={ratingAvg} count={reviewCount} size="sm" />
@@ -125,16 +133,16 @@ export default function StickyBookingRail({
           <div className="flex items-center gap-2">
             <GatedLink
               href={messageHref}
-              className="grid h-11 w-11 cursor-pointer place-items-center rounded-full border border-[var(--mk-ink)] text-[var(--mk-ink)]"
+              className="grid h-11 w-11 cursor-pointer place-items-center rounded-[var(--r-pill)] border border-ink text-ink"
             >
               <MessageCircle size={17} />
               <span className="sr-only">שליחת הודעה</span>
             </GatedLink>
             <GatedLink
-              href={bookHref}
-              className="h-11 cursor-pointer rounded-full bg-brand-600 px-6 text-sm font-semibold text-white"
+              href={bookUrl}
+              className="h-11 cursor-pointer rounded-[var(--r-pill)] bg-action px-6 text-sm font-semibold text-on-action"
             >
-              הזמנת שיעור
+              קביעת שיעור
             </GatedLink>
           </div>
         </div>

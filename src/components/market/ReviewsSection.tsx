@@ -1,6 +1,8 @@
 import { Star } from "lucide-react";
 import { formatDateShort, formatRating } from "@/lib/format";
 import type { PublicReview } from "@/lib/data/reviews";
+import { displayReviewerName } from "@/lib/home-picks";
+import Avatar from "@/components/ui/Avatar";
 
 interface ReviewsSectionProps {
   stats: {
@@ -11,23 +13,22 @@ interface ReviewsSectionProps {
   reviews: PublicReview[];
 }
 
-// Reviews per Baymard: graphical distribution bars (only above ~5 ratings —
-// small counts read better as plain cards), 2-col excerpt grid, outcomes
-// over adjectives. Reviewer identity stays anonymous by design (students
-// are not publicly exposed).
+// Big serif average, distribution bars from 5 reviews, plain-body quotes with
+// first name + date. Stars use the single star yellow. Reviewer identity stays
+// minimal by design (first name only).
 export default function ReviewsSection({ stats, reviews }: ReviewsSectionProps) {
   if (stats.count === 0) return null;
 
   return (
     <section id="reviews" aria-label="ביקורות תלמידים">
-      <h2 className="font-display text-xl font-bold text-[var(--mk-ink)]">
+      <h2 className="font-ed text-[22px] font-bold leading-tight text-ink sm:text-[26px]">
         מה תלמידים מספרים
       </h2>
 
       <div className="mt-5 flex flex-col gap-8 sm:flex-row sm:items-start">
         {/* Big numeral + stars */}
         <div className="shrink-0 text-center sm:w-40">
-          <p className="tnum font-display text-5xl font-extrabold text-[var(--mk-ink)]">
+          <p className="tnum font-ed text-6xl font-black leading-none text-ink">
             {formatRating(stats.avg)}
           </p>
           <div className="mt-1 flex justify-center gap-0.5">
@@ -37,13 +38,13 @@ export default function ReviewsSection({ stats, reviews }: ReviewsSectionProps) 
                 size={14}
                 className={
                   i <= Math.round(stats.avg)
-                    ? "fill-amber-400 text-amber-400"
-                    : "text-ink-300"
+                    ? "fill-star text-star"
+                    : "text-line"
                 }
               />
             ))}
           </div>
-          <p className="tnum mt-1 text-sm text-[var(--mk-ink-3)]">
+          <p className="tnum mt-1 text-sm text-ink-3">
             {stats.count} ביקורות
           </p>
         </div>
@@ -53,14 +54,14 @@ export default function ReviewsSection({ stats, reviews }: ReviewsSectionProps) 
           <div className="w-full max-w-sm space-y-1.5">
             {stats.distribution.map(({ star, count }) => (
               <div key={star} className="flex items-center gap-3 text-sm">
-                <span className="tnum w-3 shrink-0 text-[var(--mk-ink-2)]">{star}</span>
-                <div className="h-2 flex-1 overflow-hidden rounded-full bg-ink-150">
+                <span className="tnum w-3 shrink-0 text-ink-2">{star}</span>
+                <div className="h-2 flex-1 overflow-hidden rounded-full bg-line">
                   <div
-                    className="h-full rounded-full bg-[var(--mk-ink)]"
+                    className="h-full rounded-full bg-ink"
                     style={{ width: `${stats.count ? (count / stats.count) * 100 : 0}%` }}
                   />
                 </div>
-                <span className="tnum w-6 shrink-0 text-end text-xs text-[var(--mk-ink-3)]">
+                <span className="tnum w-6 shrink-0 text-end text-xs text-ink-3">
                   {count}
                 </span>
               </div>
@@ -76,15 +77,13 @@ export default function ReviewsSection({ stats, reviews }: ReviewsSectionProps) 
           .map((review) => (
             <blockquote
               key={review.id}
-              className="rounded-2xl border border-[var(--mk-hairline)] bg-white p-5"
+              className="rounded-[var(--r-md)] border border-line bg-surface p-5"
             >
               <div className="flex items-center gap-3">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-brand-50 text-sm font-bold text-brand-700">
-                  {review.reviewer_name.slice(0, 1)}
-                </span>
+                <Avatar src={null} name={displayReviewerName(review.reviewer_name)} size={36} />
                 <div>
-                  <p className="text-sm font-semibold text-[var(--mk-ink)]">
-                    {review.reviewer_name}
+                  <p className="text-sm font-semibold text-ink">
+                    {displayReviewerName(review.reviewer_name)}
                   </p>
                   <div className="mt-0.5 flex items-center gap-1">
                     {[1, 2, 3, 4, 5].map((i) => (
@@ -93,18 +92,18 @@ export default function ReviewsSection({ stats, reviews }: ReviewsSectionProps) 
                         size={12}
                         className={
                           i <= review.rating
-                            ? "fill-amber-400 text-amber-400"
-                            : "text-ink-300"
+                            ? "fill-star text-star"
+                            : "text-line"
                         }
                       />
                     ))}
                   </div>
                 </div>
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-[var(--mk-ink)]">
+              <p className="mt-3 text-sm leading-relaxed text-ink">
                 {review.text}
               </p>
-              <footer className="mt-3 text-xs text-[var(--mk-ink-3)]">
+              <footer className="mt-3 text-xs text-ink-3">
                 {formatDateShort(review.written_at)}
               </footer>
             </blockquote>

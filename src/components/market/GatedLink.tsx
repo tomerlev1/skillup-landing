@@ -10,6 +10,8 @@ interface GatedLinkProps {
   children: React.ReactNode;
   /** Allow teachers too (default: students only, teachers get a hint). */
   allowTeachers?: boolean;
+  /** Render the wrapper inline-block (pills in a flex/inline row) instead of block. */
+  inline?: boolean;
 }
 
 const TEACHER_MESSAGE =
@@ -23,6 +25,7 @@ export default function GatedLink({
   className = "",
   children,
   allowTeachers = false,
+  inline = false,
 }: GatedLinkProps) {
   const router = useRouter();
   const { user, profile, loading } = useAuth();
@@ -59,7 +62,7 @@ export default function GatedLink({
   }
 
   return (
-    <span ref={wrapRef} className="relative block">
+    <span ref={wrapRef} className={`relative ${inline ? "inline-block" : "block"}`}>
       <button type="button" onClick={onClick} className={className}>
         {children}
       </button>

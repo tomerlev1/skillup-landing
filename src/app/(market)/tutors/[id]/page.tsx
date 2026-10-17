@@ -4,8 +4,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   Award,
-  BadgeCheck,
-  CalendarCheck,
   ChevronLeft,
   ExternalLink,
   GraduationCap,
@@ -19,10 +17,12 @@ import ReviewsSection from "@/components/market/ReviewsSection";
 import SaveButton from "@/components/market/SaveButton";
 import ShareButton from "@/components/market/ShareButton";
 import StickyBookingRail from "@/components/market/StickyBookingRail";
+import AvailabilityPreview from "@/components/market/AvailabilityPreview";
 import TeacherRail from "@/components/market/TeacherRail";
-import Chip from "@/components/ui/Chip";
+import Avatar from "@/components/ui/Avatar";
+import VerifiedMark from "@/components/ui/VerifiedMark";
 import RatingStars from "@/components/ui/RatingStars";
-import { getUpcomingSlots } from "@/lib/data/availability";
+import { getNextSlots, getUpcomingSlots } from "@/lib/data/availability";
 import { getTeacherReviews } from "@/lib/data/reviews";
 import {
   getTeacherProfile,
@@ -32,12 +32,7 @@ import {
 } from "@/lib/data/teachers";
 import { createPublicClient } from "@/lib/supabase/public";
 import { SITE_URL } from "@/lib/constants";
-import {
-  formatDateShort,
-  formatTime,
-  formatWeekday,
-  lessonModeLabel,
-} from "@/lib/format";
+import { lessonModeLabel } from "@/lib/format";
 import { searchHref } from "@/lib/search-params";
 import type { LessonMode } from "@/lib/types";
 
@@ -109,16 +104,10 @@ export default async function TutorProfilePage({ params }: PageProps) {
       ).items.filter((t) => t.id !== id)
     : [];
 
-  // Availability preview: group the next open slots by day (up to 4 days).
-  const slotsByDay = new Map<string, typeof slots>();
-  for (const slot of slots) {
-    const day = slot.start_at.slice(0, 10);
-    if (!slotsByDay.has(day) && slotsByDay.size >= 4) continue;
-    slotsByDay.set(day, [...(slotsByDay.get(day) ?? []), slot]);
-  }
+  const similarNextSlots = await getNextSlots(similar.map((t) => t.id));
 
   const lessonModes = (teacher.lesson_modes ?? []) as LessonMode[];
-  // Face photo for identity; cover/background only as the page header banner.
+  // Face photo for identity; cover/background only as the desktop header banner.
   const avatarImage = teacher.avatar_url;
   const coverImage = teacher.background_url ?? teacher.card_image_url;
 
@@ -184,28 +173,28 @@ export default async function TutorProfilePage({ params }: PageProps) {
       />
 
       {/* Breadcrumbs */}
-      <nav aria-label="פירורי לחם" className="mb-6 flex items-center gap-1.5 text-[13px] text-[var(--mk-ink-3)]">
-        <Link href="/" className="hover:text-[var(--mk-ink)] hover:underline">ראשי</Link>
+      <nav aria-label="פירורי לחם" className="mb-4 flex items-center gap-1.5 text-[13px] text-ink-3 md:mb-6">
+        <Link href="/" className="hover:text-ink hover:underline">ראשי</Link>
         <ChevronLeft size={13} aria-hidden="true" />
         {subjects[0] ? (
           <Link
             href={searchHref({ subjectIds: [subjects[0].id] })}
-            className="hover:text-[var(--mk-ink)] hover:underline"
+            className="hover:text-ink hover:underline"
           >
             מורים ל{subjects[0].name_he}
           </Link>
         ) : (
-          <Link href="/search" className="hover:text-[var(--mk-ink)] hover:underline">
+          <Link href="/search" className="hover:text-ink hover:underline">
             מורים
           </Link>
         )}
         <ChevronLeft size={13} aria-hidden="true" />
-        <span className="text-[var(--mk-ink)]">{teacher.display_name}</span>
+        <span className="text-ink">{teacher.display_name}</span>
       </nav>
 
-      {/* Cover banner (background image belongs here, not on cards) */}
+      {/* Cover banner: md and up only (spec §8.5) */}
       {coverImage && (
-        <div className="relative mb-8 h-40 w-full overflow-hidden rounded-3xl bg-paper-50 sm:h-56">
+        <div className="relative mb-8 hidden h-40 w-full overflow-hidden rounded-[var(--r-md)] bg-action-soft md:block">
           <Image
             src={coverImage}
             alt=""
@@ -219,49 +208,31 @@ export default async function TutorProfilePage({ params }: PageProps) {
 
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_340px]">
         {/* ===== Content column ===== */}
-        <div className="min-w-0 space-y-12">
+        <div className="min-w-0 space-y-10 md:space-y-12">
           {/* Identity header */}
-          <header className="flex flex-col gap-6 sm:flex-row sm:items-start">
-            <div className="relative h-32 w-32 shrink-0 overflow-hidden rounded-3xl bg-paper-50 sm:h-40 sm:w-40">
-              {avatarImage ? (
-                <Image
-                  src={avatarImage}
-                  alt={teacher.display_name}
-                  fill
-                  sizes="160px"
-                  className="object-cover"
-                  priority
-                />
-              ) : (
-                <div className="grid h-full w-full place-items-center bg-gradient-to-br from-brand-50 via-paper-25 to-accent-50 font-display text-5xl font-bold text-brand-500">
-                  {teacher.display_name.slice(0, 1)}
-                </div>
-              )}
-            </div>
+          <header className="flex items-start gap-4 md:gap-6">
+            <Avatar src={avatarImage} name={teacher.display_name} size={72} className="shrink-0 md:hidden" />
+            <Avatar src={avatarImage} name={teacher.display_name} size={112} className="hidden shrink-0 md:inline-flex" />
 
             <div className="min-w-0 flex-1">
               <div className="flex items-start justify-between gap-3">
-                <h1 className="font-display text-2xl font-extrabold text-[var(--mk-ink)] sm:text-3xl">
+                <h1 className="font-ed text-2xl font-black leading-tight text-ink sm:text-3xl">
                   {teacher.display_name}
+                  {teacher.is_verified && (
+                    <VerifiedMark size={18} className="ms-2 align-[-1px]" />
+                  )}
                 </h1>
                 <div className="flex shrink-0 items-center gap-2">
                   <ShareButton teacherName={teacher.display_name} />
-                  <SaveButton teacherId={id} teacherName={teacher.display_name} />
+                  <SaveButton teacherId={id} teacherName={teacher.display_name} variant="plain" />
                 </div>
               </div>
 
-              {teacher.is_verified && (
-                <p className="mt-1.5 inline-flex items-center gap-1.5 text-sm font-medium text-[var(--mk-ink)]">
-                  <BadgeCheck size={16} className="text-emerald-600" />
-                  מורה מאומת על ידי SkillUp
-                </p>
-              )}
-
-              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-[var(--mk-ink-2)]">
+              <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-ink-2">
                 <RatingStars value={stats.avg} count={stats.count} size="md" />
                 {cityName && (
                   <span className="inline-flex items-center gap-1">
-                    <MapPin size={14} />
+                    <MapPin size={14} aria-hidden="true" />
                     {cityName}
                   </span>
                 )}
@@ -271,28 +242,28 @@ export default async function TutorProfilePage({ params }: PageProps) {
               </div>
 
               {/* Stat strip */}
-              <dl className="mt-5 flex flex-wrap gap-x-8 gap-y-3">
+              <dl className="mt-4 flex flex-wrap gap-x-8 gap-y-3">
                 {teacher.experience_years != null && teacher.experience_years > 0 && (
                   <div>
-                    <dt className="text-xs text-[var(--mk-ink-3)]">ניסיון</dt>
-                    <dd className="tnum mt-0.5 text-base font-semibold text-[var(--mk-ink)]">
+                    <dt className="text-xs text-ink-3">ניסיון</dt>
+                    <dd className="tnum mt-0.5 text-base font-semibold text-ink">
                       {teacher.experience_years} שנים
                     </dd>
                   </div>
                 )}
                 {teacher.total_students != null && teacher.total_students > 0 && (
                   <div>
-                    <dt className="text-xs text-[var(--mk-ink-3)]">תלמידים</dt>
-                    <dd className="tnum mt-0.5 flex items-center gap-1 text-base font-semibold text-[var(--mk-ink)]">
-                      <Users size={14} />
+                    <dt className="text-xs text-ink-3">תלמידים</dt>
+                    <dd className="tnum mt-0.5 flex items-center gap-1 text-base font-semibold text-ink">
+                      <Users size={14} aria-hidden="true" />
                       {teacher.total_students}+
                     </dd>
                   </div>
                 )}
                 {stats.count > 0 && (
                   <div>
-                    <dt className="text-xs text-[var(--mk-ink-3)]">ביקורות</dt>
-                    <dd className="tnum mt-0.5 text-base font-semibold text-[var(--mk-ink)]">
+                    <dt className="text-xs text-ink-3">ביקורות</dt>
+                    <dd className="tnum mt-0.5 text-base font-semibold text-ink">
                       {stats.count}
                     </dd>
                   </div>
@@ -301,10 +272,39 @@ export default async function TutorProfilePage({ params }: PageProps) {
             </div>
           </header>
 
-          {/* Subjects — each with its own experience-years pill when known */}
+          <AvailabilityPreview teacherId={id} slots={slots} />
+
+          {/* Video intro */}
+          {teacher.video_url && (
+            <section aria-label="סרטון היכרות">
+              <h2 className="font-ed text-[22px] font-bold leading-tight text-ink sm:text-[26px]">
+                סרטון היכרות
+              </h2>
+              <video
+                controls
+                preload="metadata"
+                className="mt-4 aspect-video w-full rounded-[var(--r-md)] bg-ink object-cover"
+                src={teacher.video_url}
+              />
+            </section>
+          )}
+
+          {/* Bio */}
+          {teacher.bio && (
+            <section aria-label="על המורה">
+              <h2 className="font-ed text-[22px] font-bold leading-tight text-ink sm:text-[26px]">
+                על {teacher.display_name}
+              </h2>
+              <p className="mt-4 whitespace-pre-line text-[15px] leading-[1.7] text-ink">
+                {teacher.bio}
+              </p>
+            </section>
+          )}
+
+          {/* Subjects, each with its own experience-years pill when known */}
           {subjects.length > 0 && (
             <section aria-label="מקצועות">
-              <h2 className="font-display text-xl font-bold text-[var(--mk-ink)]">
+              <h2 className="font-ed text-[22px] font-bold leading-tight text-ink sm:text-[26px]">
                 מקצועות לימוד
               </h2>
               <div className="mt-4 flex flex-wrap gap-2">
@@ -312,11 +312,11 @@ export default async function TutorProfilePage({ params }: PageProps) {
                   <Link
                     key={s.id}
                     href={searchHref({ subjectIds: [s.id] })}
-                    className="inline-flex items-center gap-2 rounded-full border border-[var(--mk-hairline)] bg-white py-1.5 ps-3.5 pe-2.5 text-sm font-medium text-[var(--mk-ink)] transition-colors hover:border-[var(--mk-ink)]"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-[var(--r-pill)] border border-line bg-surface py-1.5 ps-4 pe-3 text-sm font-medium text-ink transition-colors hover:border-ink"
                   >
                     {s.name_he}
                     {s.experience_years != null && s.experience_years > 0 && (
-                      <span className="tnum rounded-full bg-brand-50 px-2 py-0.5 text-[11px] font-semibold text-brand-700">
+                      <span className="tnum rounded-[var(--r-pill)] bg-action-soft px-2 py-0.5 text-[11px] font-semibold text-action">
                         {s.experience_years} שנ׳ ניסיון
                       </span>
                     )}
@@ -326,42 +326,15 @@ export default async function TutorProfilePage({ params }: PageProps) {
             </section>
           )}
 
-          {/* Video intro — high placement, highest-converting element */}
-          {teacher.video_url && (
-            <section aria-label="סרטון היכרות">
-              <h2 className="font-display text-xl font-bold text-[var(--mk-ink)]">
-                סרטון היכרות
-              </h2>
-              <video
-                controls
-                preload="metadata"
-                className="mt-4 aspect-video w-full rounded-2xl bg-ink-900 object-cover"
-                src={teacher.video_url}
-              />
-            </section>
-          )}
-
-          {/* Bio */}
-          {teacher.bio && (
-            <section aria-label="על המורה">
-              <h2 className="font-display text-xl font-bold text-[var(--mk-ink)]">
-                על {teacher.display_name}
-              </h2>
-              <p className="mt-4 whitespace-pre-line text-[15px] leading-[1.7] text-[var(--mk-ink)]">
-                {teacher.bio}
-              </p>
-            </section>
-          )}
-
           {/* Credentials — subheadings + subtly tinted icons */}
           {((teacher.education?.length ?? 0) > 0 ||
             (teacher.languages?.length ?? 0) > 0 ||
             (teacher.experience_years ?? 0) > 0) && (
             <section
               aria-label="השכלה ורקע"
-              className="rounded-3xl border border-[var(--mk-hairline)] bg-white p-6 sm:p-7"
+              className="rounded-[var(--r-md)] border border-line bg-surface p-6 sm:p-7"
             >
-              <h2 className="font-display text-lg font-bold text-[var(--mk-ink)]">
+              <h2 className="font-ed text-xl font-bold text-ink">
                 השכלה ורקע
               </h2>
 
@@ -369,14 +342,14 @@ export default async function TutorProfilePage({ params }: PageProps) {
                 {(teacher.education?.length ?? 0) > 0 && (
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="grid h-8 w-8 place-items-center rounded-lg bg-indigo-50 text-brand-600">
+                      <span className="grid h-8 w-8 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
                         <GraduationCap size={17} />
                       </span>
-                      <h3 className="text-sm font-semibold text-[var(--mk-ink)]">השכלה</h3>
+                      <h3 className="text-sm font-semibold text-ink">השכלה</h3>
                     </div>
                     <ul className="mt-3 space-y-1.5 ps-1">
                       {teacher.education!.map((item) => (
-                        <li key={item} className="text-sm leading-relaxed text-[var(--mk-ink-2)]">
+                        <li key={item} className="text-sm leading-relaxed text-ink-2">
                           {item}
                         </li>
                       ))}
@@ -387,12 +360,12 @@ export default async function TutorProfilePage({ params }: PageProps) {
                 {(teacher.languages?.length ?? 0) > 0 && (
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-50 text-emerald-600">
+                      <span className="grid h-8 w-8 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
                         <Languages size={17} />
                       </span>
-                      <h3 className="text-sm font-semibold text-[var(--mk-ink)]">שפות הוראה</h3>
+                      <h3 className="text-sm font-semibold text-ink">שפות הוראה</h3>
                     </div>
-                    <p className="mt-3 ps-1 text-sm text-[var(--mk-ink-2)]">
+                    <p className="mt-3 ps-1 text-sm text-ink-2">
                       {teacher.languages!.join(" · ")}
                     </p>
                   </div>
@@ -401,13 +374,13 @@ export default async function TutorProfilePage({ params }: PageProps) {
                 {(teacher.experience_years ?? 0) > 0 && (
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="grid h-8 w-8 place-items-center rounded-lg bg-amber-50 text-amber-600">
+                      <span className="grid h-8 w-8 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
                         <Award size={17} />
                       </span>
-                      <h3 className="text-sm font-semibold text-[var(--mk-ink)]">ניסיון</h3>
+                      <h3 className="text-sm font-semibold text-ink">ניסיון</h3>
                     </div>
-                    <p className="mt-3 ps-1 text-sm text-[var(--mk-ink-2)]">
-                      <span className="tnum font-semibold text-[var(--mk-ink)]">
+                    <p className="mt-3 ps-1 text-sm text-ink-2">
+                      <span className="tnum font-semibold text-ink">
                         {teacher.experience_years}
                       </span>{" "}
                       שנות הוראה
@@ -418,12 +391,12 @@ export default async function TutorProfilePage({ params }: PageProps) {
                 {teacher.teaching_style && (
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="grid h-8 w-8 place-items-center rounded-lg bg-rose-50 text-rose-500">
+                      <span className="grid h-8 w-8 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
                         <Sparkles size={17} />
                       </span>
-                      <h3 className="text-sm font-semibold text-[var(--mk-ink)]">סגנון הוראה</h3>
+                      <h3 className="text-sm font-semibold text-ink">סגנון הוראה</h3>
                     </div>
-                    <p className="mt-3 ps-1 text-sm leading-relaxed text-[var(--mk-ink-2)]">
+                    <p className="mt-3 ps-1 text-sm leading-relaxed text-ink-2">
                       {teacher.teaching_style}
                     </p>
                   </div>
@@ -432,7 +405,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
 
               {/* Social links are intentionally public (teachers_public projects them) */}
               {(teacher.instagram_url || teacher.facebook_url || teacher.website_url) && (
-                <div className="mk-hairline-t mt-6 flex flex-wrap items-center gap-2 pt-5">
+                <div className="mt-6 border-t border-line flex flex-wrap items-center gap-2 pt-5">
                   {(
                     [
                       { href: teacher.instagram_url, label: "אינסטגרם" },
@@ -447,7 +420,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
                         href={s.href!}
                         rel="noopener noreferrer nofollow"
                         target="_blank"
-                        className="inline-flex h-8 items-center gap-1.5 rounded-full border border-[var(--mk-hairline)] px-3 text-[13px] font-medium text-[var(--mk-ink-2)] transition-colors hover:border-[var(--mk-ink)] hover:text-[var(--mk-ink)]"
+                        className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-line px-3 text-[13px] font-medium text-ink-2 transition-colors hover:border-ink hover:text-ink"
                       >
                         <ExternalLink size={12} aria-hidden="true" />
                         {s.label}
@@ -455,38 +428,6 @@ export default async function TutorProfilePage({ params }: PageProps) {
                     ))}
                 </div>
               )}
-            </section>
-          )}
-
-          {/* Availability preview */}
-          {slotsByDay.size > 0 && (
-            <section aria-label="זמינות קרובה">
-              <h2 className="flex items-center gap-2 font-display text-xl font-bold text-[var(--mk-ink)]">
-                <CalendarCheck size={20} />
-                זמינות קרובה
-              </h2>
-              <div className="mt-4 space-y-3">
-                {[...slotsByDay.entries()].map(([day, daySlots]) => (
-                  <div key={day} className="flex flex-wrap items-center gap-2">
-                    <span className="w-28 shrink-0 text-sm font-medium text-[var(--mk-ink)]">
-                      {formatWeekday(daySlots[0].start_at)},{" "}
-                      {formatDateShort(daySlots[0].start_at)}
-                    </span>
-                    {daySlots.slice(0, 5).map((slot) => (
-                      <span
-                        key={slot.id}
-                        className="tnum rounded-full border border-[var(--mk-hairline)] bg-white px-3 py-1 text-[13px] text-[var(--mk-ink)]"
-                      >
-                        {formatTime(slot.start_at)}
-                      </span>
-                    ))}
-                  </div>
-                ))}
-              </div>
-              <p className="mt-3 text-sm text-[var(--mk-ink-3)]">
-                המועדים מתעדכנים לפי היומן של המורה. בחירת מועד נעשית בעת
-                קביעת השיעור.
-              </p>
             </section>
           )}
 
@@ -514,6 +455,8 @@ export default async function TutorProfilePage({ params }: PageProps) {
           <TeacherRail
             title="מורים דומים שאולי יתאימו לכם"
             teachers={similar}
+            nextSlots={similarNextSlots}
+            minCount={3}
             moreHref={
               primaryCategoryId ? searchHref({ categoryId: primaryCategoryId }) : "/search"
             }

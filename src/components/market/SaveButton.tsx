@@ -7,12 +7,15 @@ import { FAVORITES_EVENT, isFavorite, toggleFavorite } from "@/lib/favorites";
 interface SaveButtonProps {
   teacherId: string;
   teacherName: string;
+  /** "overlay" sits on a photo (cards); "plain" sits on the page surface. */
+  variant?: "overlay" | "plain";
 }
 
 // Save-to-list heart on every card/profile — optimistic, guest-friendly
 // (localStorage), creates the return-visit list.
-export default function SaveButton({ teacherId, teacherName }: SaveButtonProps) {
+export default function SaveButton({ teacherId, teacherName, variant = "overlay" }: SaveButtonProps) {
   const [saved, setSaved] = useState(false);
+  const plain = variant === "plain";
 
   useEffect(() => {
     const sync = () => setSaved(isFavorite(teacherId));
@@ -31,12 +34,20 @@ export default function SaveButton({ teacherId, teacherName }: SaveButtonProps) 
       }}
       aria-label={saved ? `הסרת ${teacherName} מהשמורים` : `שמירת ${teacherName}`}
       aria-pressed={saved}
-      className="grid h-8 w-8 cursor-pointer place-items-center rounded-full bg-white/90 shadow-sm transition-transform hover:scale-110 active:scale-95"
+      className={`grid cursor-pointer place-items-center rounded-full transition-transform hover:scale-110 active:scale-95 ${
+        plain
+          ? "h-11 w-11 border border-line bg-surface"
+          : "h-8 w-8 bg-white/90 shadow-sm"
+      }`}
     >
       <Heart
         size={16}
         className={
-          saved ? "fill-red-500 text-red-500" : "fill-black/25 text-white"
+          saved
+            ? "fill-red-500 text-red-500"
+            : plain
+              ? "text-ink-2"
+              : "fill-black/25 text-white"
         }
       />
     </button>
