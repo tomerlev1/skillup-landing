@@ -86,18 +86,18 @@ export default async function CityLandingPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbLd) }}
       />
 
-      <div className="max-w-[720px]">
+      <div className="relative isolate overflow-hidden rounded-[var(--r-lg)] p-6 ring-1 ring-brand-100 sm:p-10 [&>*]:max-w-[760px]" style={{ background: "var(--hero-wash)" }}>
         <nav aria-label="פירורי לחם" className="mb-4 flex flex-wrap items-center gap-1.5 text-sm text-ink-3">
           <Link href="/" className="hit-44 hover:text-ink hover:underline">ראשי</Link>
           <ChevronLeft size={16} strokeWidth={1.75} aria-hidden="true" />
           <span className="text-ink">מורה פרטי ב{shortName}</span>
         </nav>
 
-        <h1 className="flex items-center gap-3 font-ed text-[28px] font-bold leading-tight text-balance text-ink sm:text-[36px]">
-          <MapPin size={24} strokeWidth={1.75} aria-hidden="true" className="shrink-0 text-ink-3" />
+        <h1 className="flex items-center gap-3 font-ed text-[30px] font-black leading-tight text-balance text-ink sm:text-[44px]">
+          <span className="grid size-12 shrink-0 place-items-center rounded-[var(--r-md)] bg-surface text-spark-text shadow-[var(--shadow-card)]"><MapPin size={24} strokeWidth={2} aria-hidden="true" /></span>
           מורה פרטי ב{shortName}
         </h1>
-        <p className="mt-5 text-base leading-[1.75] text-ink-2">
+        <p className="mt-5 text-[17px] leading-[1.75] text-ink-2">
           מחפשים שיעורים פרטיים ב{shortName} והסביבה? ב-SkillUp תמצאו מורים
           מאומתים שמלמדים באזור {shortName}, אצל המורה, אצלכם בבית או אונליין.
           משווים מחירים, קוראים ביקורות אמיתיות של תלמידים וקובעים שיעור ישירות
@@ -108,14 +108,14 @@ export default async function CityLandingPage({ params }: PageProps) {
       {/* Teachers in the city */}
       <div className="mt-12">
         <div className="mb-5 flex items-baseline justify-between gap-4">
-          <h2 className="font-ed text-[22px] font-bold leading-tight text-balance text-ink sm:text-[28px]">
+          <h2 className="font-ed text-[26px] font-extrabold leading-tight text-balance text-ink sm:text-[32px]">
             {inCity.total > 0
               ? `${inCity.total} מורים ב${shortName}`
               : `מורים ב${shortName}`}
           </h2>
           <Link
             href={searchHref({ cityId: city.id })}
-            className="inline-flex min-h-11 shrink-0 items-center text-sm font-medium text-ink-2 hover:text-ink hover:underline"
+            className="inline-flex min-h-11 shrink-0 items-center text-[15px] font-bold text-action hover:underline"
           >
             לחיפוש עם סינון
           </Link>
@@ -134,7 +134,7 @@ export default async function CityLandingPage({ params }: PageProps) {
             ))}
           </div>
         ) : (
-          <p className="rounded-[var(--r-md)] border border-line bg-surface px-5 py-8 text-base leading-relaxed text-ink-2">
+          <p className="max-w-[960px] rounded-[var(--r-lg)] bg-surface px-6 py-10 text-center text-base leading-relaxed text-ink-2 shadow-[var(--shadow-card)] ring-1 ring-line/60">
             עדיין אין מורים שמלמדים פרונטלית ב{shortName}, אבל יש מורים שמלמדים
             אונליין מכל מקום בארץ. הנה כמה מהם:
           </p>
@@ -144,7 +144,7 @@ export default async function CityLandingPage({ params }: PageProps) {
       {/* Online alternative rail */}
       {onlineExtra.length > 0 && (
         <div className="mt-14">
-          <h2 className="mb-5 font-ed text-[22px] font-bold leading-tight text-balance text-ink sm:text-[28px]">
+          <h2 className="mb-5 font-ed text-[26px] font-extrabold leading-tight text-balance text-ink sm:text-[32px]">
             מורים אונליין שזמינים גם ל{shortName}
           </h2>
           <div className="flex max-w-[960px] flex-col gap-4">
@@ -161,8 +161,8 @@ export default async function CityLandingPage({ params }: PageProps) {
       )}
 
       {/* Category cross-links */}
-      <div className="mt-14 rounded-[var(--r-md)] border border-line bg-surface p-6 sm:p-8">
-        <h2 className="text-base font-semibold text-ink">
+      <div className="mt-14 rounded-[var(--r-lg)] bg-brand-50 p-6 ring-1 ring-brand-100 sm:p-8">
+        <h2 className="text-lg font-extrabold text-ink">
           שיעורים פרטיים ב{shortName} לפי תחום
         </h2>
         <div className="mt-4 flex flex-wrap gap-2">

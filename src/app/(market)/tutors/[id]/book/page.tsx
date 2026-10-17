@@ -38,7 +38,8 @@ export default async function BookLessonPage({ params, searchParams }: PageProps
   if (!teacher) notFound();
 
   return (
-    <div className="mx-auto max-w-[760px] px-4 py-8 sm:px-6">
+    <div className="mx-auto max-w-[800px] px-4 py-8 sm:px-6 sm:py-12">
+      <div className="rounded-[var(--r-lg)] bg-surface p-5 shadow-[var(--shadow-lift)] ring-1 ring-line/60 sm:p-9">
       <BookingWizard
         teacher={{
           id: teacher.id,
@@ -55,6 +56,7 @@ export default async function BookLessonPage({ params, searchParams }: PageProps
         studentId={session.userId}
         preselectedSlotId={slotId}
       />
+      </div>
     </div>
   );
 }

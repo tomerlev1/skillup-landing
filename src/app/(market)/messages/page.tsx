@@ -20,7 +20,7 @@ export default async function MessagesPage() {
 
   return (
     <div className="mx-auto max-w-[760px] px-4 py-8 sm:px-6">
-      <h1 className="font-ed text-2xl font-bold text-ink">הודעות</h1>
+      <h1 className="font-ed text-[30px] font-black leading-tight text-ink sm:text-[38px]">הודעות</h1>
 
       {conversations.length === 0 ? (
         <div className="mt-10 rounded-[var(--r-md)] bg-canvas px-6 py-16 text-center">
@@ -36,14 +36,14 @@ export default async function MessagesPage() {
           {profile.role === "student" && (
             <Link
               href="/search"
-              className="mt-6 inline-flex h-11 items-center rounded-[var(--r-pill)] bg-action px-6 text-sm font-semibold text-on-action transition-colors hover:bg-action-hover"
+              className="mt-6 inline-flex h-11 items-center rounded-[var(--r-pill)] bg-action px-6 text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)] transition-colors hover:bg-action-hover"
             >
               למציאת מורה
             </Link>
           )}
         </div>
       ) : (
-        <ul className="mt-6 divide-y divide-line overflow-hidden rounded-[var(--r-md)] border border-line bg-surface">
+        <ul className="mt-6 divide-y divide-line overflow-hidden rounded-[var(--r-lg)] bg-surface shadow-[var(--shadow-card)] ring-1 ring-line/60">
           {conversations.map((c) => (
             <li key={c.id}>
               <Link

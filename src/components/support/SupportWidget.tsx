@@ -308,7 +308,7 @@ export default function SupportWidget() {
                   <button
                     type="submit"
                     disabled={sendingEscalation}
-                    className="h-10 flex-1 cursor-pointer rounded-pill bg-action text-sm font-semibold text-on-action transition-colors hover:bg-action-hover disabled:opacity-60"
+                    className="h-10 flex-1 cursor-pointer rounded-pill bg-action text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)] transition-colors hover:bg-action-hover disabled:opacity-60"
                   >
                     {sendingEscalation ? "שולחים..." : "שליחה לנציג"}
                   </button>

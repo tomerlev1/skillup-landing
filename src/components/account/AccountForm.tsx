@@ -137,7 +137,7 @@ export default function AccountForm({
         </div>
       )}
 
-      <h1 className="font-ed text-2xl font-bold text-ink">
+      <h1 className="font-ed text-[30px] font-black leading-tight text-ink sm:text-[38px]">
         הפרופיל שלי
       </h1>
       <p className="mt-1.5 text-sm text-ink-2">
@@ -190,7 +190,7 @@ export default function AccountForm({
           <div className="sm:col-span-2">
             <span className="mb-1.5 block text-sm font-medium text-ink">עיר</span>
             {cityId && cityName ? (
-              <span className="inline-flex items-center gap-2 rounded-[var(--r-pill)] bg-action py-2 ps-4 pe-2 text-sm font-semibold text-on-action">
+              <span className="inline-flex items-center gap-2 rounded-[var(--r-pill)] bg-action py-2 ps-4 pe-2 text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)]">
                 <MapPin strokeWidth={1.75} size={16} />
                 {cityName}
                 <button
@@ -252,7 +252,7 @@ export default function AccountForm({
         <button
           type="submit"
           disabled={pending}
-          className="min-h-12 w-full cursor-pointer rounded-[var(--r-pill)] bg-action text-sm font-semibold text-on-action transition-colors hover:bg-action-hover disabled:opacity-60 sm:w-auto sm:px-10"
+          className="min-h-12 w-full cursor-pointer rounded-[var(--r-pill)] bg-action text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)] transition-colors hover:bg-action-hover disabled:opacity-60 sm:w-auto sm:px-10"
         >
           {pending ? "שומרים..." : "שמירת הפרטים"}
         </button>
@@ -262,7 +262,7 @@ export default function AccountForm({
         <>
           <Link
             href="/account/schedule"
-            className="mt-8 flex items-center gap-3.5 rounded-[var(--r-md)] border border-line bg-surface p-4 transition-colors hover:border-ink"
+            className="mt-8 flex items-center gap-3.5 rounded-[var(--r-lg)] bg-surface p-4 shadow-[var(--shadow-card)] ring-1 ring-line/60 transition-shadow hover:shadow-[var(--shadow-lift)]"
           >
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
               <CalendarClock strokeWidth={1.75} size={20} />

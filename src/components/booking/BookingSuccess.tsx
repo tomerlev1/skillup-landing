@@ -61,13 +61,13 @@ export default function BookingSuccess({ teacher, subjectName, outcome }: Bookin
   ];
 
   const secondaryBtn =
-    "inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-[var(--r-pill)] border border-line bg-surface px-6 text-sm font-semibold text-ink transition-colors hover:border-ink";
+    "inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-[var(--r-pill)] bg-tint-indigo px-6 text-[15px] font-bold text-tint-indigo-fg transition-colors hover:bg-brand-100";
 
   return (
-    <div className="rounded-[var(--r-md)] border border-line bg-surface p-6 sm:p-8">
+    <div className="rounded-[var(--r-lg)] bg-surface shadow-[var(--shadow-card)] ring-1 ring-line/60 p-6 sm:p-8">
       <div className="flex items-center gap-4">
         <Avatar src={teacher.avatar_url} name={name} size={56} />
-        <h1 className="font-ed text-2xl font-bold leading-tight text-ink sm:text-[28px]">
+        <h1 className="font-ed text-[28px] font-black leading-tight text-ink sm:text-[34px]">
           {outcome.anyConfirmed ? "השיעור נקבע" : `הבקשה אצל ${name}`}
         </h1>
       </div>
@@ -110,7 +110,7 @@ export default function BookingSuccess({ teacher, subjectName, outcome }: Bookin
       <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         <Link
           href="/bookings"
-          className="inline-flex min-h-12 items-center justify-center rounded-[var(--r-pill)] bg-action px-6 text-sm font-semibold text-on-action transition-colors hover:bg-action-hover"
+          className="inline-flex min-h-12 items-center justify-center rounded-[var(--r-pill)] bg-action px-6 text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)] transition-colors hover:bg-action-hover"
         >
           לשיעורים שלי
         </Link>

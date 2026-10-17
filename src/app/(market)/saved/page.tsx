@@ -79,7 +79,7 @@ export default function SavedTutorsPage() {
 
   return (
     <div className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6">
-      <h1 className="font-ed text-2xl font-bold text-ink">
+      <h1 className="font-ed text-[30px] font-black leading-tight text-ink sm:text-[38px]">
         מורים ששמרתי
       </h1>
 
@@ -88,7 +88,7 @@ export default function SavedTutorsPage() {
           <TeacherGridSkeleton count={4} />
         </div>
       ) : teachers.length === 0 ? (
-        <div className="mt-10 rounded-[var(--r-md)] border border-line bg-surface px-6 py-16 text-center">
+        <div className="mt-10 rounded-[var(--r-lg)] bg-surface shadow-[var(--shadow-card)] ring-1 ring-line/60 px-6 py-16 text-center">
           <Heart strokeWidth={1.75} size={24} className="mx-auto text-ink-3" />
           <h2 className="mt-4 text-lg font-semibold text-ink">
             עדיין לא שמרתם מורים
@@ -99,7 +99,7 @@ export default function SavedTutorsPage() {
           </p>
           <Link
             href="/search"
-            className="mt-6 inline-flex h-11 items-center rounded-full bg-action px-6 text-sm font-semibold text-on-action transition-opacity hover:opacity-90"
+            className="mt-6 inline-flex h-11 items-center rounded-full bg-action px-6 text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)] transition-opacity hover:opacity-90"
           >
             למציאת מורה
           </Link>

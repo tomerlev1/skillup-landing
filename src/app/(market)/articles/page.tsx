@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { ArrowLeft, BookOpen, Clock } from "lucide-react";
+import PageHero from "@/components/page/PageHero";
 import { ARTICLES } from "@/lib/articles";
 import { formatDateFull } from "@/lib/format";
 
@@ -11,47 +12,61 @@ export const metadata: Metadata = {
   alternates: { canonical: "/articles" },
 };
 
+const TONES = [
+  "bg-tint-indigo text-tint-indigo-fg",
+  "bg-tint-peach text-tint-peach-fg",
+  "bg-tint-mint text-tint-mint-fg",
+  "bg-tint-sky text-tint-sky-fg",
+  "bg-tint-lilac text-tint-lilac-fg",
+  "bg-tint-sun text-tint-sun-fg",
+];
+
 export default function ArticlesPage() {
   return (
-    <div className="mx-auto max-w-[840px] px-4 py-12 sm:px-6">
-      <h1 className="font-ed text-[clamp(36px,5vw,48px)] font-black leading-[1.1] text-balance text-ink">
-        מדריכים ומאמרים
-      </h1>
-      <p className="mt-3 max-w-[520px] text-base leading-relaxed text-ink-2">
-        כל מה שכדאי לדעת לפני שבוחרים מורה פרטי, כתוב בגובה העיניים ובלי
-        סיסמאות שיווקיות.
-      </p>
+    <>
+      <PageHero
+        icon={BookOpen}
+        tone="bg-tint-lilac text-tint-lilac-fg"
+        eyebrow="מדריכים"
+        title="מדריכים ומאמרים"
+        lead="כל מה שכדאי לדעת לפני שבוחרים מורה פרטי, כתוב בגובה העיניים ובלי סיסמאות שיווקיות."
+      />
 
-      <div className="mt-10 space-y-4">
-        {ARTICLES.map((article) => (
-          <article key={article.slug}>
-            <Link
-              href={`/articles/${article.slug}`}
-              className="group block rounded-[var(--r-md)] border border-line bg-surface p-6 transition-[transform,box-shadow] duration-200 ease-[var(--ease)] hover:-translate-y-[3px] hover:shadow-[var(--shadow-lift)] sm:p-7"
-            >
-              <p className="text-sm text-ink-3">
-                {formatDateFull(article.datePublished)} · {article.readingMinutes} דקות
-                קריאה
-              </p>
-              <h2 className="mt-2 text-xl font-semibold leading-snug text-balance text-ink">
-                {article.title}
-              </h2>
-              <p className="mt-2 text-base leading-relaxed text-ink-2">
-                {article.description}
-              </p>
-              <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-ink group-hover:underline">
-                לקריאה
-                <ChevronLeft
-                  size={16}
-                  strokeWidth={1.75}
-                  aria-hidden="true"
-                  className="transition-transform group-hover:-translate-x-0.5"
-                />
-              </span>
-            </Link>
-          </article>
-        ))}
-      </div>
-    </div>
+      <section className="mx-auto max-w-[1280px] px-4 py-14 sm:px-6">
+        <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {ARTICLES.map((article, i) => (
+            <li key={article.slug}>
+              <Link
+                href={`/articles/${article.slug}`}
+                className="group flex h-full flex-col rounded-[var(--r-lg)] bg-surface p-6 shadow-[var(--shadow-card)] ring-1 ring-line/60 transition-[transform,box-shadow] duration-200 ease-[var(--ease)] hover:-translate-y-1 hover:shadow-[var(--shadow-lift)] sm:p-7"
+              >
+                <span className={`grid size-12 place-items-center rounded-[var(--r-md)] ${TONES[i % TONES.length]}`}>
+                  <BookOpen size={22} strokeWidth={2} aria-hidden="true" />
+                </span>
+                <h2 className="mt-5 text-xl font-extrabold leading-snug text-balance text-ink">
+                  {article.title}
+                </h2>
+                <p className="mt-2 flex-1 text-[15px] leading-relaxed text-ink-2">{article.description}</p>
+                <div className="mt-5 flex items-center justify-between border-t border-line pt-4 text-sm">
+                  <span className="inline-flex items-center gap-1.5 text-ink-3">
+                    <Clock size={15} strokeWidth={2} aria-hidden="true" />
+                    {article.readingMinutes} דק׳ · {formatDateFull(article.datePublished)}
+                  </span>
+                  <span className="inline-flex items-center gap-1 font-bold text-action">
+                    לקריאה
+                    <ArrowLeft
+                      size={16}
+                      strokeWidth={2.25}
+                      aria-hidden="true"
+                      className="transition-transform group-hover:-translate-x-1"
+                    />
+                  </span>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </>
   );
 }

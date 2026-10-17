@@ -155,7 +155,7 @@ export default async function BookingsPage() {
       booking.mode === "teacher_location" ? addressMap.get(booking.teacher_id) : null;
 
     return (
-      <article className="rounded-[var(--r-md)] border border-line bg-surface p-5">
+      <article className="rounded-[var(--r-lg)] bg-surface shadow-[var(--shadow-card)] ring-1 ring-line/60 p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">
             <Avatar src={peer?.avatar} name={peer?.name ?? ""} size={42} />
@@ -233,7 +233,7 @@ export default async function BookingsPage() {
 
   return (
     <div className="mx-auto max-w-[760px] px-4 py-8 sm:px-6">
-      <h1 className="font-ed text-2xl font-bold text-ink">
+      <h1 className="font-ed text-[30px] font-black leading-tight text-ink sm:text-[38px]">
         השיעורים שלי
       </h1>
 
@@ -250,7 +250,7 @@ export default async function BookingsPage() {
               </p>
               <Link
                 href="/search"
-                className="mt-6 inline-flex h-11 items-center rounded-[var(--r-pill)] bg-action px-6 text-sm font-semibold text-on-action transition-colors hover:bg-action-hover"
+                className="mt-6 inline-flex h-11 items-center rounded-[var(--r-pill)] bg-action px-6 text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)] transition-colors hover:bg-action-hover"
               >
                 למציאת מורה
               </Link>

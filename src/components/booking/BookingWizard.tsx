@@ -79,7 +79,7 @@ function Option({
       className={`inline-flex min-h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-[var(--r-pill)] border px-4 text-sm font-medium transition-colors duration-200 ease-[var(--ease)] ${
         selected
           ? "border-action bg-action text-on-action"
-          : "border-line bg-surface text-ink hover:border-ink"
+          : "border-line bg-surface text-ink hover:border-brand-200 hover:bg-brand-50"
       }`}
     >
       {children}
@@ -259,9 +259,9 @@ export default function BookingWizard({
   const noSlotsForMode = noSlots && slots.length > 0 && mode !== null;
   const fixedMode = teacher.lesson_modes.length === 1;
   const inputClass =
-    "min-h-12 w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 text-[15px] text-ink outline-none transition-colors focus:border-ink";
+    "min-h-12 w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 text-[15px] text-ink outline-none";
   const secondaryBtn =
-    "inline-flex min-h-11 cursor-pointer items-center justify-center rounded-[var(--r-pill)] border border-line bg-surface px-5 text-sm font-semibold text-ink transition-colors hover:border-ink";
+    "inline-flex min-h-11 cursor-pointer items-center justify-center rounded-[var(--r-pill)] bg-tint-indigo px-5 text-sm font-bold text-tint-indigo-fg transition-colors hover:bg-brand-100";
 
   return (
     <div>
@@ -270,13 +270,13 @@ export default function BookingWizard({
         <Link
           href={`/tutors/${teacher.id}`}
           aria-label="חזרה לפרופיל"
-          className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-line text-ink transition-colors hover:border-ink"
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-canvas text-ink ring-1 ring-line transition-colors hover:bg-brand-50"
         >
           <ChevronRight strokeWidth={1.75} size={20} aria-hidden="true" />
         </Link>
         <Avatar src={teacher.avatar_url} name={name} size={44} />
         <div>
-          <h1 className="text-lg font-bold text-ink">קביעת שיעור עם {name}</h1>
+          <h1 className="font-ed text-[22px] font-black leading-tight text-ink sm:text-[26px]">קביעת שיעור עם {name}</h1>
           <p className="text-sm text-ink-3">
             {STEPS[step]} · שלב <span className="tnum">{step + 1}</span> מתוך{" "}
             <span className="tnum">{STEPS.length}</span>
@@ -290,7 +290,7 @@ export default function BookingWizard({
           <li key={label} aria-current={i === step ? "step" : undefined}>
             <span
               aria-hidden="true"
-              className={`block h-1 rounded-full ${i <= step ? "bg-action" : "bg-line"}`}
+              className={`block h-2 rounded-full ${i <= step ? "bg-action" : "bg-brand-100"}`}
             />
             <span className={`mt-1.5 block text-sm ${i === step ? "font-semibold text-ink" : "text-ink-3"}`}>
               {label}
@@ -332,10 +332,10 @@ export default function BookingWizard({
               </div>
             )}
 
-            <h2 className="text-base font-semibold text-ink">מתי נוח לכם?</h2>
+            <h2 className="text-xl font-extrabold text-ink">מתי נוח לכם?</h2>
 
             {noSlots ? (
-              <div className="mt-5 rounded-[var(--r-md)] border border-line bg-surface p-6 text-center text-sm leading-relaxed text-ink-2">
+              <div className="mt-5 rounded-[var(--r-lg)] bg-brand-50 p-7 text-center text-[15px] leading-relaxed text-ink-2 ring-1 ring-brand-100">
                 {noSlotsForMode && mode
                   ? `אין כרגע מועדים פנויים לשיעור ${lessonModeLabel(mode)}.`
                   : `היומן של ${name} מלא כרגע. שלחו הודעה ותתאמו מועד ישירות.`}
@@ -347,7 +347,7 @@ export default function BookingWizard({
                   )}
                   <Link
                     href={`/messages/new?teacher=${teacher.id}`}
-                    className="inline-flex min-h-11 items-center rounded-[var(--r-pill)] bg-action px-5 text-sm font-semibold text-on-action transition-colors hover:bg-action-hover"
+                    className="inline-flex min-h-11 items-center rounded-[var(--r-pill)] bg-action px-5 text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)] transition-colors hover:bg-action-hover"
                   >
                     שליחת הודעה ל{name}
                   </Link>
@@ -369,10 +369,10 @@ export default function BookingWizard({
                         type="button"
                         onClick={() => setSelectedDay(day)}
                         aria-pressed={active}
-                        className={`relative min-h-11 shrink-0 cursor-pointer rounded-[var(--r-sm)] border px-4 py-2 text-center transition-colors ${
+                        className={`relative min-h-14 min-w-[76px] shrink-0 cursor-pointer rounded-[var(--r-md)] border px-4 py-2 text-center transition-colors ${
                           active
                             ? "border-action bg-action text-on-action"
-                            : "border-line bg-surface text-ink hover:border-ink"
+                            : "border-line bg-surface text-ink hover:border-brand-200 hover:bg-brand-50"
                         }`}
                       >
                         <span className="block text-sm font-semibold">
@@ -402,12 +402,12 @@ export default function BookingWizard({
                         onClick={() => toggleSlot(s)}
                         disabled={atCap}
                         aria-pressed={selected}
-                        className={`tnum min-h-11 cursor-pointer rounded-[var(--r-sm)] border px-3 py-2 text-sm font-medium transition-colors ${
+                        className={`tnum min-h-12 cursor-pointer rounded-[var(--r-sm)] border px-3 py-2 text-[15px] font-bold transition-colors ${
                           selected
-                            ? "border-action bg-action-soft text-action"
+                            ? "border-action bg-action text-on-action shadow-[0_8px_18px_-10px_rgba(79,70,229,0.9)]"
                             : atCap
                               ? "cursor-not-allowed border-line bg-canvas text-ink-3 opacity-60"
-                              : "border-line bg-surface text-ink hover:border-ink"
+                              : "border-line bg-surface text-ink hover:border-brand-200 hover:bg-brand-50"
                         }`}
                       >
                         <span className="ltr-isolate">
@@ -445,7 +445,7 @@ export default function BookingWizard({
           <div className="space-y-8">
             {subjects.length > 1 && (
               <fieldset>
-                <legend className="text-base font-semibold text-ink">באיזה מקצוע תרצו שיעור?</legend>
+                <legend className="text-lg font-extrabold text-ink">באיזה מקצוע תרצו שיעור?</legend>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {subjects.map((s) => (
                     <Option
@@ -461,7 +461,7 @@ export default function BookingWizard({
             )}
 
             <fieldset>
-              <legend className="text-base font-semibold text-ink">איך תרצו ללמוד?</legend>
+              <legend className="text-lg font-extrabold text-ink">איך תרצו ללמוד?</legend>
               <div className="mt-4 flex flex-wrap gap-2">
                 {teacher.lesson_modes.map((m) => {
                   const price = lessonModePrice(m, teacher.hourly_rate, teacher.lesson_mode_prices);
@@ -516,7 +516,7 @@ export default function BookingWizard({
             )}
 
             <fieldset>
-              <legend className="text-base font-semibold text-ink">
+              <legend className="text-lg font-extrabold text-ink">
                 למי השיעור? <span className="text-sm font-normal text-ink-3">(לא חובה)</span>
               </legend>
               <div className="mt-4 flex flex-wrap gap-2">
@@ -548,8 +548,8 @@ export default function BookingWizard({
         {/* ===== Step 3: summary ===== */}
         {step === 2 && selectedSlots.length > 0 && (
           <div className="space-y-6">
-            <div className="rounded-[var(--r-md)] border border-line bg-surface p-5">
-              <h2 className="text-base font-semibold text-ink">סיכום</h2>
+            <div className="rounded-[var(--r-lg)] bg-brand-50 p-5 ring-1 ring-brand-100 sm:p-6">
+              <h2 className="text-xl font-extrabold text-ink">סיכום</h2>
               <dl className="mt-4 space-y-2.5 text-sm">
                 <div className="flex justify-between gap-4">
                   <dt className="text-ink-3">מקצוע</dt>
@@ -590,7 +590,7 @@ export default function BookingWizard({
                 {hasPrice && (
                   <div className="flex justify-between gap-4 border-t border-line pt-2.5">
                     <dt className="text-ink-3">סה״כ</dt>
-                    <dd className="ltr-isolate tnum font-semibold text-ink">{formatPrice(totalPrice)}</dd>
+                    <dd className="ltr-isolate tnum text-xl font-black text-brand-800">{formatPrice(totalPrice)}</dd>
                   </div>
                 )}
               </dl>
@@ -607,7 +607,7 @@ export default function BookingWizard({
                 onChange={(e) => setNotes(e.target.value)}
                 maxLength={500}
                 placeholder="ספרו על מה תרצו לעבוד"
-                className="w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 py-3 text-[15px] text-ink outline-none transition-colors focus:border-ink"
+                className="w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 py-3 text-[15px] text-ink outline-none"
               />
             </div>
 
@@ -652,7 +652,7 @@ export default function BookingWizard({
               type="button"
               onClick={() => canContinue && setStep((s) => s + 1)}
               disabled={!canContinue}
-              className="min-h-12 cursor-pointer rounded-[var(--r-pill)] bg-action px-8 text-sm font-semibold text-on-action transition-colors hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-40"
+              className="min-h-12 cursor-pointer rounded-[var(--r-pill)] bg-action px-8 text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)] transition-colors hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-40"
             >
               המשך
             </button>
@@ -661,7 +661,7 @@ export default function BookingWizard({
               type="button"
               onClick={submit}
               disabled={!canContinue || pending}
-              className="min-h-12 cursor-pointer rounded-[var(--r-pill)] bg-action px-6 text-sm font-semibold text-on-action transition-colors hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-40"
+              className="min-h-12 cursor-pointer rounded-[var(--r-pill)] bg-action px-6 text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)] transition-colors hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-40"
             >
               {pending ? "שולחים..." : submitLabel(name, selectedSlots.length)}
             </button>

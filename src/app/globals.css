@@ -363,3 +363,16 @@ summary:focus-visible {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ===== FORM FIELDS: one focus language site-wide ===== */
+input:is([type="text"], [type="email"], [type="password"], [type="tel"], [type="search"], [type="number"], :not([type])),
+textarea,
+select {
+  transition: border-color 150ms var(--ease), box-shadow 150ms var(--ease), background-color 150ms var(--ease);
+}
+input:is([type="text"], [type="email"], [type="password"], [type="tel"], [type="search"], [type="number"], :not([type])):focus,
+textarea:focus,
+select:focus {
+  border-color: var(--c-action);
+  box-shadow: 0 0 0 4px var(--c-brand-100);
+}

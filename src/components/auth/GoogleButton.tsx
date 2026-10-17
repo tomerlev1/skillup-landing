@@ -25,7 +25,7 @@ export default function GoogleButton({ next, label }: { next: string; label: str
       type="button"
       onClick={onClick}
       disabled={pending}
-      className="inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2.5 rounded-[var(--r-pill)] border border-line bg-surface text-sm font-semibold text-ink transition-colors hover:border-ink disabled:opacity-60"
+      className="inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2.5 rounded-[var(--r-pill)] border border-line bg-surface text-[15px] font-bold text-ink shadow-[var(--shadow-card)] transition-colors hover:bg-canvas disabled:opacity-60"
     >
       <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
         <path

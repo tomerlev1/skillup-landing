@@ -148,7 +148,7 @@ export default function StickyBookingRail({
             </GatedLink>
             <GatedLink
               href={bookUrl}
-              className="h-11 cursor-pointer rounded-[var(--r-pill)] bg-action px-6 text-sm font-semibold text-on-action"
+              className="h-11 cursor-pointer rounded-[var(--r-pill)] bg-action px-6 text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)]"
             >
               קביעת שיעור
             </GatedLink>

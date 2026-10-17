@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, CircleHelp, Mail } from "lucide-react";
+import CtaBand from "@/components/page/CtaBand";
+import PageHero from "@/components/page/PageHero";
 import { FAQ_ITEMS } from "@/lib/structured-data";
 import { CONTACT_EMAIL } from "@/lib/constants";
 
@@ -13,46 +14,52 @@ export const metadata: Metadata = {
 
 export default function FAQPage() {
   return (
-    <div className="mx-auto max-w-[840px] px-4 py-12 sm:px-6">
-      <h1 className="font-ed text-[clamp(36px,5vw,48px)] font-black leading-[1.1] text-balance text-ink">
-        שאלות נפוצות
-      </h1>
-      <p className="mt-3 text-base text-ink-2">
-        לא מצאתם תשובה? כתבו לנו דרך הצ&apos;אט כאן באתר או במייל{" "}
-        <a
-          href={`mailto:${CONTACT_EMAIL}`}
-          dir="ltr"
-          className="ltr-isolate font-medium text-action underline-offset-2 hover:underline"
-        >
-          {CONTACT_EMAIL}
-        </a>
-        .
-      </p>
+    <>
+      <PageHero
+        icon={CircleHelp}
+        tone="bg-tint-sky text-tint-sky-fg"
+        eyebrow="עזרה"
+        title="שאלות נפוצות"
+        lead="התשובות לשאלות שהכי שואלים אותנו, בקצרה ובבהירות."
+      />
 
-      <div className="faq mt-8">
-        {FAQ_ITEMS.map((item, i) => (
-          <details key={item.q}>
-            <summary>
-              <span className="idx tnum">{String(i + 1).padStart(2, "0")}</span>
-              {item.q}
-              <ChevronDown className="chev" size={16} strokeWidth={1.75} aria-hidden="true" />
-            </summary>
-            <p>{item.a}</p>
-          </details>
-        ))}
-      </div>
+      <section className="mx-auto grid max-w-[1280px] gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="faq">
+          {FAQ_ITEMS.map((item, i) => (
+            <details key={item.q}>
+              <summary>
+                <span className="idx tnum">{i + 1}</span>
+                {item.q}
+                <ChevronDown className="chev" size={18} strokeWidth={2} aria-hidden="true" />
+              </summary>
+              <p>{item.a}</p>
+            </details>
+          ))}
+        </div>
 
-      <div className="mt-10 rounded-[var(--r-md)] border border-line bg-surface p-7 text-center">
-        <h2 className="font-ed text-[22px] font-bold leading-tight text-balance text-ink">
-          מוכנים להתחיל?
-        </h2>
-        <Link
-          href="/search"
-          className="mt-4 inline-flex h-12 items-center rounded-full bg-action px-7 text-[15px] font-semibold text-on-action transition-colors duration-200 hover:bg-action-hover"
-        >
-          למציאת מורה
-        </Link>
-      </div>
-    </div>
+        <aside className="h-fit rounded-[var(--r-lg)] bg-surface p-6 shadow-[var(--shadow-card)] ring-1 ring-line/60 lg:sticky lg:top-24">
+          <span className="grid size-12 place-items-center rounded-[var(--r-md)] bg-tint-peach text-tint-peach-fg">
+            <Mail size={22} strokeWidth={2} aria-hidden="true" />
+          </span>
+          <h2 className="mt-4 text-lg font-extrabold text-ink">לא מצאתם תשובה?</h2>
+          <p className="mt-1.5 text-[15px] leading-relaxed text-ink-2">
+            כתבו לנו דרך הצ׳אט כאן באתר או במייל, ונחזור אליכם.
+          </p>
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            dir="ltr"
+            className="mt-4 inline-flex min-h-11 items-center font-bold text-action underline-offset-2 hover:underline"
+          >
+            {CONTACT_EMAIL}
+          </a>
+        </aside>
+      </section>
+
+      <CtaBand
+        title="מוכנים להתחיל?"
+        primary={{ href: "/search", label: "למציאת מורה" }}
+        secondary={{ href: "/how-it-works", label: "איך זה עובד" }}
+      />
+    </>
   );
 }

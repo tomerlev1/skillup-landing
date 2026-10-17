@@ -97,7 +97,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={pending}
-          className="min-h-12 w-full cursor-pointer rounded-[var(--r-pill)] bg-action text-sm font-semibold text-on-action transition-colors hover:bg-action-hover disabled:opacity-60"
+          className="min-h-12 w-full cursor-pointer rounded-[var(--r-pill)] bg-action text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)] transition-colors hover:bg-action-hover disabled:opacity-60"
         >
           {pending ? "מתחברים..." : "התחברות"}
         </button>

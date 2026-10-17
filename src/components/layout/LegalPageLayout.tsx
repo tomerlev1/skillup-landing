@@ -14,8 +14,8 @@ export default function LegalPageLayout({
   sections,
 }: LegalPageLayoutProps) {
   return (
-    <div className="bg-surface">
-      <article className="mx-auto max-w-[760px] px-4 pb-24 pt-12 sm:px-6 sm:pt-16">
+    <div className="bg-canvas px-4 py-10 sm:py-14">
+      <article className="mx-auto max-w-[860px] rounded-[var(--r-lg)] bg-surface px-6 pb-16 pt-10 shadow-[var(--shadow-card)] ring-1 ring-line/60 sm:px-12 sm:pt-14">
         <header className="mb-10">
           <h1 className="font-ed text-[32px] font-black leading-tight text-ink sm:text-[40px]">
             {title}
@@ -26,7 +26,7 @@ export default function LegalPageLayout({
         {sections.length > 3 && (
           <nav
             aria-label="תוכן העניינים"
-            className="mb-12 rounded-[var(--r-md)] border border-line bg-canvas p-5"
+            className="mb-12 rounded-[var(--r-md)] bg-brand-50 p-5 ring-1 ring-brand-100"
           >
             <ul className="grid gap-x-8 gap-y-1 sm:grid-cols-2">
               {sections.map((section) => (
@@ -45,7 +45,7 @@ export default function LegalPageLayout({
 
         {sections.map((section) => (
           <section key={section.id} id={section.id} className="mb-12 scroll-mt-24">
-            <h2 className="mb-4 text-xl font-semibold text-ink">{section.title}</h2>
+            <h2 className="mb-4 text-[22px] font-extrabold text-ink">{section.title}</h2>
             <div
               className="space-y-3 text-base leading-[1.75] text-ink-2 [&_a]:text-action [&_a]:underline [&_a]:underline-offset-2 [&_h4]:mb-2 [&_h4]:mt-6 [&_h4]:text-base [&_h4]:font-semibold [&_h4]:text-ink [&_li]:mb-2 [&_li]:leading-[1.75] [&_li_strong]:text-ink [&_ul]:list-disc [&_ul]:ps-6"
               dangerouslySetInnerHTML={{ __html: section.content }}

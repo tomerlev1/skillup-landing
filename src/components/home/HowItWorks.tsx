@@ -22,15 +22,19 @@ const LOOK: { icon: LucideIcon; tone: string }[] = [
 ];
 
 // Three steps (spec §8.3.4). Step 2 carries the "we don't charge you" line.
-export default function HowItWorks() {
+export default function HowItWorks({ heading = true, className = "mt-20" }: { heading?: boolean; className?: string }) {
   return (
-    <section id="how-it-works" className="mt-20 bg-brand-50 py-16 sm:py-20">
+    <section id="how-it-works" className={`bg-brand-50 py-16 sm:py-20 ${className}`}>
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
-        <p className="text-sm font-semibold text-action">פשוט, שקוף, ישיר</p>
-        <h2 className="font-ed mt-1 text-[28px] font-extrabold leading-tight text-balance text-ink sm:text-[36px]">
-          איך זה עובד
-        </h2>
-        <ol className="mt-10 grid gap-5 sm:grid-cols-3 sm:gap-6">
+        {heading && (
+          <>
+            <p className="text-sm font-semibold text-action">פשוט, שקוף, ישיר</p>
+            <h2 className="font-ed mt-1 text-[28px] font-extrabold leading-tight text-balance text-ink sm:text-[36px]">
+              איך זה עובד
+            </h2>
+          </>
+        )}
+        <ol className={`${heading ? "mt-10" : ""} grid gap-5 sm:grid-cols-3 sm:gap-6`}>
           {HOW_IT_WORKS_STEPS.map((s, i) => {
             const { icon: Icon, tone } = LOOK[i] ?? LOOK[0];
             return (

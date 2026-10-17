@@ -183,7 +183,7 @@ export default function FilterPanel({
       <fieldset>
         <legend className="mb-3 text-[15px] font-bold text-ink">עיר</legend>
         {draft.cityId && cityName ? (
-          <span className="inline-flex items-center gap-2 rounded-full bg-action py-2 ps-4 pe-2 text-sm font-semibold text-on-action">
+          <span className="inline-flex items-center gap-2 rounded-full bg-action py-2 ps-4 pe-2 text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)]">
             <MapPin strokeWidth={1.75} size={16} />
             {cityName}
             <button

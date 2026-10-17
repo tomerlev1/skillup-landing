@@ -84,7 +84,7 @@ export default async function ArticlePage({ params }: PageProps) {
           {article.sections.map((section, i) => (
             <section key={i}>
               {section.heading && (
-                <h2 className="mb-3 font-ed text-[22px] font-bold leading-tight text-balance text-ink">
+                <h2 className="mb-3 font-ed text-[24px] font-extrabold leading-tight text-balance text-ink">
                   {section.heading}
                 </h2>
               )}
@@ -102,8 +102,8 @@ export default async function ArticlePage({ params }: PageProps) {
       </article>
 
       {/* Conversion band */}
-      <div className="mt-12 rounded-[var(--r-md)] border border-line bg-surface p-7 text-center">
-        <h2 className="font-ed text-[22px] font-bold leading-tight text-balance text-ink">
+      <div className="mt-12 rounded-[var(--r-lg)] bg-brand-50 p-8 text-center ring-1 ring-brand-100">
+        <h2 className="font-ed text-[26px] font-black leading-tight text-balance text-ink">
           מוכנים למצוא את המורה שלכם?
         </h2>
         <p className="mx-auto mt-2 max-w-[420px] text-base leading-relaxed text-ink-2">
@@ -112,7 +112,7 @@ export default async function ArticlePage({ params }: PageProps) {
         </p>
         <Link
           href="/search"
-          className="mt-5 inline-flex h-12 items-center rounded-full bg-action px-7 text-[15px] font-semibold text-on-action transition-colors duration-200 hover:bg-action-hover"
+          className="mt-5 inline-flex h-12 items-center rounded-full bg-action px-7 text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)] transition-colors duration-200 hover:bg-action-hover"
         >
           למציאת מורה
         </Link>
@@ -120,7 +120,7 @@ export default async function ArticlePage({ params }: PageProps) {
 
       {/* More articles */}
       <div className="mt-10">
-        <h2 className="text-base font-semibold text-ink">עוד מאמרים</h2>
+        <h2 className="text-lg font-extrabold text-ink">עוד מאמרים</h2>
         <ul className="mt-2">
           {ARTICLES.filter((a) => a.slug !== slug).map((a) => (
             <li key={a.slug}>

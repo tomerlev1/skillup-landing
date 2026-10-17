@@ -52,7 +52,7 @@ export default function AppLinkShell({
         bare ? "py-14 sm:py-20" : "min-h-dvh"
       }`}
     >
-      <section className="w-full max-w-[520px] rounded-[var(--r-md)] border border-line bg-surface px-6 py-10 text-center sm:px-8">
+      <section className="w-full max-w-[520px] rounded-[var(--r-lg)] bg-surface px-6 py-10 text-center shadow-[var(--shadow-lift)] ring-1 ring-line/60 sm:px-8">
         {!bare && <BrandLogo className="mx-auto mb-6 h-9 w-auto" />}
         {t && (
           <div

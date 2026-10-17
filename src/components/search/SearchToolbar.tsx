@@ -110,7 +110,7 @@ export default function SearchToolbar({
             <button
               type="button"
               onClick={apply}
-              className="h-12 w-full cursor-pointer rounded-full bg-action text-sm font-semibold text-on-action transition-opacity hover:opacity-90"
+              className="h-12 w-full cursor-pointer rounded-full bg-action text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)] transition-opacity hover:opacity-90"
             >
               {count != null ? (
                 <>

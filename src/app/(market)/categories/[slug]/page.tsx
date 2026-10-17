@@ -118,7 +118,7 @@ export default async function CategoryLandingPage({ params }: PageProps) {
       />
 
       {/* Header */}
-      <div className="max-w-[720px]">
+      <div className="relative isolate overflow-hidden rounded-[var(--r-lg)] p-6 ring-1 ring-brand-100 sm:p-10 [&>*]:max-w-[760px]" style={{ background: "var(--hero-wash)" }}>
         <nav aria-label="פירורי לחם" className="mb-4 flex flex-wrap items-center gap-1.5 text-sm text-ink-3">
           <Link href="/" className="hit-44 hover:text-ink hover:underline">ראשי</Link>
           <ChevronLeft size={16} strokeWidth={1.75} aria-hidden="true" />
@@ -126,23 +126,23 @@ export default async function CategoryLandingPage({ params }: PageProps) {
         </nav>
 
         <div className="flex items-center gap-4">
-          <span className="grid h-14 w-14 shrink-0 place-items-center rounded-[var(--r-md)] border border-line bg-surface">
-            <CategoryIcon iconName={category.icon_name} size={24} className="text-ink" />
+          <span className="grid h-14 w-14 shrink-0 place-items-center rounded-[var(--r-md)] bg-surface text-action shadow-[var(--shadow-card)]">
+            <CategoryIcon iconName={category.icon_name} size={26} className="text-action" />
           </span>
-          <h1 className="font-ed text-[28px] font-bold leading-tight text-balance text-ink sm:text-[36px]">
+          <h1 className="font-ed text-[30px] font-black leading-tight text-balance text-ink sm:text-[44px]">
             מורים פרטיים ל{category.name_he}
           </h1>
         </div>
 
         {intro && (
-          <p className="mt-5 text-base leading-[1.75] text-ink-2">{intro}</p>
+          <p className="mt-5 text-[17px] leading-[1.75] text-ink-2">{intro}</p>
         )}
       </div>
 
       {/* Subject chips — deep links into filtered search */}
       {subjects.length > 0 && (
         <div className="mt-8">
-          <h2 className="text-sm font-semibold text-ink">
+          <h2 className="text-[15px] font-bold text-ink">
             מקצועות ב{category.name_he}
           </h2>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -158,14 +158,14 @@ export default async function CategoryLandingPage({ params }: PageProps) {
       {/* Teachers */}
       <div className="mt-12">
         <div className="mb-5 flex items-baseline justify-between gap-4">
-          <h2 className="font-ed text-[22px] font-bold leading-tight text-balance text-ink sm:text-[28px]">
+          <h2 className="font-ed text-[26px] font-extrabold leading-tight text-balance text-ink sm:text-[32px]">
             {result.total > 0
               ? `${result.total} מורים ל${category.name_he} ב-SkillUp`
               : `מורים ל${category.name_he}`}
           </h2>
           <Link
             href={searchHref({ categoryId: category.id })}
-            className="inline-flex min-h-11 shrink-0 items-center text-sm font-medium text-ink-2 hover:text-ink hover:underline"
+            className="inline-flex min-h-11 shrink-0 items-center text-[15px] font-bold text-action hover:underline"
           >
             לכל המורים עם סינון
           </Link>
@@ -184,7 +184,7 @@ export default async function CategoryLandingPage({ params }: PageProps) {
             ))}
           </div>
         ) : (
-          <p className="rounded-[var(--r-md)] border border-line bg-surface px-5 py-8 text-base leading-relaxed text-ink-2">
+          <p className="max-w-[960px] rounded-[var(--r-lg)] bg-surface px-6 py-10 text-center text-base leading-relaxed text-ink-2 shadow-[var(--shadow-card)] ring-1 ring-line/60">
             המורים הראשונים בתחום הזה בדרך אלינו. בינתיים אפשר לחפש בתחומים
             אחרים או להירשם ולקבל עדכון.
           </p>
@@ -192,8 +192,8 @@ export default async function CategoryLandingPage({ params }: PageProps) {
       </div>
 
       {/* Geo cross-links */}
-      <div className="mt-14 rounded-[var(--r-md)] border border-line bg-surface p-6 sm:p-8">
-        <h2 className="text-base font-semibold text-ink">
+      <div className="mt-14 rounded-[var(--r-lg)] bg-brand-50 p-6 ring-1 ring-brand-100 sm:p-8">
+        <h2 className="text-lg font-extrabold text-ink">
           {category.name_he} לפי עיר
         </h2>
         <p className="mt-1 text-sm text-ink-3">
