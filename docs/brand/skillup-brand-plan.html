@@ -1,0 +1,643 @@
+<title>שפת המותג SkillUp</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Rubik:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one 760px reading column; wide bands for system tables and mockups. The page itself uses the proposed v2 tokens. */
+:root{
+  --indigo:#4F46E5; --indigo-soft:#EEEDFD; --midnight:#16123F; --spark:#F97316;
+  --ink:#14131F; --ink-2:#4B4A5C; --ink-3:#6E6D82; --canvas:#F6F6FA; --surface:#FFFFFF; --line:#E7E6EF;
+  --ok:#0E9F6E; --ok-soft:#E7F6EF; --warn:#B86E00; --warn-soft:#FFF4E0; --bad:#E11D48; --bad-soft:#FDECF0; --star:#F5A623;
+  --on-midnight:#FFFFFF; --on-midnight-2:#B9B6DA;
+  --f-ui:"Rubik","Heebo",system-ui,sans-serif; --f-ed:"Frank Ruhl Libre","David Libre",Georgia,serif;
+  --r-sm:10px; --r-md:16px; --r-pill:999px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --indigo:#8B85FF; --indigo-soft:#25224F; --midnight:#0D0B26; --spark:#FB923C;
+  --ink:#F2F1FA; --ink-2:#C4C2D6; --ink-3:#9896AE; --canvas:#100E22; --surface:#1A1833; --line:#2E2B4D;
+  --ok:#34D399; --ok-soft:#10302A; --warn:#F5B44A; --warn-soft:#33270F; --bad:#FB7185; --bad-soft:#3A1622;
+  --on-midnight:#FFFFFF; --on-midnight-2:#A9A6CF; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --indigo:#8B85FF; --indigo-soft:#25224F; --midnight:#0D0B26; --spark:#FB923C;
+  --ink:#F2F1FA; --ink-2:#C4C2D6; --ink-3:#9896AE; --canvas:#100E22; --surface:#1A1833; --line:#2E2B4D;
+  --ok:#34D399; --ok-soft:#10302A; --warn:#F5B44A; --warn-soft:#33270F; --bad:#FB7185; --bad-soft:#3A1622;
+  --on-midnight:#FFFFFF; --on-midnight-2:#A9A6CF; color-scheme:dark}
+
+body{background:var(--canvas);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.7}
+.page{direction:rtl;text-align:right}
+.wrap{max-width:820px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wide{max-width:1120px}
+h1,h2,h3{text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--indigo)}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+
+/* Hero */
+.hero{background:var(--midnight);color:var(--on-midnight);padding-block:56px 48px}
+.hero .kicker{font-size:14px;color:var(--on-midnight-2);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--spark)}
+.hero h1{font-family:var(--f-ed);font-weight:900;font-size:clamp(40px,7vw,72px);line-height:1.05;margin-top:18px}
+.hero h1 em{font-style:normal;color:var(--spark)}
+.hero .lede{margin-top:18px;font-size:19px;color:var(--on-midnight-2);max-width:620px}
+.meta{margin-top:28px;display:flex;flex-wrap:wrap;gap:8px}
+.meta span{border:1px solid rgba(255,255,255,.18);border-radius:var(--r-pill);padding:4px 12px;font-size:13px;color:var(--on-midnight-2)}
+
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding-block:10px}
+nav.toc a{white-space:nowrap;text-decoration:none;color:var(--ink-2);font-size:14px;padding:6px 12px;border-radius:var(--r-pill)}
+nav.toc a:hover{background:var(--canvas);color:var(--ink)}
+
+section{padding-block:56px;border-bottom:1px solid var(--line)}
+.sec-n{font-size:13px;font-weight:600;color:var(--spark);margin-bottom:8px}
+h2{font-family:var(--f-ed);font-weight:700;font-size:clamp(28px,4.4vw,40px);line-height:1.15}
+h3{font-size:19px;font-weight:600;margin-top:32px}
+.intro{margin-top:14px;font-size:18px;color:var(--ink-2);max-width:680px}
+.body{margin-top:14px;color:var(--ink-2)}
+.stack{display:flex;flex-direction:column;gap:14px}
+
+/* Bottom line */
+.thesis{margin-top:28px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:28px}
+.thesis .big{font-family:var(--f-ed);font-size:clamp(30px,5vw,46px);font-weight:900;line-height:1.1}
+.thesis .big span{color:var(--indigo)}
+.thesis p.s{margin-top:12px;color:var(--ink-2)}
+ol.points{margin:28px 0 0;padding:0;list-style:none;display:grid;gap:12px;counter-reset:p}
+ol.points li{counter-increment:p;display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:start}
+ol.points li::before{content:counter(p);font-family:var(--f-ed);font-weight:900;font-size:24px;color:var(--ink-3);line-height:1.3}
+ol.points b{color:var(--ink)}
+
+/* Strengths */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:24px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:18px}
+.tile b{display:block;font-weight:600;margin-bottom:4px}
+.tile p{font-size:15px;color:var(--ink-2)}
+
+/* Findings */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}
+.filters button{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:var(--r-pill);padding:6px 14px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--canvas);border-color:var(--ink)}
+.findings{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+details.f{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:0}
+details.f summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:16px 18px}
+details.f summary::-webkit-details-marker{display:none}
+details.f summary .t{font-weight:600;min-width:0}
+details.f summary .chev{color:var(--ink-3);transition:transform .2s}
+details.f[open] summary .chev{transform:rotate(180deg)}
+details.f .fb{padding:0 18px 18px;display:grid;gap:10px;color:var(--ink-2);font-size:15px}
+details.f .fb b{color:var(--ink)}
+.sev{font-size:12px;font-weight:600;border-radius:var(--r-pill);padding:3px 10px;white-space:nowrap}
+.sev.c{background:var(--bad-soft);color:var(--bad)}
+.sev.h{background:var(--warn-soft);color:var(--warn)}
+.sev.m{background:var(--indigo-soft);color:var(--indigo)}
+code,.file{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;direction:ltr;unicode-bidi:isolate;background:var(--canvas);border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:var(--ink-2)}
+
+/* Brand platform */
+.principles{margin-top:24px;display:grid;gap:0;border-top:1px solid var(--line)}
+.principle{display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:20px;padding-block:18px;border-bottom:1px solid var(--line)}
+.principle h4{margin:0;font-family:var(--f-ed);font-size:22px;font-weight:700;line-height:1.25}
+.principle p{color:var(--ink-2);font-size:15px}
+@media (max-width:620px){.principle{grid-template-columns:1fr;gap:6px}}
+
+.voice{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.voice .col{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:18px}
+.voice .col h4{margin:0 0 10px;font-size:15px}
+.voice ul{margin:0;padding-inline-start:18px;color:var(--ink-2);font-size:15px;display:grid;gap:6px}
+.voice .yes h4{color:var(--ok)} .voice .no h4{color:var(--bad)}
+@media (max-width:620px){.voice{grid-template-columns:1fr}}
+
+.tbl{margin-top:20px;overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:15px;min-width:560px}
+th,td{text-align:right;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;font-weight:600;color:var(--ink-3);background:var(--canvas)}
+tr:last-child td{border-bottom:0}
+td.old{color:var(--ink-3);text-decoration:line-through;text-decoration-color:var(--bad)}
+td.new{color:var(--ink);font-weight:500}
+
+/* Color system */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-top:24px}
+.sw{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden}
+.sw .chip{height:76px;display:flex;align-items:flex-end;padding:10px;font-size:12px;font-family:ui-monospace,Menlo,monospace;direction:ltr;justify-content:flex-end}
+.sw .lbl{padding:12px}
+.sw .lbl b{display:block;font-size:15px}
+.sw .lbl span{font-size:13px;color:var(--ink-3)}
+.ratio{margin-top:20px;display:flex;height:22px;border-radius:var(--r-pill);overflow:hidden;border:1px solid var(--line)}
+.ratio div{height:100%}
+.ratio-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:13px;color:var(--ink-3)}
+.ratio-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-inline-end:6px;vertical-align:middle}
+
+/* Type specimen */
+.spec{margin-top:24px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md)}
+.spec .row{display:grid;grid-template-columns:120px 1fr;gap:16px;align-items:baseline;padding:16px 20px;border-bottom:1px solid var(--line)}
+.spec .row:last-child{border-bottom:0}
+.spec .k{font-size:12px;color:var(--ink-3);direction:rtl}
+@media (max-width:560px){.spec .row{grid-template-columns:1fr;gap:4px}}
+
+/* Mockups */
+.mock-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:24px;align-items:start}
+.mock-label{font-size:13px;font-weight:600;color:var(--ink-3);margin-bottom:10px}
+.card-old{background:#fff;border:1px solid #E5E7EB;border-radius:16px;overflow:hidden;color:#111827;font-family:var(--f-ui);max-width:300px}
+.card-old .ph{aspect-ratio:1/1;background:linear-gradient(135deg,#3B82F6,#F97316);position:relative;display:grid;place-items:center}
+.card-old .ph .sil{width:46%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.85)}
+.card-old .badge{position:absolute;top:10px;right:10px;background:#fff;border-radius:999px;font-size:11px;font-weight:700;color:#047857;padding:4px 10px}
+.card-old .heart{position:absolute;top:10px;left:10px;width:30px;height:30px;border-radius:50%;background:#fff}
+.card-old .b{padding:12px 14px 14px}
+.card-old .r1{display:flex;justify-content:space-between;font-weight:600}
+.card-old .sub{font-size:13px;color:#6B7280}
+.card-old .modes{display:flex;gap:4px;margin-top:6px}
+.card-old .modes span{background:#F3F4F8;border-radius:6px;font-size:11px;padding:1px 6px;color:#4B5563}
+.card-old .foot{display:flex;justify-content:space-between;border-top:1px solid #E5E7EB;margin-top:12px;padding-top:12px}
+.card-old .price{background:#EEF2FF;color:#3730A3;border-radius:999px;font-size:13px;font-weight:700;padding:6px 12px}
+.card-old .go{border:1px solid #C7D2FE;color:#4338CA;border-radius:999px;font-size:12px;font-weight:600;padding:6px 12px}
+
+.card-new{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;max-width:300px;transition:transform .2s,box-shadow .2s}
+.card-new:hover{transform:translateY(-2px);box-shadow:0 12px 28px -12px rgba(22,18,63,.25)}
+.card-new .ph{aspect-ratio:4/5;position:relative;background:linear-gradient(160deg,#C9C4F2 0%,#8E86E8 55%,#4F46E5 100%)}
+.card-new .ph .face{position:absolute;inset:18% 22% 0;border-radius:48% 48% 0 0;background:linear-gradient(180deg,#F1D3BE 0 42%,#2A2A40 42% 100%)}
+.card-new .ph .avail{position:absolute;bottom:10px;right:10px;background:rgba(255,255,255,.95);color:#0B7A55;font-size:12px;font-weight:600;border-radius:var(--r-pill);padding:4px 10px;display:flex;gap:6px;align-items:center}
+.card-new .ph .avail::before{content:"";width:7px;height:7px;border-radius:50%;background:#0E9F6E}
+.card-new .b{padding:14px 16px 16px;display:grid;gap:4px}
+.card-new .nm{display:flex;align-items:center;gap:6px;font-weight:600;font-size:17px}
+.vchk{width:16px;height:16px;border-radius:50%;background:var(--ok);display:inline-grid;place-items:center;color:#fff;font-size:10px;font-weight:700}
+.card-new .hl{font-family:var(--f-ed);font-size:16px;line-height:1.35;color:var(--ink)}
+.card-new .row{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;font-size:14px;color:var(--ink-2)}
+.card-new .row b{color:var(--ink);font-size:17px}
+.card-new .st{color:var(--star)}
+.tnum{font-variant-numeric:tabular-nums}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+.notes{font-size:14px;color:var(--ink-2);display:grid;gap:8px;margin:0;padding-inline-start:18px}
+
+/* Flow */
+.flow{margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;counter-reset:s}
+.step{counter-increment:s;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;position:relative}
+.step::before{content:counter(s);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--indigo);color:#fff;font-weight:600;font-size:14px;margin-bottom:10px}
+.step b{display:block;margin-bottom:4px}
+.step p{font-size:14px;color:var(--ink-2)}
+.step.now::before{background:var(--spark)}
+
+.phone{width:min(300px,100%);border:1px solid var(--line);border-radius:34px;padding:10px;background:var(--surface);box-shadow:0 20px 40px -24px rgba(22,18,63,.35)}
+.phone .scr{border-radius:26px;overflow:hidden;background:var(--canvas);font-size:13px}
+.phone .top{padding:14px;background:var(--surface);display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line)}
+.phone .av{width:52px;height:52px;border-radius:14px;background:linear-gradient(160deg,#C9C4F2,#4F46E5);flex:none}
+.phone .pn{font-weight:600;font-size:15px}
+.phone .pm{color:var(--ink-3);font-size:12px}
+.phone .slots{padding:14px;display:grid;gap:8px}
+.phone .slots .d{font-weight:600;font-size:12px;color:var(--ink-2)}
+.phone .sr{display:flex;gap:6px;flex-wrap:wrap}
+.phone .s{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px 10px;font-weight:500}
+.phone .s.on{background:var(--indigo);border-color:var(--indigo);color:#fff}
+.phone .sheet{background:var(--surface);border-top:1px solid var(--line);padding:14px;display:grid;gap:8px}
+.phone .sheet .ln{display:flex;justify-content:space-between;color:var(--ink-2)}
+.phone .sheet .ln b{color:var(--ink)}
+.phone .cta{background:var(--indigo);color:#fff;text-align:center;border-radius:var(--r-pill);padding:11px;font-weight:600;font-size:14px}
+.phone .fine{font-size:11px;color:var(--ink-3);text-align:center}
+
+/* Innovation */
+.inno{margin-top:24px;display:grid;gap:12px}
+.inno article{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:20px;display:grid;gap:8px}
+.inno .hd{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+.inno h4{margin:0;font-size:18px;font-weight:600}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;border-radius:var(--r-pill);padding:2px 10px;border:1px solid var(--line);color:var(--ink-2)}
+.tag.hi{border-color:transparent;background:var(--ok-soft);color:var(--ok)}
+.inno p{color:var(--ink-2);font-size:15px}
+
+/* Roadmap */
+.road{margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.phase{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:20px}
+.phase .when{font-size:13px;color:var(--spark);font-weight:600}
+.phase h4{margin:4px 0 12px;font-family:var(--f-ed);font-size:22px}
+.phase ul{margin:0;padding-inline-start:18px;display:grid;gap:7px;font-size:14px;color:var(--ink-2)}
+
+.honest{margin-top:24px;background:var(--surface);border:1px dashed var(--line);border-radius:var(--r-md);padding:20px;color:var(--ink-2);font-size:15px}
+.honest ul{margin:8px 0 0;padding-inline-start:18px;display:grid;gap:6px}
+footer.end{padding-block:40px;color:var(--ink-3);font-size:13px}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="page" dir="rtl" lang="he">
+
+<header class="hero">
+  <div class="wrap wide">
+    <div class="kicker"><span class="dot"></span> בדיקת עיצוב וחוויית משתמש · skillup-web · אוקטובר 2026</div>
+    <h1>רף גבוה.<br><em>סף נמוך.</em></h1>
+    <p class="lede">שפת מותג, ממצאי בדיקה ותוכנית שדרוג ל-SkillUp: איך להיראות כמו המוצר הכי טוב בשוק השיעורים הפרטיים, ולהרגיש נגישים לכל תלמיד, הורה ומורה בישראל.</p>
+    <div class="meta"><span>125 קובצי קוד נקראו</span><span>האתר נבדק חי בדסקטופ ובנייד</span><span>16 ממצאים</span><span>10 רעיונות לחדשנות</span><span>מפת דרכים ב-3 שלבים</span></div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="תוכן העניינים">
+  <div class="wrap wide">
+    <a href="#bottom">בקצרה</a><a href="#good">מה עובד</a><a href="#findings">ממצאים</a><a href="#brand">פלטפורמת מותג</a><a href="#voice">שפה וטון</a><a href="#visual">מערכת חזותית</a><a href="#components">רכיבים</a><a href="#flows">מסעות משתמש</a><a href="#future">חדשנות 2030</a><a href="#roadmap">מפת דרכים</a>
+  </div>
+</nav>
+
+<!-- ===== Bottom line ===== -->
+<section id="bottom">
+  <div class="wrap">
+    <div class="sec-n">השורה התחתונה</div>
+    <h2>הבסיס הטכני מצוין. המותג עוד לא קיים.</h2>
+    <p class="intro">האתר בנוי נכון: עברית מימין לשמאל בלי באגים, מספרים שלא קופצים, SEO רציני, נגישות בסיסית. אבל מבחינה חזותית הוא נראה כמו תבנית איכותית של שוק דו-צדדי, ולא כמו מותג. אין בו שום דבר שאומר "חינוך", שום דבר שאומר "ישראל", ושום דבר שמסביר למה לסמוך דווקא עליכם.</p>
+
+    <div class="thesis">
+      <div class="big">פרימיום ב<span>סטנדרט</span>,<br>נגיש ב<span>סף</span>.</div>
+      <p class="s">זה הרעיון המארגן שאני מציע לכל החלטה במוצר. פרימיום לא אומר יוקרתי ויקר, הוא אומר שבדקנו, שזה עובד, ושאין הפתעות. נגיש לא אומר זול, הוא אומר שכל אחד מבין מה קורה ומצליח לקבוע שיעור בדקה, בשפה שלו, מהטלפון שלו.</p>
+    </div>
+
+    <ol class="points">
+      <li><span><b>האמון לא מוצג, הוא רק נטען.</b> התג "מורה מאומת" מופיע כמעט על כל כרטיס ולא מוסבר מה נבדק. אין סטנדרט לתמונות פרופיל. הורה שמחפש מורה לילד בן 12 לא מקבל את מה שהוא צריך כדי להחליט.</span></li>
+      <li><span><b>הכסף מוסתר.</b> במוצר יש תשלום, קרדיטים וסטטוס "ממתין לתשלום", אבל אף מסך לא מסביר מתי משלמים, איך, ומה קורה בביטול. אצל קהל רגיש למחיר, שקיפות בכסף היא האמון עצמו.</span></li>
+      <li><span><b>הדרך לשיעור ארוכה מדי.</b> השעות הפנויות בפרופיל לא לחיצות. האשף מתחיל בפרטים ולא בזמן. הכפתור אומר "קביעת שיעור" כשבפועל נשלחת בקשה.</span></li>
+      <li><span><b>יש שתי מערכות עיצוב שמתחרות.</b> רכיבי דף נחיתה ישנים, כפתור עם גרדיאנט, ניווט אחר בעמודי משפט, 3 גוונים של צהוב לכוכבים, 13 רדיוסים שונים. הסחף הזה מורגש גם אם לא מזהים אותו.</span></li>
+      <li><span><b>ההזדמנות לשנת 2030 היא התאמה, לא חיפוש.</b> התחרות לא תהיה על מי מציג יותר מורים, אלא על מי מבין הכי מהר מה התלמיד צריך ומוכיח שזה עבד. יומן התקדמות, התאמה בשיחה וקביעה מיידית הם הכיוון.</span></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== What works ===== -->
+<section id="good">
+  <div class="wrap">
+    <div class="sec-n">01 · כנות</div>
+    <h2>מה כבר עובד טוב, ושומרים עליו</h2>
+    <div class="grid2">
+      <div class="tile"><b>RTL ברמה גבוהה</b><p>מחירים וטלפונים מבודדים לכיוון שמאל-לימין, ספרות טבלאיות, אייקונים שמתהפכים נכון. רוב האתרים בישראל לא מגיעים לרמה הזו.</p></div>
+      <div class="tile"><b>מבנה SEO חזק</b><p>עמודי עיר ומקצוע, נתונים מובנים, מטא-דאטה לכל מורה. זה נכס שיווקי אמיתי לטווח ארוך.</p></div>
+      <div class="tile"><b>פנייה ברבים, בגובה העיניים</b><p>"מחפשים, משווים וקובעים". הטון חם וישיר ברוב האתר. צריך רק להשלים את העקביות.</p></div>
+      <div class="tile"><b>כרטיס הזמנה דביק</b><p>פס תחתון בנייד וכרטיס צד בדסקטופ. התבנית נכונה, ההיררכיה בתוכה צריכה חידוד.</p></div>
+      <div class="tile"><b>משמעת עיצובית מתועדת</b><p>יש מסמך עקרונות (ds-bundle). זו נקודת פתיחה נדירה. הבעיה היא שהקוד לא תמיד מציית לו.</p></div>
+      <div class="tile"><b>הזמנה בטוחה מבחינה טכנית</b><p>מפתח idempotency, טיפול בשעה שנתפסה, שלד טעינה. הבסיס לחוויית "זה פשוט עובד" כבר קיים.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Findings ===== -->
+<section id="findings">
+  <div class="wrap">
+    <div class="sec-n">02 · ממצאים</div>
+    <h2>16 ממצאים, לפי חומרה</h2>
+    <p class="intro">כל ממצא מגובה בקוד או במסך שבדקתי. הנתונים באתר המקומי הם מסביבת הפיתוח (Supabase dev), ולכן ממצאי התוכן מתייחסים לחוסר בכללים ולא לפרופיל מסוים.</p>
+    <div class="filters" role="group" aria-label="סינון לפי חומרה">
+      <button type="button" data-f="all" aria-pressed="true">הכול</button>
+      <button type="button" data-f="c" aria-pressed="false">קריטי</button>
+      <button type="button" data-f="h" aria-pressed="false">גבוה</button>
+      <button type="button" data-f="m" aria-pressed="false">בינוני</button>
+    </div>
+    <div class="findings" id="findingsList">
+
+      <details class="f" data-s="c"><summary><span class="sev c">קריטי</span><span class="t">התשלום קיים במוצר אבל לא מוסבר באף מסך</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>באשף ההזמנה יש קרדיטים, סכום "לתשלום" ושליחה עם אמצעי תשלום <code>card</code> קבוע. ב"השיעורים שלי" מופיע סטטוס "ממתין לתשלום" ו"הוחזר". אבל לפני הלחיצה המשתמש לא יודע: מתי מחויבים, למי משלמים, באיזה אמצעי, ומה מדיניות הביטול. כלל ה-ds-bundle "לא מדברים על כסף" נכון לעמלות, ושגוי לשקיפות.</p>
+        <p><b>הצעה:</b> שורת "איך משלמים" קבועה בכרטיס ההזמנה ובסיכום: "לא מחויבים עד שהמורה מאשר. ביטול חינם עד 24 שעות לפני." לפרט אמצעי תשלום מקומיים (ביט, Apple Pay, כרטיס) כשזה רלוונטי.</p>
+        <p><span class="file">BookingWizard.tsx:197</span> <span class="file">bookings/page.tsx:23</span></p></div></details>
+
+      <details class="f" data-s="c"><summary><span class="sev c">קריטי</span><span class="t">השעות הפנויות בפרופיל הן טקסט, לא כפתורים</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>"זמינות קרובה" מציגה שעות כגלולות שנראות לחיצות, אבל הן <code>span</code>. זה הרגע הכי חם במסע (התלמיד ראה שעה שנוחה לו), והמוצר שולח אותו לחפש שוב בתוך האשף.</p>
+        <p><b>הצעה:</b> כל שעה פותחת את ההזמנה עם השעה כבר מסומנת. אותו דבר בכרטיס המורה: "פנוי מחר 17:00".</p>
+        <p><span class="file">tutors/[id]/page.tsx:475</span></p></div></details>
+
+      <details class="f" data-s="c"><summary><span class="sev c">קריטי</span><span class="t">"מורה מאומת" על כמעט כל כרטיס, בלי הסבר מה נבדק</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>תג שמופיע על כולם לא מבדל אף אחד. הורים בישראל רוצים לדעת שלושה דברים: שזה באמת האדם, שיש לו הכשרה, ושבטוח להשאיר אותו עם ילד.</p>
+        <p><b>הצעה:</b> שכבות אימות גלויות: זהות מאומתת, תעודה או השכלה מאומתת, ואישור משטרה לעבודה עם קטינים כשהמורה מעלה אותו. לכל שכבה טולטיפ של משפט אחד. כדאי לבדוק עם עורך דין את הנוסח לגבי האישור.</p>
+        <p><span class="file">TeacherCard.tsx:476</span></p></div></details>
+
+      <details class="f" data-s="c"><summary><span class="sev c">קריטי</span><span class="t">אין סטנדרט ובקרה לתמונות פרופיל</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>במסלול "מורים מובילים" בדף הבית (נתוני פיתוח) מופיעים: צללית גנרית, תמונת פרחים, צילום הופעה, וצילום מסך של טופס התחברות שבו כתובת מייל גלויה. בלי כללים ובקרה, זה מה שיגיע ל-production, ומיקום "מובילים" מגביר את הנזק.</p>
+        <p><b>הצעה:</b> בדיקה אוטומטית בהעלאה (פנים מזוהות, לא צילום מסך, בלי טקסט), מדריך צילום קצר למורים, ותנאי סף למסלולי דף הבית: תמונה תקינה ולפחות 3 ביקורות.</p></div></details>
+
+      <details class="f" data-s="h"><summary><span class="sev h">גבוה</span><span class="t">אין מקום להורה במוצר</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>ההרשמה מציעה רק "תלמיד/ה" או "מורה". בשיעורים לבית הספר מי שמחפש, משווה ומשלם הוא בדרך כלל ההורה. "למי השיעור?" מופיע כשדה רשות בשלב הראשון באשף.</p>
+        <p><b>הצעה:</b> תפקיד "הורה" עם פרופילי ילדים (שם, כיתה, מגמה, יחידות), קביעה בשם הילד, ועדכוני התקדמות להורה.</p>
+        <p><span class="file">SignupForm.tsx:114</span> <span class="file">BookingWizard.tsx:41</span></p></div></details>
+
+      <details class="f" data-s="h"><summary><span class="sev h">גבוה</span><span class="t">שתי מערכות עיצוב חיות זו לצד זו</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>תיקיית <code>components/landing</code> מכילה 11 רכיבים מדף הנחיתה הקודם, רובם לא בשימוש. <code>Button.tsx</code> עם גרדיאנט ונצנוץ, ו-<code>Navbar</code>/<code>Footer</code> הישנים עדיין עוטפים את תנאי השימוש ומדיניות הפרטיות. מי שלוחץ "תנאי שימוש" באמצע הזמנה עובר למותג אחר.</p>
+        <p><span class="file">LegalPageLayout.tsx</span> <span class="file">ui/Button.tsx</span></p></div></details>
+
+      <details class="f" data-s="h"><summary><span class="sev h">גבוה</span><span class="t">הכפתור מבטיח "קביעה" כשבפועל נשלחת בקשה</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>"אישור וקביעת שיעור" ואז מסך "הבקשה נשלחה למורה". פער בין ההבטחה לתוצאה הוא שחיקת אמון קטנה בכל הזמנה. בנוסף, בדף הפרופיל הכפתור הוא "הזמנת שיעור" ובאשף "קביעת שיעור".</p>
+        <p><b>הצעה:</b> "שליחת בקשה לרותם" כשנדרש אישור. "קביעת שיעור" רק כשהקביעה מיידית.</p></div></details>
+
+      <details class="f" data-s="h"><summary><span class="sev h">גבוה</span><span class="t">פרופיל בנייד: המסך הראשון הוא באנר ותמונה</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>ב-375 פיקסלים, תמונת רקע (במקרה שנבדק: מעגל חשמלי גנרי) ותמונת פרופיל גדולה תופסות את כל המסך הראשון. שם, דירוג וזמינות מתחת. כפתור התמיכה הצף יושב צמוד מעל "הזמנת שיעור".</p>
+        <p><b>הצעה:</b> כותרת קומפקטית (תמונה 72px לצד שם, תגי אימות, דירוג), באנר רק בדסקטופ, וכפתור תמיכה שעולה מעל הפס הדביק או נעלם בעמוד פרופיל.</p></div></details>
+
+      <details class="f" data-s="h"><summary><span class="sev h">גבוה</span><span class="t">אין הצהרת נגישות, ואין מצב כהה באתר</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>תקנות הנגישות בישראל (לפי ת"י 5568) מחייבות אתרים מסחריים בהצהרת נגישות ובעמידה ב-AA. לא מצאתי עמוד כזה. גם 35 שימושים בטקסט 13px ו-12 ב-11px הם בעייתיים לקהל רחב. האפליקציה תומכת במצב כהה, האתר לא.</p></div></details>
+
+      <details class="f" data-s="m"><summary><span class="sev m">בינוני</span><span class="t">"תקציב האינדיגו" כתוב, אבל לא מתקיים</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>בכל כרטיס שני רכיבים באינדיגו (מחיר + "לפרופיל"), כלומר 16 על מסך הבית לפני שמגיעים לכפתור אמיתי. הקטגוריות צבועות בצבעי קשת. כשהכול צבעוני, הפעולה הראשית לא בולטת.</p>
+        <p><span class="file">TeacherCard.tsx:533</span> <span class="file">page.tsx:174</span></p></div></details>
+
+      <details class="f" data-s="m"><summary><span class="sev m">בינוני</span><span class="t">טוקנים נסחפים</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>שלוש משפחות אפור במקביל (<code>dark-*</code>, <code>ink-*</code>, <code>--mk-ink</code>), שלושה צהובים לכוכב (<code>#F5A623</code>, <code>amber-400</code>, <code>#F59E0B</code>), 13 ערכי רדיוס, 12 גדלי טקסט שרירותיים. כל אחד לבד קטן. יחד הם מה שמבדיל "בנוי טוב" מ"מותג".</p></div></details>
+
+      <details class="f" data-s="m"><summary><span class="sev m">בינוני</span><span class="t">גופן Mono בלי עברית משמש לכותרות-על בעברית</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>JetBrains Mono נטען רק בלטינית, אבל <code>.eyebrow</code> מציג "מידע למורים" ו"למורים". העברית נופלת לגופן מערכת, עם ריווח אותיות ואותיות רישיות שלא קיימים בעברית.</p>
+        <p><span class="file">layout.tsx:23</span> <span class="file">globals.css .eyebrow</span></p></div></details>
+
+      <details class="f" data-s="m"><summary><span class="sev m">בינוני</span><span class="t">16 לוכסנים מגדריים מול פנייה ברבים</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>"תלמיד/ה", "מסכימ/ה", "מקליד/ה", "משתמש/ת". שאר האתר פונה ברבים וזה עובד יפה. הלוכסנים נראים בירוקרטיים ומיושנים.</p>
+        <p><b>הצעה:</b> ניסוח ניטרלי: "לומדים", "אני מסכים לתנאים" יוחלף ב"בלחיצה אתם מאשרים את...", "מקלידים...".</p></div></details>
+
+      <details class="f" data-s="m"><summary><span class="sev m">בינוני</span><span class="t">דף הבית: 10 מקטעים, כפילויות ומקטע ריק</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>הקטגוריות מופיעות פעמיים (צ'יפים בראש ורשת באמצע). "חדשים ב-SkillUp" מוצג עם כרטיס אחד ושטח ריק לצדו. הכותרת "בצורה הנוחה והנגישה ביותר" היא סופרלטיב בלי הוכחה. פאנל המורים מזכיר "מעקב אם שולם או לא", בניגוד לטון.</p></div></details>
+
+      <details class="f" data-s="m"><summary><span class="sev m">בינוני</span><span class="t">הרשמה: Google בתחתית, סיסמה כברירת מחדל</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>הדרך הקצרה מוסתרת מתחת לטופס. ב-2026 הציפייה היא Google / Apple / קוד בטלפון קודם, וסיסמה כאפשרות משנית. Passkeys הם הצעד הבא.</p>
+        <p><span class="file">SignupForm.tsx:258</span></p></div></details>
+
+      <details class="f" data-s="m"><summary><span class="sev m">בינוני</span><span class="t">איורים ואייקונים בלי שפה אחת</span><span class="chev">⌄</span></summary>
+        <div class="fb"><p>אייקוני Lucide בצבעים שונים לכל קטגוריה, אימוג'י בביו, איור שטוח גנרי בפאנל המורים, וצללית אדם כברירת מחדל לתמונה חסרה. אין חתימה חזותית שאפשר לזהות כ-SkillUp.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Brand platform ===== -->
+<section id="brand">
+  <div class="wrap">
+    <div class="sec-n">03 · פלטפורמת מותג</div>
+    <h2>מי זה SkillUp, כשהוא בשיא שלו</h2>
+    <p class="intro">אישיות המותג: <b>המורה הכי טוב שהיה לכם.</b> בקיא בלי להתנשא, רגוע גם כשיש לחץ של בגרות, ישיר לגבי מחיר וזמן, ומאמין בכם. לא מוכר, לא צועק, לא חמוד מדי.</p>
+
+    <div class="principles">
+      <div class="principle"><h4>הוכחה לפני הבטחה</h4><p>מספרים אמיתיים, פנים אמיתיות, ביקורות עם הקשר ("5 יח׳ מתמטיקה, כיתה י״א"). כל שם תואר שאי אפשר להוכיח יוצא מהאתר.</p></div>
+      <div class="principle"><h4>פעולה אחת בכל מסך</h4><p>אינדיגו רק לפעולה הראשית. אם יש שתי פעולות באינדיגו, אחת מהן לא ראשית.</p></div>
+      <div class="principle"><h4>שקיפות מלאה, מראש</h4><p>מחיר, משך, דרך תשלום, מדיניות ביטול וזמן תגובה של המורה מופיעים לפני הלחיצה, לא אחריה.</p></div>
+      <div class="principle"><h4>רוגע</h4><p>מעט צבעים, הרבה אוויר, תנועה רק כשהיא מסבירה משהו. שיעור פרטי הוא לרוב החלטה בלחץ, והממשק צריך להוריד אותו.</p></div>
+      <div class="principle"><h4>נגיש כברירת מחדל</h4><p>טקסט קריא (16px בגוף), אזורי לחיצה של 44px, ניגודיות AA, ושפה שמובנת גם למי שעברית היא לא שפת האם שלו. בהמשך: ערבית ורוסית.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Voice ===== -->
+<section id="voice">
+  <div class="wrap">
+    <div class="sec-n">04 · שפה וטון</div>
+    <h2>איך SkillUp מדבר</h2>
+    <div class="voice">
+      <div class="col yes"><h4>כן</h4><ul><li>פנייה ברבים, בגובה העיניים: "מחפשים", "קובעים"</li><li>משפטים קצרים, פועל בהתחלה</li><li>מספרים במקום תארים: "עונה תוך שעתיים"</li><li>אומרים מה קורה עכשיו ומה יקרה אחר כך</li><li>שגיאה מסבירה מה לעשות</li></ul></div>
+      <div class="col no"><h4>לא</h4><ul><li>סימני קריאה ("נהנים יותר!")</li><li>סופרלטיבים ("הכי נוח ונגיש")</li><li>לוכסנים מגדריים ("תלמיד/ה")</li><li>ז'רגון טכני או משפטי</li><li>הבטחה שהמוצר לא מקיים</li></ul></div>
+    </div>
+
+    <h3>מילון מונחים אחיד</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>מושג</th><th>המונח היחיד</th><th>במקום</th></tr></thead>
+      <tbody>
+        <tr><td>הפעולה הראשית בפרופיל</td><td class="new">קביעת שיעור</td><td class="old">הזמנת שיעור / אישור וקביעת שיעור</td></tr>
+        <tr><td>כשנדרש אישור מורה</td><td class="new">שליחת בקשה ל{שם}</td><td class="old">אישור וקביעת שיעור</td></tr>
+        <tr><td>תג אימות</td><td class="new">פרופיל מאומת (ניטרלי מגדרית)</td><td class="old">מורה מאומת</td></tr>
+        <tr><td>יצירת חשבון</td><td class="new">הרשמה</td><td class="old">יצירת חשבון / פתיחת חשבון</td></tr>
+        <tr><td>מי לומד</td><td class="new">לומדים / הילד שלכם</td><td class="old">תלמיד/ה</td></tr>
+        <tr><td>שיעור ראשון קצר</td><td class="new">שיעור היכרות</td><td class="old">(לא קיים)</td></tr>
+      </tbody></table></div>
+
+    <h3>לפני ואחרי</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>איפה</th><th>היום</th><th>מוצע</th></tr></thead>
+      <tbody>
+        <tr><td>כותרת דף הבית</td><td class="old">מורים פרטיים בישראל בצורה הנוחה והנגישה ביותר</td><td class="new">מורים פרטיים שבדקנו בשבילכם</td></tr>
+        <tr><td>תת-כותרת</td><td class="old">מחפשים, משווים וקובעים שיעור ישירות מול מורים מאומתים...</td><td class="new">פרופילים מאומתים, מחירים שקופים וזמינות אמיתית. קובעים שיעור בדקה, אונליין או פנים אל פנים.</td></tr>
+        <tr><td>פאנל מורים</td><td class="old">המורים שלנו נהנים יותר!</td><td class="new">אתם מלמדים. אנחנו דואגים לכל השאר.</td></tr>
+        <tr><td>תנאים באשף</td><td class="old">☐ קראתי ואני מסכימ/ה לתנאי השימוש</td><td class="new">בשליחת הבקשה אתם מאשרים את תנאי השימוש ומדיניות הביטול.</td></tr>
+        <tr><td>הצלחה</td><td class="old">הבקשה נשלחה למורה</td><td class="new">הבקשה אצל רותם. בדרך כלל הוא עונה תוך שעתיים, ונעדכן אתכם בוואטסאפ.</td></tr>
+        <tr><td>אין זמינות</td><td class="old">למורה אין כרגע מועדים פתוחים ביומן.</td><td class="new">היומן של רותם מלא השבוע. שלחו הודעה ותתאמו שעה, או קבלו התראה כשמתפנה מקום.</td></tr>
+      </tbody></table></div>
+  </div>
+</section>
+
+<!-- ===== Visual system ===== -->
+<section id="visual">
+  <div class="wrap wide">
+    <div class="sec-n">05 · מערכת חזותית</div>
+    <h2>צבע, טיפוגרפיה, צורה, צילום</h2>
+    <p class="intro">האינדיגו נשאר, כי הוא כבר באפליקציות ובלוגו. אבל #4F46E5 הוא בדיוק indigo-600 של Tailwind, הצבע הנפוץ ביותר במוצרי תוכנה בשנים האחרונות. מה שיהפוך אותו לשלכם זה ההקשר: כחול-לילה עמוק למשטחי פרימיום, וכתום "UP" שמסמן התקדמות.</p>
+
+    <h3>צבעים ותפקידים</h3>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#4F46E5;color:#fff">#4F46E5</div><div class="lbl"><b>אינדיגו פעולה</b><span>כפתורים, קישורים, פוקוס, בחירה. ורק זה.</span></div></div>
+      <div class="sw"><div class="chip" style="background:#16123F;color:#fff">#16123F</div><div class="lbl"><b>לילה</b><span>משטחי פרימיום: ראש דף, פוטר, מסך אישור, בסיס למצב כהה.</span></div></div>
+      <div class="sw"><div class="chip" style="background:#F97316;color:#fff">#F97316</div><div class="lbl"><b>ניצוץ (UP)</b><span>התקדמות, הישגים, "חדש", חי עכשיו. אף פעם לא טקסט רץ.</span></div></div>
+      <div class="sw"><div class="chip" style="background:#14131F;color:#fff">#14131F</div><div class="lbl"><b>דיו</b><span>טקסט ראשי. משפחת אפור אחת עם נטייה לאינדיגו.</span></div></div>
+      <div class="sw"><div class="chip" style="background:#6E6D82;color:#fff">#6E6D82</div><div class="lbl"><b>דיו 3</b><span>טקסט משני. ניגודיות AA על לבן.</span></div></div>
+      <div class="sw"><div class="chip" style="background:#F6F6FA;color:#14131F;border-bottom:1px solid #E7E6EF">#F6F6FA</div><div class="lbl"><b>קנבס</b><span>רקע עמוד. כרטיסים לבנים מעליו.</span></div></div>
+      <div class="sw"><div class="chip" style="background:#0E9F6E;color:#fff">#0E9F6E</div><div class="lbl"><b>מאומת / פנוי</b><span>אימות, אישור, "פנוי מחר".</span></div></div>
+      <div class="sw"><div class="chip" style="background:#F5A623;color:#14131F">#F5A623</div><div class="lbl"><b>כוכב</b><span>צהוב אחד לכל הדירוגים באתר.</span></div></div>
+    </div>
+    <div class="ratio" aria-hidden="true"><div style="flex:62;background:#F6F6FA"></div><div style="flex:20;background:#FFFFFF"></div><div style="flex:10;background:#14131F"></div><div style="flex:5;background:#4F46E5"></div><div style="flex:2;background:#16123F"></div><div style="flex:1;background:#F97316"></div></div>
+    <div class="ratio-legend"><span><i style="background:#F6F6FA;border:1px solid #ccc"></i>קנבס 62%</span><span><i style="background:#fff;border:1px solid #ccc"></i>משטחים 20%</span><span><i style="background:#14131F"></i>דיו 10%</span><span><i style="background:#4F46E5"></i>אינדיגו 5%</span><span><i style="background:#16123F"></i>לילה 2%</span><span><i style="background:#F97316"></i>ניצוץ 1%</span></div>
+    <p class="body">קטגוריות יוצאות מצבעי הקשת: אייקון בדיו על רקע קנבס. הצבע נשמר למידע (אימות, זמינות, דירוג) ולפעולה.</p>
+
+    <h3>טיפוגרפיה</h3>
+    <p class="body">היום: Heebo 900 צפוף לכותרות + Rubik + JetBrains Mono. Heebo הוא ברירת המחדל של חצי מהסטארטאפים בישראל, ומשקל 900 עם ריווח שלילי צועק. ההצעה: <b>Rubik</b> לכל הממשק (כבר נטען, עברית מצוינת), ו<b>Frank Ruhl Libre</b> לרגעים עריכתיים: ציטוטי ביקורות, תוצאות של תלמידים, כותרות שיווק. סריף עברי מביא תחושה של ספר, ידע ורצינות, וזה בדיוק ה"פרימיום" של עולם הלימוד. בהמשך, אם יש תקציב, רישיון לגופן תצוגה מקורי מבית יציקה ישראלי ייתן חתימה שאף מתחרה לא יכול להעתיק.</p>
+    <div class="spec">
+      <div class="row"><span class="k">תצוגה · 48 / סריף 900</span><span style="font-family:var(--f-ed);font-weight:900;font-size:clamp(32px,5vw,48px);line-height:1.1">מורים שבדקנו בשבילכם</span></div>
+      <div class="row"><span class="k">כותרת · 28 / סריף 700</span><span style="font-family:var(--f-ed);font-weight:700;font-size:28px;line-height:1.2">"עלה מ-62 ל-88 בבגרות"</span></div>
+      <div class="row"><span class="k">כותרת ממשק · 22 / Rubik 600</span><span style="font-weight:600;font-size:22px">זמינות קרובה</span></div>
+      <div class="row"><span class="k">גוף · 16 / Rubik 400</span><span style="font-size:16px">מלמד מתמטיקה ופיזיקה 7 שנים, עם התמחות בהכנה ל-4 ו-5 יחידות.</span></div>
+      <div class="row"><span class="k">משני · 14 / Rubik 500</span><span style="font-size:14px;color:var(--ink-3);font-weight:500">תל אביב · אונליין · אצל המורה</span></div>
+      <div class="row"><span class="k">מספרים · טבלאיים</span><span class="tnum" style="font-size:22px;font-weight:600"><span class="ltr">₪150</span> · <span class="ltr">4.9</span> · <span class="ltr">17:00</span></span></div>
+    </div>
+    <p class="body">סולם קבוע: 12 · 14 · 16 · 18 · 22 · 28 · 36 · 48. מינימום 14 לטקסט שמישהו צריך לקרוא. כותרות-על (eyebrow) ב-Rubik 500, בלי ריווח אותיות.</p>
+
+    <h3>צורה ותנועה</h3>
+    <div class="grid2">
+      <div class="tile"><b>3 רדיוסים בלבד</b><p>10px לשדות וצ'יפים קטנים, 16px לכרטיסים, גלולה לכפתורים. במקום 13 הערכים של היום.</p></div>
+      <div class="tile"><b>צל אחד, רק בריחוף</b><p>כרטיסים שטוחים עם קו דק. הרמה קלה בצל כחול-לילה בריחוף ובשכבות צפות.</p></div>
+      <div class="tile"><b>תנועה שמסבירה</b><p>150 עד 250 מילישניות. קפיץ קטן בבחירת שעה, רגע חגיגי אחד בהצלחת הזמנה. להוריד את הכותרת עם הגרדיאנט הזז ואת הפעימה הקבועה בכפתור החיפוש.</p></div>
+      <div class="tile"><b>אייקונים</b><p>Lucide נשאר, בקו 1.75 ובגודל 20 או 24, בצבע דיו. 9 אייקוני קטגוריה מותאמים באותו קו יהיו הנכס הראשון שמזוהה רק עם SkillUp. בלי אימוג'י בממשק.</p></div>
+    </div>
+
+    <h3>צילום ואיור</h3>
+    <div class="grid2">
+      <div class="tile"><b>תקן תמונת מורה</b><p>פנים, בגובה העיניים, אור טבעי, רקע שקט, יחס 4:5. בדיקה אוטומטית בהעלאה. אין תמונה? מונוגרמה על לילה עם נקודת ניצוץ, לא צללית אפורה.</p></div>
+      <div class="tile"><b>צילומים אמיתיים במקום איורים</b><p>יום צילום אחד עם מורים אמיתיים: שולחן מטבח בפתח תקווה, גיטרה בחיפה, דף נוסחאות לפני בגרות. זו ההשקעה עם התשואה הגבוהה ביותר לתחושת פרימיום.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Components ===== -->
+<section id="components">
+  <div class="wrap wide">
+    <div class="sec-n">06 · רכיבים</div>
+    <h2>כרטיס המורה, לפני ואחרי</h2>
+    <p class="intro">הכרטיס מופיע בכל מקום, ולכן כל שיפור בו מוכפל. הכיוון: פחות תוויות, יותר סיבה ללחוץ.</p>
+    <div class="mock-grid">
+      <div>
+        <div class="mock-label">היום</div>
+        <div class="card-old" aria-hidden="true">
+          <div class="ph"><span class="sil"></span><span class="badge">✓ מורה מאומת</span><span class="heart"></span></div>
+          <div class="b">
+            <div class="r1"><span>דין לוי</span><span style="font-size:13px">★ 5.0 <span style="color:#6B7280">(3)</span></span></div>
+            <div class="sub">כלכלה · מדעי המחשב · מתמטיקה</div>
+            <div class="sub">📍 אבן יהודה</div>
+            <div class="modes"><span>אונליין</span><span>אצל המורה</span></div>
+            <div class="foot"><span class="price">₪150 לשעה</span><span class="go">לפרופיל ›</span></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="mock-label">מוצע</div>
+        <article class="card-new">
+          <div class="ph" aria-hidden="true"><span class="face"></span><span class="avail">פנוי מחר · <span class="ltr tnum">17:00</span></span></div>
+          <div class="b">
+            <div class="nm">דין לוי <span class="vchk" title="פרופיל מאומת: זהות ותעודה">✓</span></div>
+            <div class="hl">מכין ל-5 יח׳ מתמטיקה, בסבלנות ובשיטה</div>
+            <div class="row"><span><span class="st">★</span> <b class="tnum ltr" style="font-size:15px">5.0</b> · 3 ביקורות · אבן יהודה</span></div>
+            <div class="row"><span>שיעור 60 דק׳ · אונליין או אצלו</span><b class="tnum ltr">₪150</b></div>
+          </div>
+        </article>
+      </div>
+      <div>
+        <div class="mock-label">מה השתנה ולמה</div>
+        <ul class="notes">
+          <li><b>"פנוי מחר 17:00"</b> על התמונה. הזמינות היא שיקול ההחלטה שהכי חסר היום.</li>
+          <li><b>שורת כותרת שהמורה כותב</b>, בסריף. היא מוכרת את המורה טוב יותר מרשימת מקצועות.</li>
+          <li><b>האימות הוא אייקון ליד השם</b>, עם הסבר בריחוף. לא תווית על הפנים.</li>
+          <li><b>המחיר בדיו, עם משך שיעור.</b> לא עוד אינדיגו. ₪150 בלי משך לא אומר כלום.</li>
+          <li><b>בלי כפתור "לפרופיל".</b> כל הכרטיס לחיץ. פחות רעש, אותה פעולה.</li>
+          <li><b>תמונה 4:5</b> במקום ריבוע: יותר פנים, פחות רקע.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Flows ===== -->
+<section id="flows">
+  <div class="wrap wide">
+    <div class="sec-n">07 · מסעות משתמש</div>
+    <h2>מחיפוש לשיעור, בלי לחשוב פעמיים</h2>
+
+    <h3>קביעת שיעור: הזמן קודם</h3>
+    <p class="body">היום: פרופיל → כפתור → התחברות → פרטים → מועד → סיכום עם תיבת סימון → בקשה. מוצע: התלמיד בוחר שעה איפה שהוא רואה אותה, והשאר נאסף בגיליון אחד.</p>
+    <div class="mock-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+      <div class="flow" style="margin-top:0;grid-template-columns:1fr">
+        <div class="step now"><b>בוחרים שעה</b><p>מהכרטיס, מהפרופיל או מהיומן. השעה נשמרת גם אם צריך להתחבר באמצע.</p></div>
+        <div class="step"><b>למי ומה</b><p>"לי" או "לנועה, כיתה י״א". המקצוע והיחידות ממולאים מהחיפוש. אופן הלימוד עם המחיר שלו.</p></div>
+        <div class="step"><b>סיכום שקוף</b><p>סכום, משך, "לא מחויבים עד שרותם מאשר", ביטול חינם עד 24 שעות. בלי תיבת סימון.</p></div>
+        <div class="step"><b>מה קורה עכשיו</b><p>ציר זמן: נשלח → רותם מאשר (בדרך כלל תוך שעתיים) → תזכורת בוואטסאפ יום לפני. הוספה ליומן בלחיצה.</p></div>
+      </div>
+      <div style="display:flex;justify-content:center">
+        <div class="phone" aria-label="הדמיה: גיליון קביעת שיעור בנייד">
+          <div class="scr">
+            <div class="top"><span class="av"></span><div><div class="pn">רותם לוי <span class="vchk">✓</span></div><div class="pm">★ 4.8 · 12 ביקורות · עונה תוך שעתיים</div></div></div>
+            <div class="slots">
+              <div class="d">מחר, יום ג׳</div>
+              <div class="sr"><span class="s tnum">16:00</span><span class="s on tnum">17:00</span><span class="s tnum">18:30</span></div>
+              <div class="d">יום ד׳, 21.10</div>
+              <div class="sr"><span class="s tnum">15:00</span><span class="s tnum">19:00</span></div>
+            </div>
+            <div class="sheet">
+              <div class="ln"><span>מתמטיקה 5 יח׳ · לנועה</span><span>אונליין</span></div>
+              <div class="ln"><span>60 דק׳, מחר <span class="ltr tnum">17:00</span></span><b class="ltr tnum">₪190</b></div>
+              <div class="cta">שליחת בקשה לרותם</div>
+              <div class="fine">לא מחויבים עד האישור · ביטול חינם עד 24 שעות לפני</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>דף הבית: 7 מקטעים במקום 10</h3>
+    <div class="flow">
+      <div class="step"><b>הבטחה + חיפוש + הוכחה</b><p>כותרת, שורת חיפוש, ומתחתיה מספרים אמיתיים ופנים של מורים.</p></div>
+      <div class="step"><b>מה המטרה?</b><p>בגרות · פסיכומטרי · לשפר ציון · ללמוד משהו חדש · למבוגרים. כניסה לפי צורך, לא לפי קטגוריה.</p></div>
+      <div class="step"><b>פנויים השבוע</b><p>מורים מובילים עם השעה הפנויה הבאה. מוצג רק כשיש לפחות 4.</p></div>
+      <div class="step"><b>איך זה עובד</b><p>3 צעדים, כולל איך משלמים ומה קורה בביטול.</p></div>
+      <div class="step"><b>מה בדקנו</b><p>שכבות האימות, מוסברות בשפה פשוטה. זה המקטע שהורים צריכים.</p></div>
+      <div class="step"><b>תוצאות</b><p>ציטוטים עם הקשר, בסריף: מי, איזה מקצוע, מה השתנה.</p></div>
+      <div class="step"><b>למורים + שאלות</b><p>ערים עוברות לפוטר. ה-SEO נשמר, הרעש יורד.</p></div>
+    </div>
+
+    <h3>חיפוש ופרופיל</h3>
+    <div class="grid2">
+      <div class="tile"><b>מסננים שאנשים באמת צריכים</b><p>"פנוי השבוע", שפת לימוד (עברית, ערבית, רוסית, אנגלית), מגדר המורה (חשוב בחלק מהמגזרים), רמה ויחידות לימוד. מחיר ודירוג קיימים.</p></div>
+      <div class="tile"><b>ביקורות עם הקשר</b><p>תג "אחרי שיעור ב-SkillUp", מקצוע ורמה לכל ביקורת, ותשובת המורה. מיון לפי רלוונטיות למה שחיפשתם.</p></div>
+      <div class="tile"><b>שאלות מהירות למורה</b><p>צ'יפים כמו "מלמד גם 3 יח׳?" או "אפשר שיעור ביום שישי?" שממלאים הודעה. מוריד את המחסום לפנייה ראשונה.</p></div>
+      <div class="tile"><b>סרטון היכרות למעלה</b><p>45 שניות עם המורה, לפני הביו. האלמנט הכי משכנע בשוק הזה, ואפשר לעודד אותו בציון שלמות פרופיל.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Innovation ===== -->
+<section id="future">
+  <div class="wrap">
+    <div class="sec-n">08 · חדשנות</div>
+    <h2>מה יגרום ל-SkillUp להיראות כמו 2030</h2>
+    <p class="intro">לא אפקטים חזותיים, אלא מוצר שמבין, מוכיח ונעלם מהדרך. מסודר לפי השפעה ביחס למאמץ.</p>
+    <div class="inno">
+      <article><div class="hd"><h4>התאמה בשיחה</h4><div class="tags"><span class="tag hi">השפעה גבוהה</span><span class="tag">מאמץ בינוני</span></div></div><p>"מחפשת מורה למתמטיקה 5 יח׳ לבת שלי בכיתה י״א, בערבים, עד 150 ₪". בעברית או בערבית, בהקלדה או בקול. חוזרות 3 התאמות, ולכל אחת משפט "למה זה מתאים לכם". הצ'אט לתמיכה כבר קיים, אפשר לבנות עליו.</p></article>
+      <article><div class="hd"><h4>יומן התקדמות</h4><div class="tags"><span class="tag hi">השפעה גבוהה</span><span class="tag">מאמץ בינוני</span></div></div><p>אחרי כל שיעור, המורה מוסיף שתי שורות (יש כבר "הערות על השיעור" באפליקציה). התלמיד וההורה רואים ציר התקדמות. זה הופך את SkillUp ממקום שמוצאים בו מורה למקום שבו רואים שזה עובד, ונותן ביקורות מבוססות תוצאה.</p></article>
+      <article><div class="hd"><h4>קביעה מיידית ושיעור היכרות</h4><div class="tags"><span class="tag hi">השפעה גבוהה</span><span class="tag">מאמץ נמוך</span></div></div><p>מורים שמסכימים מקבלים תג "אישור מיידי" והשעה נסגרת מיד. שיעור היכרות של 20 דקות במחיר מופחת מוריד את הסיכון של הפעם הראשונה.</p></article>
+      <article><div class="hd"><h4>ההבטחה של SkillUp</h4><div class="tags"><span class="tag hi">השפעה גבוהה</span><span class="tag">החלטה עסקית</span></div></div><p>"השיעור הראשון לא התאים? נמצא לכם מורה אחר, על חשבוננו." משפט אחד כזה עושה יותר לתחושת פרימיום מכל עיצוב. דורש החלטה עסקית ובדיקה של השפעה על המורים.</p></article>
+      <article><div class="hd"><h4>וואטסאפ כערוץ ראשי</h4><div class="tags"><span class="tag hi">השפעה גבוהה</span><span class="tag">מאמץ בינוני</span></div></div><p>בישראל, וואטסאפ הוא תיבת הדואר האמיתית. אישורים, תזכורות והזזת שיעור בכפתור אחד בתוך השיחה.</p></article>
+      <article><div class="hd"><h4>ממשק בערבית וברוסית</h4><div class="tags"><span class="tag">השפעה גבוהה</span><span class="tag">מאמץ בינוני</span></div></div><p>האתר כבר בנוי מימין לשמאל, אז ערבית היא הצעד הטבעי. זה גם המימוש הכי ישיר של "נגיש לכולם", בפלח שבו התחרות חלשה.</p></article>
+      <article><div class="hd"><h4>מאמן פרופיל למורים</h4><div class="tags"><span class="tag">השפעה בינונית</span><span class="tag">מאמץ נמוך</span></div></div><p>ציון שלמות, בדיקת תמונה, הצעה לשורת כותרת וביו. מורים עם פרופיל טוב מעלים את רמת כל האתר.</p></article>
+      <article><div class="hd"><h4>כניסה בלי סיסמה</h4><div class="tags"><span class="tag">השפעה בינונית</span><span class="tag">מאמץ נמוך</span></div></div><p>Google, Apple, קוד ב-SMS ו-Passkeys. פחות נטישה ברגע הכי רגיש, בין בחירת שעה לשליחה.</p></article>
+      <article><div class="hd"><h4>חבילות ומחיר ברור</h4><div class="tags"><span class="tag">השפעה בינונית</span><span class="tag">החלטה עסקית</span></div></div><p>חבילת 5 או 10 שיעורים, אמצעי תשלום מקומיים, וחלוקה בין הורים. הכסף הופך מנקודת חיכוך לנקודת אמון.</p></article>
+      <article><div class="hd"><h4>מצב כהה ומצב קריאה נוחה</h4><div class="tags"><span class="tag">השפעה נמוכה</span><span class="tag">מאמץ נמוך</span></div></div><p>התאמה לאפליקציה, ומתג לטקסט גדול וניגודיות גבוהה. מתאים לתלמידים עם לקויות למידה ולמבוגרים.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Roadmap ===== -->
+<section id="roadmap">
+  <div class="wrap wide">
+    <div class="sec-n">09 · מפת דרכים</div>
+    <h2>שלושה שלבים</h2>
+    <div class="road">
+      <div class="phase"><div class="when">שבועיים</div><h4>ניקיון ועקביות</h4><ul>
+        <li>מילון מונחים, בלי לוכסנים, תיקון הכפתור ל"שליחת בקשה"</li>
+        <li>שעות לחיצות בפרופיל, עם השעה שמורה אחרי התחברות</li>
+        <li>הסתרת מסלולים עם פחות מ-4 מורים, תנאי סף למסלול "מובילים"</li>
+        <li>מחיקת components/landing, עמודי משפט עם הניווט החדש</li>
+        <li>צהוב אחד, 3 רדיוסים, משפחת אפור אחת, eyebrow בלי Mono</li>
+        <li>כרטיס בלי "לפרופיל", מחיר בדיו</li>
+        <li>Google למעלה בהרשמה, כפתור תמיכה מעל הפס הדביק</li>
+        <li>הצהרת נגישות</li>
+      </ul></div>
+      <div class="phase"><div class="when">4 עד 8 שבועות</div><h4>מערכת המותג</h4><ul>
+        <li>טוקנים v2 (צבע, טיפוגרפיה, צורה) בווב ובאפליקציות</li>
+        <li>סריף עריכתי, 9 אייקוני קטגוריה מותאמים</li>
+        <li>תקן תמונה ובדיקה אוטומטית בהעלאה</li>
+        <li>כרטיס מורה v2 עם "פנוי מחר"</li>
+        <li>גיליון קביעת שיעור v2 עם שקיפות תשלום וביטול</li>
+        <li>תפקיד הורה ופרופילי ילדים</li>
+        <li>שכבות אימות גלויות ודף "מה בדקנו"</li>
+        <li>דף בית ב-7 מקטעים, יום צילום</li>
+      </ul></div>
+      <div class="phase"><div class="when">רבעון ומעלה</div><h4>היתרון של 2030</h4><ul>
+        <li>התאמה בשיחה, בעברית ובערבית</li>
+        <li>יומן התקדמות וביקורות מבוססות תוצאה</li>
+        <li>קביעה מיידית ושיעור היכרות</li>
+        <li>התראות והזזת שיעורים בוואטסאפ</li>
+        <li>ממשק בערבית, אחריו רוסית</li>
+        <li>Passkeys, חבילות שיעורים, מצב כהה</li>
+      </ul></div>
+    </div>
+
+    <div class="honest">
+      <b>מה לא בדקתי, כדי שיהיה ברור:</b>
+      <ul>
+        <li>לא התחברתי ולא הרצתי הזמנה מקצה לקצה. אשף ההזמנה, "השיעורים שלי" וההודעות נבדקו מהקוד בלבד.</li>
+        <li>האתר רץ מול סביבת הפיתוח, ולכן התוכן (תמונות, ביקורות, מורים) הוא נתוני בדיקה.</li>
+        <li>אין לי נתוני שימוש או המרה. סדרי העדיפויות מבוססים על ניסיון בשווקים דומים, וכדאי לאמת אותם מול אנליטיקס וראיונות עם 5 עד 8 הורים ומורים.</li>
+        <li>נושאי חוק (נגישות, אישור לעבודה עם קטינים, ניסוח "ההבטחה") צריכים בדיקה משפטית לפני יישום.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="end"><div class="wrap wide">SkillUp · בדיקת חוויה ושפת מותג · נכתב על בסיס skillup-web (ענף marketplace, קומיט 269e18f)</div></footer>
+</div>
+
+<script>
+(function(){
+  var btns=document.querySelectorAll('.filters button');
+  var items=document.querySelectorAll('#findingsList details');
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    var f=b.getAttribute('data-f');
+    btns.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+    items.forEach(function(d){d.hidden=!(f==='all'||d.getAttribute('data-s')===f)});
+  })});
+})();
+</script>
