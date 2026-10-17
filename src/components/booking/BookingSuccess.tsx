@@ -11,6 +11,8 @@ export interface BookingOutcome {
   createdSlots: AvailabilitySlot[];
   failed: number;
   anyConfirmed: boolean;
+  /** Ids of created slots whose booking came back already confirmed. */
+  confirmedSlotIds: string[];
 }
 
 interface BookingSuccessProps {
@@ -22,8 +24,8 @@ interface BookingSuccessProps {
 const ICS_FILE_NAME = "skillup-lesson.ics";
 
 /** Download a client-built .ics through a temporary blob: URL. */
-function downloadIcs(event: CalendarEvent) {
-  const blob = new Blob([buildIcs(event)], { type: "text/calendar;charset=utf-8" });
+function downloadIcs(events: CalendarEvent[]) {
+  const blob = new Blob([buildIcs(events)], { type: "text/calendar;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -38,16 +40,19 @@ function downloadIcs(event: CalendarEvent) {
 // two ways forward. No response-time promise: there is no data behind one.
 export default function BookingSuccess({ teacher, subjectName, outcome }: BookingSuccessProps) {
   const name = teacher.display_name;
-  const first = outcome.createdSlots[0];
-  const event: CalendarEvent | null = first
-    ? {
-        uid: `${first.id}@skillup`,
-        title: subjectName ? `שיעור ${subjectName} עם ${name}` : `שיעור עם ${name}`,
-        startIso: first.start_at,
-        endIso: first.end_at,
-        description: `התשלום והביטול נקבעים ישירות מול ${name}.`,
-      }
-    : null;
+  const confirmed = new Set(outcome.confirmedSlotIds);
+  // Every created booking goes into the one .ics. Until the teacher confirms,
+  // the event says it is a request.
+  const events: CalendarEvent[] = outcome.createdSlots.map((slot) => ({
+    uid: `${slot.id}@skillup`,
+    title: confirmed.has(slot.id) ? `שיעור עם ${name}` : `בקשת שיעור עם ${name}`,
+    startIso: slot.start_at,
+    endIso: slot.end_at,
+    description: subjectName
+      ? `${subjectName}. התשלום והביטול נקבעים ישירות מול ${name}.`
+      : `התשלום והביטול נקבעים ישירות מול ${name}.`,
+  }));
+  const event = events[0] ?? null;
 
   const timeline = [
     { label: "נשלח", done: true },
@@ -110,7 +115,7 @@ export default function BookingSuccess({ teacher, subjectName, outcome }: Bookin
           לשיעורים שלי
         </Link>
         {event && (
-          <button type="button" onClick={() => downloadIcs(event)} className={secondaryBtn}>
+          <button type="button" onClick={() => downloadIcs(events)} className={secondaryBtn}>
             <CalendarPlus strokeWidth={1.75} size={20} aria-hidden="true" />
             הוספה ליומן
           </button>
@@ -128,7 +133,7 @@ export default function BookingSuccess({ teacher, subjectName, outcome }: Bookin
             rel="noopener noreferrer"
             className="inline-flex min-h-11 items-center font-medium text-ink-2 underline hover:text-ink"
           >
-            Google Calendar
+            {events.length > 1 ? "Google Calendar (המועד הראשון)" : "Google Calendar"}
           </a>
         </p>
       )}

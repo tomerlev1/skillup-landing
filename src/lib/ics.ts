@@ -20,22 +20,29 @@ function escapeText(text: string): string {
     .replace(/\r?\n/g, "\\n");
 }
 
-/** A one-event calendar file, built in the browser (no server round-trip). */
-export function buildIcs(e: CalendarEvent): string {
+/**
+ * A calendar file with one VEVENT per event, built in the browser (no server
+ * round-trip). Accepts a single event or a list (e.g. every created booking).
+ */
+export function buildIcs(events: CalendarEvent | CalendarEvent[]): string {
+  const list = Array.isArray(events) ? events : [events];
+  const stamp = utcStamp(new Date().toISOString());
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
     "PRODID:-//SkillUp//Booking//HE",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
-    "BEGIN:VEVENT",
-    `UID:${e.uid}`,
-    `DTSTAMP:${utcStamp(new Date().toISOString())}`,
-    `DTSTART:${utcStamp(e.startIso)}`,
-    `DTEND:${utcStamp(e.endIso)}`,
-    `SUMMARY:${escapeText(e.title)}`,
-    ...(e.description ? [`DESCRIPTION:${escapeText(e.description)}`] : []),
-    "END:VEVENT",
+    ...list.flatMap((e) => [
+      "BEGIN:VEVENT",
+      `UID:${e.uid}`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART:${utcStamp(e.startIso)}`,
+      `DTEND:${utcStamp(e.endIso)}`,
+      `SUMMARY:${escapeText(e.title)}`,
+      ...(e.description ? [`DESCRIPTION:${escapeText(e.description)}`] : []),
+      "END:VEVENT",
+    ]),
     "END:VCALENDAR",
   ];
   return lines.join("\r\n") + "\r\n";

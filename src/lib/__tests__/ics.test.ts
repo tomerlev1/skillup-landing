@@ -41,6 +41,37 @@ describe("buildIcs", () => {
   });
 });
 
+describe("buildIcs with several events", () => {
+  const second = {
+    uid: "b2@skillup",
+    title: "בקשת שיעור עם רותם",
+    startIso: "2026-10-23T16:30:00Z",
+    endIso: "2026-10-23T17:30:00Z",
+  };
+  const ics = buildIcs([event, second]);
+  it("has one calendar with one VEVENT per event", () => {
+    expect(ics.match(/BEGIN:VCALENDAR/g)).toHaveLength(1);
+    expect(ics.match(/BEGIN:VEVENT/g)).toHaveLength(2);
+    expect(ics.match(/END:VEVENT/g)).toHaveLength(2);
+    expect(ics.trimEnd().endsWith("END:VCALENDAR")).toBe(true);
+  });
+  it("keeps each event's uid, times and title, in order", () => {
+    expect(ics).toContain("UID:b1@skillup");
+    expect(ics).toContain("UID:b2@skillup");
+    expect(ics).toContain("DTSTART:20261023T163000Z");
+    expect(ics).toContain("DTEND:20261023T173000Z");
+    expect(ics).toContain("SUMMARY:בקשת שיעור עם רותם");
+    expect(ics.indexOf("UID:b1@skillup")).toBeLessThan(ics.indexOf("UID:b2@skillup"));
+  });
+  it("omits DESCRIPTION only for the event without one", () => {
+    expect(ics.match(/^DESCRIPTION:/gm)).toHaveLength(1);
+  });
+  it("matches the single-event form for a one-item list", () => {
+    const strip = (s: string) => s.replace(/^DTSTAMP:.*$/m, "");
+    expect(strip(buildIcs([event]))).toBe(strip(buildIcs(event)));
+  });
+});
+
 describe("googleCalendarUrl", () => {
   const url = googleCalendarUrl(event);
   it("is a Google Calendar template link", () => {

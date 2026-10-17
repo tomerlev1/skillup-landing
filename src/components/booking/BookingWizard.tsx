@@ -159,6 +159,8 @@ export default function BookingWizard({
   }
 
   // Full per-lesson price = (base + mode surcharge) prorated by duration.
+  // No hourly rate on the profile → no price at all (never a fake ₪0).
+  const hasPrice = teacher.hourly_rate != null;
   function slotPrice(slot: AvailabilitySlot): number {
     const perHour =
       (mode
@@ -187,6 +189,7 @@ export default function BookingWizard({
     setError(null);
 
     const createdSlots: AvailabilitySlot[] = [];
+    const confirmedSlotIds: string[] = [];
     let failed = 0;
     let anyConfirmed = false;
     let firstError: string | null = null;
@@ -223,7 +226,10 @@ export default function BookingWizard({
       } else {
         createdSlots.push(slot);
         const status = (data as { status?: string } | null)?.status;
-        if (status === "confirmed") anyConfirmed = true;
+        if (status === "confirmed") {
+          anyConfirmed = true;
+          confirmedSlotIds.push(slot.id);
+        }
       }
     }
 
@@ -232,7 +238,7 @@ export default function BookingWizard({
       setError(firstError ?? "לא הצלחנו לשלוח את הבקשה. נסו שוב.");
       return;
     }
-    setResult({ createdSlots, failed, anyConfirmed });
+    setResult({ createdSlots, failed, anyConfirmed, confirmedSlotIds });
   }
 
   if (result) {
@@ -248,6 +254,9 @@ export default function BookingWizard({
   // Empty state follows what can actually be booked: no day groups left once
   // the selected/fixed mode filter is applied (not just an empty calendar).
   const noSlots = slotsByDay.length === 0;
+  // Open slots exist, but none fit the chosen/fixed mode → say so, instead of
+  // claiming the calendar is full.
+  const noSlotsForMode = noSlots && slots.length > 0 && mode !== null;
   const fixedMode = teacher.lesson_modes.length === 1;
   const inputClass =
     "min-h-12 w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 text-[15px] text-ink outline-none transition-colors focus:border-ink";
@@ -314,7 +323,7 @@ export default function BookingWizard({
                     <li key={s.id} className="flex items-start gap-2">
                       <TriangleAlert strokeWidth={1.75} size={16} className="mt-0.5 shrink-0 text-warn" aria-hidden="true" />
                       <span>
-                        המועד <span className="tnum">{slotWhen(s)}</span> לא זמין ל{lessonModeLabel(mode)}.
+                        המועד <span className="tnum">{slotWhen(s)}</span> לא זמין לשיעור {lessonModeLabel(mode)}.
                         הסירו אותו ובחרו מועד אחר.
                       </span>
                     </li>
@@ -327,7 +336,9 @@ export default function BookingWizard({
 
             {noSlots ? (
               <div className="mt-5 rounded-[var(--r-md)] border border-line bg-surface p-6 text-center text-sm leading-relaxed text-ink-2">
-                היומן של {name} מלא כרגע. שלחו הודעה ותתאמו מועד ישירות.
+                {noSlotsForMode && mode
+                  ? `אין כרגע מועדים פנויים לשיעור ${lessonModeLabel(mode)}.`
+                  : `היומן של ${name} מלא כרגע. שלחו הודעה ותתאמו מועד ישירות.`}
                 <div className="mt-4 flex flex-wrap justify-center gap-3">
                   {mode && !fixedMode && (
                     <button type="button" onClick={() => setMode(null)} className={secondaryBtn}>
@@ -476,7 +487,7 @@ export default function BookingWizard({
                     <li key={s.id} className="flex items-start gap-2">
                       <TriangleAlert strokeWidth={1.75} size={20} className="mt-0.5 shrink-0 text-warn" aria-hidden="true" />
                       <span>
-                        המועד <span className="tnum">{slotWhen(s)}</span> לא זמין ל{lessonModeLabel(mode)}.
+                        המועד <span className="tnum">{slotWhen(s)}</span> לא זמין לשיעור {lessonModeLabel(mode)}.
                         חזרו לבחור מועד אחר.
                       </span>
                     </li>
@@ -567,17 +578,21 @@ export default function BookingWizard({
                           {availabilityTime(s.start_at)}–{availabilityTime(s.end_at)}
                         </span>
                       </span>
-                      <span className="ltr-isolate tnum font-medium text-ink">
-                        {formatPrice(slotPrice(s))}
-                      </span>
+                      {hasPrice && (
+                        <span className="ltr-isolate tnum font-medium text-ink">
+                          {formatPrice(slotPrice(s))}
+                        </span>
+                      )}
                     </dd>
                   ))}
                 </div>
 
-                <div className="flex justify-between gap-4 border-t border-line pt-2.5">
-                  <dt className="text-ink-3">סה״כ</dt>
-                  <dd className="ltr-isolate tnum font-semibold text-ink">{formatPrice(totalPrice)}</dd>
-                </div>
+                {hasPrice && (
+                  <div className="flex justify-between gap-4 border-t border-line pt-2.5">
+                    <dt className="text-ink-3">סה״כ</dt>
+                    <dd className="ltr-isolate tnum font-semibold text-ink">{formatPrice(totalPrice)}</dd>
+                  </div>
+                )}
               </dl>
             </div>
 
