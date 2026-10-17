@@ -33,8 +33,15 @@ export default function StickyBookingRail({
 
   // Lift the support launcher above the mobile bottom bar while it exists.
   useEffect(() => {
-    document.body.style.setProperty("--sticky-bar-h", "76px");
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const sync = () => {
+      if (mq.matches) document.body.style.setProperty("--sticky-bar-h", "76px");
+      else document.body.style.removeProperty("--sticky-bar-h");
+    };
+    sync();
+    mq.addEventListener("change", sync);
     return () => {
+      mq.removeEventListener("change", sync);
       document.body.style.removeProperty("--sticky-bar-h");
     };
   }, []);
@@ -108,7 +115,7 @@ export default function StickyBookingRail({
           שליחת הודעה
         </GatedLink>
 
-        <p className="mt-4 text-[13px] leading-relaxed text-ink-3">
+        <p className="mt-4 text-sm leading-relaxed text-ink-3">
           התשלום והביטול נקבעים ישירות מול המורה. SkillUp לא גובה מכם כלום.
         </p>
       </div>
@@ -120,12 +127,12 @@ export default function StickyBookingRail({
             {fromPrice != null && (
               <p className="flex items-baseline gap-1 text-ink">
                 {hasRange && (
-                  <span className="text-xs text-ink-3">החל מ־</span>
+                  <span className="text-sm text-ink-3">החל מ־</span>
                 )}
                 <span className="ltr-isolate tnum text-lg font-bold">
                   {formatPrice(fromPrice)}
                 </span>
-                <span className="text-xs text-ink-3">לשעה</span>
+                <span className="text-sm text-ink-3">לשעה</span>
               </p>
             )}
             <RatingStars value={ratingAvg} count={reviewCount} size="sm" />

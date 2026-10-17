@@ -42,7 +42,7 @@ export default function ShareButton({ teacherName, className = "" }: ShareButton
       type="button"
       onClick={onShare}
       aria-label="שיתוף הפרופיל"
-      className={`inline-flex h-11 w-11 cursor-pointer items-center justify-center gap-1.5 rounded-[var(--r-pill)] border border-line bg-surface sm:w-auto sm:px-4 text-[13px] font-semibold text-ink transition-colors hover:border-ink ${className}`}
+      className={`inline-flex h-11 w-11 cursor-pointer items-center justify-center gap-1.5 rounded-[var(--r-pill)] border border-line bg-surface sm:w-auto sm:px-4 text-sm font-semibold text-ink transition-colors hover:border-ink ${className}`}
     >
       {copied ? (
         <>

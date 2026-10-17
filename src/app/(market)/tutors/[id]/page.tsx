@@ -173,7 +173,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
       />
 
       {/* Breadcrumbs */}
-      <nav aria-label="פירורי לחם" className="mb-4 flex items-center gap-1.5 text-[13px] text-ink-3 md:mb-6">
+      <nav aria-label="פירורי לחם" className="mb-4 flex items-center gap-1.5 text-sm text-ink-3 md:mb-6">
         <Link href="/" className="hover:text-ink hover:underline">ראשי</Link>
         <ChevronLeft size={13} aria-hidden="true" />
         {subjects[0] ? (
@@ -245,7 +245,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
               <dl className="mt-4 flex flex-wrap gap-x-8 gap-y-3">
                 {teacher.experience_years != null && teacher.experience_years > 0 && (
                   <div>
-                    <dt className="text-xs text-ink-3">ניסיון</dt>
+                    <dt className="text-sm text-ink-3">ניסיון</dt>
                     <dd className="tnum mt-0.5 text-base font-semibold text-ink">
                       {teacher.experience_years} שנים
                     </dd>
@@ -253,7 +253,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
                 )}
                 {teacher.total_students != null && teacher.total_students > 0 && (
                   <div>
-                    <dt className="text-xs text-ink-3">תלמידים</dt>
+                    <dt className="text-sm text-ink-3">תלמידים</dt>
                     <dd className="tnum mt-0.5 flex items-center gap-1 text-base font-semibold text-ink">
                       <Users size={14} aria-hidden="true" />
                       {teacher.total_students}+
@@ -262,7 +262,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
                 )}
                 {stats.count > 0 && (
                   <div>
-                    <dt className="text-xs text-ink-3">ביקורות</dt>
+                    <dt className="text-sm text-ink-3">ביקורות</dt>
                     <dd className="tnum mt-0.5 text-base font-semibold text-ink">
                       {stats.count}
                     </dd>
@@ -420,7 +420,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
                         href={s.href!}
                         rel="noopener noreferrer nofollow"
                         target="_blank"
-                        className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-line px-3 text-[13px] font-medium text-ink-2 transition-colors hover:border-ink hover:text-ink"
+                        className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-line px-3 text-sm font-medium text-ink-2 transition-colors hover:border-ink hover:text-ink"
                       >
                         <ExternalLink size={12} aria-hidden="true" />
                         {s.label}

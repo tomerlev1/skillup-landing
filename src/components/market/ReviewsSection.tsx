@@ -103,7 +103,7 @@ export default function ReviewsSection({ stats, reviews }: ReviewsSectionProps) 
               <p className="mt-3 text-sm leading-relaxed text-ink">
                 {review.text}
               </p>
-              <footer className="mt-3 text-xs text-ink-3">
+              <footer className="mt-3 text-sm text-ink-3">
                 {formatDateShort(review.written_at)}
               </footer>
             </blockquote>
