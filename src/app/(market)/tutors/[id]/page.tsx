@@ -194,7 +194,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
 
       {/* Cover banner: md and up only (spec §8.5) */}
       {coverImage && (
-        <div className="relative mb-8 hidden h-40 w-full overflow-hidden rounded-[var(--r-md)] bg-action-soft md:block">
+        <div className="relative mb-8 hidden h-44 w-full overflow-hidden rounded-[var(--r-lg)] bg-brand-100 md:block">
           <Image
             src={coverImage}
             alt=""
@@ -210,13 +210,13 @@ export default async function TutorProfilePage({ params }: PageProps) {
         {/* ===== Content column ===== */}
         <div className="min-w-0 space-y-10 md:space-y-12">
           {/* Identity header */}
-          <header className="flex items-start gap-4 md:gap-6">
+          <header className="flex items-start gap-4 rounded-[var(--r-lg)] bg-surface p-5 shadow-[var(--shadow-card)] ring-1 ring-line/60 md:gap-6 md:p-7">
             <Avatar src={avatarImage} name={teacher.display_name} size={72} className="shrink-0 md:hidden" />
             <Avatar src={avatarImage} name={teacher.display_name} size={112} className="hidden shrink-0 md:inline-flex" />
 
             <div className="min-w-0 flex-1">
               <div className="flex items-start justify-between gap-3">
-                <h1 className="font-ed text-2xl font-black leading-tight text-ink sm:text-3xl">
+                <h1 className="font-ed text-[26px] font-black leading-tight text-ink sm:text-[34px]">
                   {teacher.display_name}
                   {teacher.is_verified && (
                     <VerifiedMark size={18} className="ms-2 align-[-1px]" />
@@ -242,28 +242,28 @@ export default async function TutorProfilePage({ params }: PageProps) {
               </div>
 
               {/* Stat strip */}
-              <dl className="mt-4 flex flex-wrap gap-x-8 gap-y-3">
+              <dl className="mt-5 flex flex-wrap gap-2.5">
                 {teacher.experience_years != null && teacher.experience_years > 0 && (
-                  <div>
-                    <dt className="text-sm text-ink-3">ניסיון</dt>
-                    <dd className="tnum mt-0.5 text-base font-semibold text-ink">
+                  <div className="rounded-[var(--r-md)] bg-tint-indigo px-4 py-2.5">
+                    <dt className="text-sm font-medium text-ink-2">ניסיון</dt>
+                    <dd className="tnum mt-0.5 text-lg font-extrabold text-ink">
                       {teacher.experience_years} שנים
                     </dd>
                   </div>
                 )}
                 {teacher.total_students != null && teacher.total_students > 0 && (
-                  <div>
-                    <dt className="text-sm text-ink-3">תלמידים</dt>
-                    <dd className="tnum mt-0.5 flex items-center gap-1 text-base font-semibold text-ink">
+                  <div className="rounded-[var(--r-md)] bg-tint-mint px-4 py-2.5">
+                    <dt className="text-sm font-medium text-ink-2">תלמידים</dt>
+                    <dd className="tnum mt-0.5 flex items-center gap-1 text-lg font-extrabold text-ink">
                       <Users strokeWidth={1.75} size={16} aria-hidden="true" />
                       {teacher.total_students}+
                     </dd>
                   </div>
                 )}
                 {stats.count > 0 && (
-                  <div>
-                    <dt className="text-sm text-ink-3">ביקורות</dt>
-                    <dd className="tnum mt-0.5 text-base font-semibold text-ink">
+                  <div className="rounded-[var(--r-md)] bg-tint-sun px-4 py-2.5">
+                    <dt className="text-sm font-medium text-ink-2">ביקורות</dt>
+                    <dd className="tnum mt-0.5 text-lg font-extrabold text-ink">
                       {stats.count}
                     </dd>
                   </div>
@@ -277,7 +277,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
           {/* Video intro */}
           {teacher.video_url && (
             <section aria-label="סרטון היכרות">
-              <h2 className="font-ed text-[22px] font-bold leading-tight text-ink sm:text-[26px]">
+              <h2 className="font-ed text-[24px] font-extrabold leading-tight text-ink sm:text-[28px]">
                 סרטון היכרות
               </h2>
               <video
@@ -292,7 +292,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
           {/* Bio */}
           {teacher.bio && (
             <section aria-label="על המורה">
-              <h2 className="font-ed text-[22px] font-bold leading-tight text-ink sm:text-[26px]">
+              <h2 className="font-ed text-[24px] font-extrabold leading-tight text-ink sm:text-[28px]">
                 על {teacher.display_name}
               </h2>
               <p className="mt-4 whitespace-pre-line text-[15px] leading-[1.7] text-ink">
@@ -304,7 +304,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
           {/* Subjects, each with its own experience-years pill when known */}
           {subjects.length > 0 && (
             <section aria-label="מקצועות">
-              <h2 className="font-ed text-[22px] font-bold leading-tight text-ink sm:text-[26px]">
+              <h2 className="font-ed text-[24px] font-extrabold leading-tight text-ink sm:text-[28px]">
                 מקצועות לימוד
               </h2>
               <div className="mt-4 flex flex-wrap gap-2">
@@ -312,11 +312,11 @@ export default async function TutorProfilePage({ params }: PageProps) {
                   <Link
                     key={s.id}
                     href={searchHref({ subjectIds: [s.id] })}
-                    className="inline-flex min-h-11 items-center gap-2 rounded-[var(--r-pill)] border border-line bg-surface py-1.5 ps-4 pe-3 text-sm font-medium text-ink transition-colors hover:border-ink"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-[var(--r-pill)] bg-tint-indigo py-1.5 ps-4 pe-3 text-[15px] font-semibold text-tint-indigo-fg transition-colors hover:bg-brand-100"
                   >
                     {s.name_he}
                     {s.experience_years != null && s.experience_years > 0 && (
-                      <span className="tnum rounded-[var(--r-pill)] border border-line bg-canvas px-2 py-0.5 text-xs font-medium text-ink-2">
+                      <span className="tnum rounded-[var(--r-pill)] bg-surface px-2 py-0.5 text-xs font-semibold text-ink-2">
                         {s.experience_years} שנ׳ ניסיון
                       </span>
                     )}
@@ -332,9 +332,9 @@ export default async function TutorProfilePage({ params }: PageProps) {
             (teacher.experience_years ?? 0) > 0) && (
             <section
               aria-label="השכלה ורקע"
-              className="rounded-[var(--r-md)] border border-line bg-surface p-6 sm:p-7"
+              className="rounded-[var(--r-lg)] bg-surface p-6 shadow-[var(--shadow-card)] ring-1 ring-line/60 sm:p-7"
             >
-              <h2 className="font-ed text-xl font-bold text-ink">
+              <h2 className="font-ed text-[22px] font-extrabold text-ink">
                 השכלה ורקע
               </h2>
 
@@ -342,10 +342,10 @@ export default async function TutorProfilePage({ params }: PageProps) {
                 {(teacher.education?.length ?? 0) > 0 && (
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="grid h-8 w-8 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
+                      <span className="grid size-10 place-items-center rounded-[var(--r-sm)] bg-tint-indigo text-tint-indigo-fg">
                         <GraduationCap strokeWidth={1.75} size={16} />
                       </span>
-                      <h3 className="text-sm font-semibold text-ink">השכלה</h3>
+                      <h3 className="text-base font-bold text-ink">השכלה</h3>
                     </div>
                     <ul className="mt-3 space-y-1.5 ps-1">
                       {teacher.education!.map((item) => (
@@ -360,10 +360,10 @@ export default async function TutorProfilePage({ params }: PageProps) {
                 {(teacher.languages?.length ?? 0) > 0 && (
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="grid h-8 w-8 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
+                      <span className="grid size-10 place-items-center rounded-[var(--r-sm)] bg-tint-sky text-tint-sky-fg">
                         <Languages strokeWidth={1.75} size={16} />
                       </span>
-                      <h3 className="text-sm font-semibold text-ink">שפות הוראה</h3>
+                      <h3 className="text-base font-bold text-ink">שפות הוראה</h3>
                     </div>
                     <p className="mt-3 ps-1 text-sm text-ink-2">
                       {teacher.languages!.join(" · ")}
@@ -374,10 +374,10 @@ export default async function TutorProfilePage({ params }: PageProps) {
                 {(teacher.experience_years ?? 0) > 0 && (
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="grid h-8 w-8 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
+                      <span className="grid size-10 place-items-center rounded-[var(--r-sm)] bg-tint-sun text-tint-sun-fg">
                         <Award strokeWidth={1.75} size={16} />
                       </span>
-                      <h3 className="text-sm font-semibold text-ink">ניסיון</h3>
+                      <h3 className="text-base font-bold text-ink">ניסיון</h3>
                     </div>
                     <p className="mt-3 ps-1 text-sm text-ink-2">
                       <span className="tnum font-semibold text-ink">
@@ -391,10 +391,10 @@ export default async function TutorProfilePage({ params }: PageProps) {
                 {teacher.teaching_style && (
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="grid h-8 w-8 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
+                      <span className="grid size-10 place-items-center rounded-[var(--r-sm)] bg-tint-rose text-tint-rose-fg">
                         <Sparkles strokeWidth={1.75} size={16} />
                       </span>
-                      <h3 className="text-sm font-semibold text-ink">סגנון הוראה</h3>
+                      <h3 className="text-base font-bold text-ink">סגנון הוראה</h3>
                     </div>
                     <p className="mt-3 ps-1 text-sm leading-relaxed text-ink-2">
                       {teacher.teaching_style}

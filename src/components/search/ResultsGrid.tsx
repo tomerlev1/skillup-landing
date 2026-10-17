@@ -73,7 +73,7 @@ export default function ResultsGrid({
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-x-4 md:gap-y-8 xl:grid-cols-4 lg:gap-x-6">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-5 xl:grid-cols-3 xl:gap-6">
         {items.map((t, i) => (
           <TeacherCard
             key={t.id}

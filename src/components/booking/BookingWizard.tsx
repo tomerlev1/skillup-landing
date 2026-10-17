@@ -78,7 +78,7 @@ function Option({
       aria-pressed={selected}
       className={`inline-flex min-h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-[var(--r-pill)] border px-4 text-sm font-medium transition-colors duration-200 ease-[var(--ease)] ${
         selected
-          ? "border-ink bg-ink text-canvas"
+          ? "border-action bg-action text-on-action"
           : "border-line bg-surface text-ink hover:border-ink"
       }`}
     >
@@ -290,7 +290,7 @@ export default function BookingWizard({
           <li key={label} aria-current={i === step ? "step" : undefined}>
             <span
               aria-hidden="true"
-              className={`block h-1 rounded-full ${i <= step ? "bg-ink" : "bg-line"}`}
+              className={`block h-1 rounded-full ${i <= step ? "bg-action" : "bg-line"}`}
             />
             <span className={`mt-1.5 block text-sm ${i === step ? "font-semibold text-ink" : "text-ink-3"}`}>
               {label}
@@ -371,7 +371,7 @@ export default function BookingWizard({
                         aria-pressed={active}
                         className={`relative min-h-11 shrink-0 cursor-pointer rounded-[var(--r-sm)] border px-4 py-2 text-center transition-colors ${
                           active
-                            ? "border-ink bg-ink text-canvas"
+                            ? "border-action bg-action text-on-action"
                             : "border-line bg-surface text-ink hover:border-ink"
                         }`}
                       >

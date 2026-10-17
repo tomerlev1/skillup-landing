@@ -57,7 +57,7 @@ export default function ReviewsSection({ stats, reviews }: ReviewsSectionProps) 
                 <span className="tnum w-3 shrink-0 text-ink-2">{star}</span>
                 <div className="h-2 flex-1 overflow-hidden rounded-full bg-line">
                   <div
-                    className="h-full rounded-full bg-ink"
+                    className="h-full rounded-full bg-star"
                     style={{ width: `${stats.count ? (count / stats.count) * 100 : 0}%` }}
                   />
                 </div>

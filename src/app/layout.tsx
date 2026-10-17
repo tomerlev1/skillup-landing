@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Rubik, Frank_Ruhl_Libre } from "next/font/google";
+import { Rubik } from "next/font/google";
 import "./globals.css";
 import { SITE_URL } from "@/lib/constants";
 import { JSON_LD_BLOCKS } from "@/lib/structured-data";
@@ -8,14 +8,7 @@ import { themeInitScript } from "@/lib/theme";
 const rubik = Rubik({
   variable: "--font-family-rubik",
   subsets: ["hebrew", "latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const frank = Frank_Ruhl_Libre({
-  variable: "--font-family-frank",
-  subsets: ["hebrew", "latin"],
-  weight: ["700", "900"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
@@ -142,7 +135,7 @@ export default function RootLayout({
       lang="he"
       dir="rtl"
       suppressHydrationWarning
-      className={`${rubik.variable} ${frank.variable}`}
+      className={rubik.variable}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />

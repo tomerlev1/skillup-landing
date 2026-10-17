@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, ShieldCheck } from "lucide-react";
 import GatedLink from "@/components/market/GatedLink";
 import RatingStars from "@/components/ui/RatingStars";
 import { formatPrice, lessonModeLabel, lessonModePrice } from "@/lib/format";
@@ -64,14 +64,14 @@ export default function StickyBookingRail({
   return (
     <>
       {/* Desktop rail */}
-      <div className="hidden rounded-[var(--r-md)] border border-line bg-surface p-6 shadow-[var(--shadow-lift)] lg:block">
+      <div className="hidden overflow-hidden rounded-[var(--r-lg)] bg-surface p-6 shadow-[var(--shadow-lift)] ring-1 ring-line/60 lg:block">
         <div className="flex items-baseline justify-between gap-3">
           {fromPrice != null && (
             <p className="flex items-baseline gap-1.5 text-ink">
               {hasRange && (
                 <span className="text-sm text-ink-3">החל מ־</span>
               )}
-              <span className="ltr-isolate tnum text-2xl font-bold">
+              <span className="ltr-isolate tnum text-[30px] font-black text-brand-800">
                 {formatPrice(fromPrice)}
               </span>
               <span className="text-sm text-ink-3">לשעה</span>
@@ -81,17 +81,17 @@ export default function StickyBookingRail({
         </div>
 
         {lessonModes.length > 0 && (
-          <ul className="mt-4 space-y-2 border-t border-line pt-4">
+          <ul className="mt-5 space-y-1.5 rounded-[var(--r-md)] bg-canvas p-3">
             {lessonModes.map((mode) => {
               const price = modePrice(mode);
               return (
                 <li
                   key={mode}
-                  className="flex items-center justify-between text-sm text-ink-2"
+                  className="flex items-center justify-between rounded-[var(--r-sm)] px-2 py-1.5 text-[15px] text-ink-2"
                 >
                   <span>{lessonModeLabel(mode)}</span>
                   {price != null && (
-                    <span className="ltr-isolate tnum font-medium text-ink">
+                    <span className="ltr-isolate tnum font-bold text-ink">
                       {formatPrice(price)}
                     </span>
                   )}
@@ -103,20 +103,21 @@ export default function StickyBookingRail({
 
         <GatedLink
           href={bookUrl}
-          className="mt-5 h-12 w-full cursor-pointer rounded-[var(--r-pill)] bg-action text-sm font-semibold text-on-action transition-colors hover:bg-action-hover"
+          className="mt-5 h-13 w-full cursor-pointer rounded-[var(--r-pill)] bg-action text-base font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.9)] transition-colors hover:bg-action-hover"
         >
           קביעת שיעור
         </GatedLink>
         <GatedLink
           href={messageHref}
-          className="mt-2.5 inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-[var(--r-pill)] border border-ink text-sm font-semibold text-ink transition-colors hover:bg-action-soft"
+          className="mt-2.5 inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-[var(--r-pill)] bg-tint-indigo text-sm font-bold text-tint-indigo-fg transition-colors hover:bg-brand-100"
         >
           <MessageCircle strokeWidth={1.75} size={16} />
           שליחת הודעה
         </GatedLink>
 
-        <p className="mt-4 text-sm leading-relaxed text-ink-3">
-          התשלום והביטול נקבעים ישירות מול המורה. SkillUp לא גובה מכם כלום.
+        <p className="mt-4 flex items-start gap-2.5 rounded-[var(--r-md)] bg-tint-mint p-3 text-sm leading-relaxed text-ink-2">
+          <ShieldCheck strokeWidth={2} size={18} className="mt-0.5 shrink-0 text-tint-mint-fg" aria-hidden="true" />
+          <span>התשלום והביטול נקבעים ישירות מול המורה. SkillUp לא גובה מכם כלום.</span>
         </p>
       </div>
 

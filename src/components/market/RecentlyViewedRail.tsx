@@ -24,7 +24,7 @@ export default function RecentlyViewedRail() {
 
   return (
     <section className="mx-auto max-w-[1280px] px-4 pt-14 sm:px-6">
-      <h2 className="mb-5 font-ed text-[22px] font-bold leading-tight text-balance text-ink sm:text-[28px]">
+      <h2 className="mb-5 font-ed text-[26px] font-extrabold leading-tight text-balance text-ink sm:text-[32px]">
         מורים שצפיתם בהם לאחרונה
       </h2>
       <div className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">

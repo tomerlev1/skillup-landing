@@ -97,10 +97,10 @@ export default function MarketNav({ categories }: MarketNavProps) {
         scrolled ? "border-b border-line" : "border-b border-transparent"
       }`}
     >
-      <nav className="mx-auto flex h-16 max-w-[1280px] items-center gap-6 px-4 sm:px-6">
+      <nav className="mx-auto flex h-[72px] max-w-[1280px] items-center gap-6 px-4 sm:px-6">
         {/* Logo (start side = right in RTL) */}
         <Link href="/" className="flex h-11 shrink-0 items-center" aria-label="SkillUp, דף הבית">
-          <BrandLogo className="h-9 w-auto" />
+          <BrandLogo className="h-11 w-auto" />
         </Link>
 
         {/* Desktop links */}
@@ -236,7 +236,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
               </Link>
               <Link
                 href="/signup"
-                className="hit-44 inline-flex h-10 items-center rounded-pill bg-ink px-4 text-sm font-semibold text-surface transition-colors hover:bg-ink-2 sm:px-5"
+                className="hit-44 inline-flex h-11 items-center rounded-pill bg-action px-5 text-sm font-bold text-on-action shadow-[0_6px_16px_-8px_rgba(79,70,229,0.7)] transition-colors hover:bg-action-hover sm:px-6"
               >
                 הרשמה
               </Link>
@@ -307,7 +307,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
                 </Link>
                 <Link
                   href="/signup"
-                  className="flex h-11 flex-1 items-center justify-center rounded-pill bg-ink text-sm font-semibold text-surface"
+                  className="flex h-11 flex-1 items-center justify-center rounded-pill bg-action text-sm font-bold text-on-action"
                 >
                   הרשמה
                 </Link>

@@ -31,7 +31,7 @@ export default function TeacherRail({
   return (
     <section className="mx-auto max-w-[1280px] px-4 sm:px-6">
       <div className="mb-5 flex items-baseline justify-between gap-4">
-        <h2 className="font-ed text-[22px] font-bold leading-tight text-balance text-ink sm:text-[28px]">
+        <h2 className="font-ed text-[26px] font-extrabold leading-tight text-balance text-ink sm:text-[32px]">
           {title}
         </h2>
         {moreHref && (

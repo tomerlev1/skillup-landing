@@ -24,8 +24,29 @@
   --color-star: var(--c-star);
   --radius-pill: 999px;
 
+  /* Brand tints: soft surface + strong foreground per hue (light/dark aware) */
+  --color-brand-50: var(--c-brand-50);
+  --color-brand-100: var(--c-brand-100);
+  --color-brand-200: var(--c-brand-200);
+  --color-brand-800: var(--c-brand-800);
+  --color-tint-indigo: var(--c-tint-indigo);
+  --color-tint-indigo-fg: var(--c-tint-indigo-fg);
+  --color-tint-peach: var(--c-tint-peach);
+  --color-tint-peach-fg: var(--c-tint-peach-fg);
+  --color-tint-mint: var(--c-tint-mint);
+  --color-tint-mint-fg: var(--c-tint-mint-fg);
+  --color-tint-sky: var(--c-tint-sky);
+  --color-tint-sky-fg: var(--c-tint-sky-fg);
+  --color-tint-sun: var(--c-tint-sun);
+  --color-tint-sun-fg: var(--c-tint-sun-fg);
+  --color-tint-rose: var(--c-tint-rose);
+  --color-tint-rose-fg: var(--c-tint-rose-fg);
+  --color-tint-lilac: var(--c-tint-lilac);
+  --color-tint-lilac-fg: var(--c-tint-lilac-fg);
+  --color-tint-teal: var(--c-tint-teal);
+  --color-tint-teal-fg: var(--c-tint-teal-fg);
+
   --font-rubik: var(--font-family-rubik);
-  --font-frank: var(--font-family-frank);
 }
 
 /* ===================================================================
@@ -54,14 +75,32 @@
   --c-spark-text: #C2410C;
   --c-star: #F5A623;
 
-  --r-sm: 10px;
-  --r-md: 16px;
+  --r-sm: 12px;
+  --r-md: 20px;
+  --r-lg: 28px;
+
+  --c-brand-50: #F4F2FF;
+  --c-brand-100: #E9E6FF;
+  --c-brand-200: #D4CEFF;
+  --c-brand-800: #2E28A8;
+  --c-tint-indigo: #EEECFF;  --c-tint-indigo-fg: #4338CA;
+  --c-tint-peach: #FFF0E6;   --c-tint-peach-fg: #C2410C;
+  --c-tint-mint: #E6F7EF;    --c-tint-mint-fg: #047857;
+  --c-tint-sky: #E8F2FF;     --c-tint-sky-fg: #1D4ED8;
+  --c-tint-sun: #FFF6D9;     --c-tint-sun-fg: #92600A;
+  --c-tint-rose: #FFEDF1;    --c-tint-rose-fg: #BE185D;
+  --c-tint-lilac: #F4ECFF;   --c-tint-lilac-fg: #6D28D9;
+  --c-tint-teal: #E3F6F6;    --c-tint-teal-fg: #0F766E;
+  --shadow-card: 0 1px 2px rgba(20, 19, 31, 0.04), 0 8px 24px -14px rgba(46, 40, 168, 0.18);
+  --hero-wash: radial-gradient(60% 80% at 100% 0%, #E9E6FF 0%, transparent 60%),
+    radial-gradient(45% 60% at 0% 100%, #FFE8D9 0%, transparent 65%),
+    linear-gradient(180deg, #FBFAFF 0%, #F6F5FC 100%);
   --r-pill: 999px;
   --shadow-lift: 0 16px 32px -18px rgba(20, 19, 31, 0.35);
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 
   --font-ui: var(--font-family-rubik), ui-sans-serif, system-ui, sans-serif;
-  --font-ed: var(--font-family-frank), var(--font-family-rubik), serif;
+  --font-ed: var(--font-family-rubik), ui-sans-serif, system-ui, sans-serif;
 
   color-scheme: light;
 }
@@ -86,6 +125,23 @@
   --c-danger-text: #FB7185;
   --c-spark-text: #FB923C;
   --c-star: #F5A623;
+
+  --c-brand-50: #1D1A42;
+  --c-brand-100: #262259;
+  --c-brand-200: #352F7A;
+  --c-brand-800: #CFCBFF;
+  --c-tint-indigo: #24215A;  --c-tint-indigo-fg: #B9B4FF;
+  --c-tint-peach: #3A2216;   --c-tint-peach-fg: #FDBA8C;
+  --c-tint-mint: #0F2E24;    --c-tint-mint-fg: #6EE7B7;
+  --c-tint-sky: #132A47;     --c-tint-sky-fg: #93C5FD;
+  --c-tint-sun: #33290F;     --c-tint-sun-fg: #FCD679;
+  --c-tint-rose: #3A1626;    --c-tint-rose-fg: #F9A8C8;
+  --c-tint-lilac: #2A1A47;   --c-tint-lilac-fg: #C4B5FD;
+  --c-tint-teal: #0F2E2E;    --c-tint-teal-fg: #5EEAD4;
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
+  --hero-wash: radial-gradient(60% 80% at 100% 0%, #262259 0%, transparent 60%),
+    radial-gradient(45% 60% at 0% 100%, #33201A 0%, transparent 65%),
+    linear-gradient(180deg, #13112B 0%, #100E22 100%);
 
   color-scheme: dark;
 }
@@ -112,11 +168,28 @@
     --c-spark-text: #FB923C;
     --c-star: #F5A623;
 
+    --c-brand-50: #1D1A42;
+    --c-brand-100: #262259;
+    --c-brand-200: #352F7A;
+    --c-brand-800: #CFCBFF;
+    --c-tint-indigo: #24215A;  --c-tint-indigo-fg: #B9B4FF;
+    --c-tint-peach: #3A2216;   --c-tint-peach-fg: #FDBA8C;
+    --c-tint-mint: #0F2E24;    --c-tint-mint-fg: #6EE7B7;
+    --c-tint-sky: #132A47;     --c-tint-sky-fg: #93C5FD;
+    --c-tint-sun: #33290F;     --c-tint-sun-fg: #FCD679;
+    --c-tint-rose: #3A1626;    --c-tint-rose-fg: #F9A8C8;
+    --c-tint-lilac: #2A1A47;   --c-tint-lilac-fg: #C4B5FD;
+    --c-tint-teal: #0F2E2E;    --c-tint-teal-fg: #5EEAD4;
+    --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
+    --hero-wash: radial-gradient(60% 80% at 100% 0%, #262259 0%, transparent 60%),
+      radial-gradient(45% 60% at 0% 100%, #33201A 0%, transparent 65%),
+      linear-gradient(180deg, #13112B 0%, #100E22 100%);
+
     color-scheme: dark;
   }
 }
 
-.font-ed { font-family: var(--font-ed); }
+.font-ed { font-family: var(--font-ed); letter-spacing: -0.015em; }
 
 /* ===== BASE ===== */
 html {
@@ -178,31 +251,41 @@ body {
   }
 }
 
-/* ===== FAQ accordion (home + /faq) ===== */
+/* ===== FAQ accordion (home + /faq): soft cards, indigo index ===== */
+.faq { display: grid; gap: 12px; }
 .faq details {
-  border-bottom: 1px solid var(--c-line);
-  padding: 20px 8px;
-  transition: background-color 200ms var(--ease);
+  background: var(--c-surface);
+  border-radius: var(--r-md);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-card);
+  outline: 1px solid color-mix(in srgb, var(--c-line) 60%, transparent);
+  transition: box-shadow 200ms var(--ease);
 }
-.faq details[open] { background: var(--c-surface); }
+.faq details[open] { box-shadow: var(--shadow-lift); }
 .faq summary {
   list-style: none;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   min-height: 44px;
   font-family: var(--font-ui);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 18px;
   color: var(--c-ink);
 }
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary .idx {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-pill);
+  background: var(--c-tint-indigo);
+  color: var(--c-tint-indigo-fg);
   font-size: 14px;
-  font-weight: 500;
-  color: var(--c-ink-3);
-  min-width: 32px;
+  font-weight: 700;
 }
 .faq summary .chev {
   flex-shrink: 0;
@@ -210,10 +293,10 @@ body {
   color: var(--c-ink-3);
   transition: transform 200ms var(--ease);
 }
-.faq details[open] summary .chev { transform: rotate(180deg); }
+.faq details[open] summary .chev { transform: rotate(180deg); color: var(--c-action); }
 .faq details p {
-  margin: 12px 0 0;
-  padding-inline-start: 48px;
+  margin: 10px 0 4px;
+  padding-inline-start: 50px;
   color: var(--c-ink-2);
   font-size: 16px;
   line-height: 1.7;

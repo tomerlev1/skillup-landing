@@ -190,7 +190,7 @@ export default function AccountForm({
           <div className="sm:col-span-2">
             <span className="mb-1.5 block text-sm font-medium text-ink">עיר</span>
             {cityId && cityName ? (
-              <span className="inline-flex items-center gap-2 rounded-[var(--r-pill)] bg-ink py-2 ps-4 pe-2 text-sm font-medium text-surface">
+              <span className="inline-flex items-center gap-2 rounded-[var(--r-pill)] bg-action py-2 ps-4 pe-2 text-sm font-semibold text-on-action">
                 <MapPin strokeWidth={1.75} size={16} />
                 {cityName}
                 <button

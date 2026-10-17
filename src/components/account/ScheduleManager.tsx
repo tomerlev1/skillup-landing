@@ -153,7 +153,7 @@ export default function ScheduleManager({
               onClick={() => setDayOffset(i)}
               className={`relative shrink-0 rounded-[var(--r-md)] border px-3.5 py-2 text-center transition-colors ${
                 selected
-                  ? "border-ink bg-ink text-surface"
+                  ? "border-action bg-action text-on-action"
                   : "border-line bg-surface text-ink hover:border-ink"
               }`}
             >

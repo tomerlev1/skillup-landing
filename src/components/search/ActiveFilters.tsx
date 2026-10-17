@@ -88,7 +88,7 @@ export default function ActiveFilters({
         <Link
           key={chip.key}
           href={searchHref(chip.without)}
-          className="hit-44 inline-flex h-9 items-center gap-1.5 rounded-full bg-ink ps-3.5 pe-2.5 text-sm font-medium text-surface"
+          className="hit-44 inline-flex h-9 items-center gap-1.5 rounded-full bg-action ps-3.5 pe-2.5 text-sm font-semibold text-on-action"
         >
           {chip.label}
           <X size={16} strokeWidth={1.75} aria-hidden="true" />

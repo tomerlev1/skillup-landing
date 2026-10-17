@@ -132,7 +132,7 @@ export default function SignupForm() {
             onClick={() => setRole(opt.value)}
             className={`h-11 cursor-pointer rounded-[var(--r-pill)] text-sm font-semibold transition-colors ${
               role === opt.value
-                ? "bg-ink text-surface"
+                ? "bg-action text-on-action"
                 : "text-ink-3 hover:text-ink"
             }`}
           >

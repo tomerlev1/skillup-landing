@@ -15,7 +15,7 @@ interface MarketFooterProps {
 // page (categories, cities), plus company/legal. Calm 14px link columns.
 export default function MarketFooter({ categories, majorCities }: MarketFooterProps) {
   return (
-    <footer className="border-t border-line bg-surface">
+    <footer className="mt-4 border-t border-line bg-brand-50">
       <div className="mx-auto max-w-[1280px] px-4 py-14 sm:px-6">
         <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
           <nav aria-label="מקצועות פופולריים">
@@ -129,7 +129,7 @@ export default function MarketFooter({ categories, majorCities }: MarketFooterPr
             <ThemeToggle />
           </div>
           <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
-            <BrandLogo className="h-7 w-auto" />
+            <BrandLogo className="h-10 w-auto" />
             <p className="text-sm text-ink-3">
               © {new Date().getFullYear()} SkillUp. כל הזכויות שמורות.
             </p>

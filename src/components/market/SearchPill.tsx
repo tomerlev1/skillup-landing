@@ -265,14 +265,14 @@ export default function SearchPill({
       <div
         role="search"
         className={`flex ${height} w-full items-stretch rounded-[var(--r-pill)] border bg-surface transition-[box-shadow,border-color] duration-200 ease-[var(--ease)] ${
-          active ? "border-line shadow-[var(--shadow-lift)]" : "border-line hover:border-ink-3"
+          active ? "border-brand-200 shadow-[var(--shadow-lift)] ring-4 ring-brand-100" : "border-line/60 shadow-[var(--shadow-card)] hover:border-brand-200"
         }`}
       >
         {/* What segment */}
         <label
           className="flex min-w-0 flex-[1.3] cursor-text items-center gap-2 rounded-[var(--r-pill)] ps-4 pe-2 sm:gap-3 sm:ps-6 sm:pe-4"
         >
-          <GraduationCap size={20} strokeWidth={1.75} aria-hidden="true" className="shrink-0 text-ink-3" />
+          <GraduationCap size={20} strokeWidth={2} aria-hidden="true" className="shrink-0 text-action" />
           <span className="sr-only">מה תרצו ללמוד?</span>
           <input
             ref={whatRef}
@@ -291,7 +291,7 @@ export default function SearchPill({
 
         {/* Where segment */}
         <label className="flex min-w-0 flex-1 cursor-text items-center gap-2 ps-3 pe-1 sm:gap-3 sm:ps-5 sm:pe-2">
-          <MapPin size={20} strokeWidth={1.75} aria-hidden="true" className="shrink-0 text-ink-3" />
+          <MapPin size={20} strokeWidth={2} aria-hidden="true" className="shrink-0 text-spark-text" />
           <span className="sr-only">איפה? עיר או אונליין</span>
           <input
             value={where}
@@ -310,9 +310,10 @@ export default function SearchPill({
             type="button"
             onClick={submit}
             aria-label="חיפוש מורים"
-            className={`grid ${compact ? "size-11" : "size-11 sm:size-12"} shrink-0 cursor-pointer place-items-center rounded-[var(--r-pill)] bg-action text-on-action transition-colors duration-200 ease-[var(--ease)] hover:bg-action-hover`}
+            className={`inline-flex ${compact ? "h-11 w-11 justify-center" : "h-11 w-11 justify-center sm:h-12 sm:w-auto sm:gap-2 sm:px-6"} shrink-0 cursor-pointer items-center rounded-[var(--r-pill)] bg-action font-bold text-on-action shadow-[0_8px_20px_-10px_rgba(79,70,229,0.8)] transition-colors duration-200 ease-[var(--ease)] hover:bg-action-hover`}
           >
-            <Search size={20} strokeWidth={1.75} aria-hidden="true" />
+            <Search size={20} strokeWidth={2.25} aria-hidden="true" />
+            {!compact && <span className="hidden sm:inline">חיפוש</span>}
           </button>
         </div>
       </div>

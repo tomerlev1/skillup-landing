@@ -61,7 +61,6 @@ function Photo({
         className={`font-ed relative text-[80px] font-black leading-none text-action ${monoClass}`}
       >
         {monogram(teacher.display_name)}
-        <span className="absolute -end-4 top-1 size-3 rounded-full bg-spark" />
       </span>
     </div>
   );
@@ -84,7 +83,7 @@ export default function TeacherCard({
 
   if (variant === "wall") {
     return (
-      <article className="group relative">
+      <article className="group relative rounded-[var(--r-lg)] bg-surface p-2 shadow-[var(--shadow-card)] ring-1 ring-line/60 transition-[transform,box-shadow] duration-200 ease-[var(--ease)] hover:-translate-y-1 hover:shadow-[var(--shadow-lift)]">
         <Link
           href={href}
           className="block rounded-[var(--r-md)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action"
@@ -96,7 +95,8 @@ export default function TeacherCard({
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 240px"
             />
           </div>
-          <h3 className="mt-3 flex min-w-0 items-center gap-1.5 text-base font-semibold leading-snug text-ink">
+          <div className="px-2 pb-2">
+          <h3 className="mt-3 flex min-w-0 items-center gap-1.5 text-base font-bold leading-snug text-ink">
             <span className="min-w-0 truncate" title={name}>
               {name}
             </span>
@@ -113,8 +113,9 @@ export default function TeacherCard({
               className="mt-1"
             />
           )}
+          </div>
         </Link>
-        <div className="absolute end-2.5 top-2.5">
+        <div className="absolute end-4 top-4">
           <SaveButton teacherId={teacher.id} teacherName={name} />
         </div>
       </article>
@@ -127,11 +128,11 @@ export default function TeacherCard({
 
   return (
     <article
-      className={`group relative h-full overflow-hidden rounded-[var(--r-md)] border border-line bg-surface transition-[transform,box-shadow] duration-200 ease-[var(--ease)] hover:-translate-y-[3px] hover:shadow-[var(--shadow-lift)] ${row("max-md:p-2.5")}`}
+      className={`group relative h-full overflow-hidden rounded-[var(--r-lg)] bg-surface shadow-[var(--shadow-card)] ring-1 ring-line/60 transition-[transform,box-shadow] duration-200 ease-[var(--ease)] hover:-translate-y-1 hover:shadow-[var(--shadow-lift)] ${row("max-md:rounded-[var(--r-md)] max-md:p-2.5")}`}
     >
       <Link
         href={href}
-        className={`flex h-full flex-col rounded-[var(--r-md)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-action ${row("max-md:flex-row max-md:gap-3 max-md:rounded-[var(--r-sm)]")}`}
+        className={`flex h-full flex-col rounded-[var(--r-lg)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-action ${row("max-md:flex-row max-md:gap-3 max-md:rounded-[var(--r-sm)]")}`}
       >
         {/* Photo 4:5 (row: 96×120). Card top corners come from the article clip. */}
         <div
@@ -163,7 +164,7 @@ export default function TeacherCard({
           {/* Line 1: name + verified ⟷ rating, sharing one baseline */}
           <div className="flex items-baseline justify-between gap-2">
             <h3
-              className={`flex min-w-0 items-center gap-1.5 text-[17px] font-semibold leading-[1.3] text-ink ${row("max-md:text-base")}`}
+              className={`flex min-w-0 items-center gap-1.5 text-[17px] font-bold leading-[1.3] text-ink ${row("max-md:text-base")}`}
             >
               <span className="min-w-0 truncate" title={name}>
                 {name}
@@ -173,11 +174,22 @@ export default function TeacherCard({
             <RatingStars value={teacher.rating_avg} count={teacher.review_count} />
           </div>
 
-          {lines.subjects && (
-            <p className="mt-1 truncate text-sm leading-5 text-ink-2">{lines.subjects}</p>
+          {teacher.subjects.length > 0 && (
+            <ul className="mt-2 flex min-w-0 flex-wrap gap-1.5 overflow-hidden" style={{ maxHeight: 28 }}>
+              {teacher.subjects.slice(0, 3).map((s, i) => (
+                <li
+                  key={s}
+                  className={`truncate rounded-[var(--r-pill)] px-2.5 py-0.5 text-[13px] font-medium leading-6 ${
+                    i === 0 ? "bg-tint-indigo text-tint-indigo-fg" : "bg-canvas text-ink-2"
+                  }`}
+                >
+                  {s}
+                </li>
+              ))}
+            </ul>
           )}
           {lines.credentials && (
-            <p className="mt-0.5 truncate text-sm leading-5 text-ink-3">{lines.credentials}</p>
+            <p className="mt-2 truncate text-sm leading-5 text-ink-3">{lines.credentials}</p>
           )}
 
           {/* Row layout: availability as green text instead of the photo pill */}
@@ -194,13 +206,13 @@ export default function TeacherCard({
           <div className={`min-h-3 flex-1 ${row("max-md:min-h-1")}`} />
 
           <div
-            className={`mt-auto flex items-baseline justify-between gap-2 border-t border-line pt-3 ${row("max-md:border-t-0 max-md:pt-1")}`}
+            className={`mt-auto flex items-baseline justify-between gap-2 border-t border-dashed border-line pt-3 ${row("max-md:border-t-0 max-md:pt-1")}`}
           >
             <span className="min-w-0 truncate text-sm text-ink-2">{lines.where}</span>
             {lines.price != null && (
               <span className="shrink-0 whitespace-nowrap text-sm text-ink-3">
                 <span
-                  className={`ltr-isolate tnum text-lg font-semibold text-ink ${row("max-md:text-base")}`}
+                  className={`ltr-isolate tnum text-xl font-extrabold text-brand-800 ${row("max-md:text-lg")}`}
                 >
                   ₪{NUM.format(lines.price)}
                 </span>{" "}

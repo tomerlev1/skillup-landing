@@ -84,16 +84,16 @@ export default async function SearchPage({
 
   return (
     <div className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6">
-      <h1 className="font-ed text-2xl font-bold text-ink sm:text-3xl">
+      <h1 className="font-ed text-[28px] font-black text-ink sm:text-[38px]">
         {heading}
         {cityName && <span> ב{cityName}</span>}
       </h1>
 
-      <div className="mt-6 grid grid-cols-1 gap-10 lg:grid-cols-[260px_minmax(0,1fr)]">
+      <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
         {/* Filter sidebar — first in DOM = the RIGHT side in RTL */}
         <aside className="hidden lg:block" aria-label="סינון תוצאות">
-          <div className="sticky top-20">
-            <h2 className="mb-5 text-base font-semibold text-ink">סינון</h2>
+          <div className="sticky top-24 rounded-[var(--r-lg)] bg-surface p-5 shadow-[var(--shadow-card)] ring-1 ring-line/60">
+            <h2 className="mb-5 text-lg font-extrabold text-ink">סינון</h2>
             <FilterPanel
               categories={categories}
               applied={applied}
