@@ -1,0 +1,1127 @@
+[
+  {
+    "date": "2026-02-02",
+    "title_he": "ט״ו בשבט",
+    "category": "minor"
+  },
+  {
+    "date": "2026-03-02",
+    "title_he": "ערב פורים",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2026-03-03",
+    "title_he": "פורים",
+    "category": "major"
+  },
+  {
+    "date": "2026-03-04",
+    "title_he": "שושן פורים",
+    "category": "minor"
+  },
+  {
+    "date": "2026-04-01",
+    "title_he": "ערב פסח",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2026-04-02",
+    "title_he": "פסח א׳",
+    "category": "major"
+  },
+  {
+    "date": "2026-04-03",
+    "title_he": "פסח ב׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2026-04-04",
+    "title_he": "פסח ג׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2026-04-05",
+    "title_he": "פסח ד׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2026-04-06",
+    "title_he": "פסח ה׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2026-04-07",
+    "title_he": "פסח ו׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2026-04-08",
+    "title_he": "פסח ז׳",
+    "category": "major"
+  },
+  {
+    "date": "2026-04-14",
+    "title_he": "יום השואה",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2026-04-21",
+    "title_he": "יום הזכרון",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2026-04-22",
+    "title_he": "יום העצמאות",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2026-05-01",
+    "title_he": "פסח שני",
+    "category": "minor"
+  },
+  {
+    "date": "2026-05-05",
+    "title_he": "ל״ג בעומר",
+    "category": "minor"
+  },
+  {
+    "date": "2026-05-15",
+    "title_he": "יום ירושלים",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2026-05-21",
+    "title_he": "ערב שבועות",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2026-05-22",
+    "title_he": "שבועות",
+    "category": "major"
+  },
+  {
+    "date": "2026-07-22",
+    "title_he": "ערב תשעה באב",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2026-07-23",
+    "title_he": "תשעה באב",
+    "category": "major"
+  },
+  {
+    "date": "2026-07-29",
+    "title_he": "ט״ו באב",
+    "category": "minor"
+  },
+  {
+    "date": "2026-09-11",
+    "title_he": "ערב ראש השנה",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2026-09-12",
+    "title_he": "ראש השנה 5787",
+    "category": "major"
+  },
+  {
+    "date": "2026-09-13",
+    "title_he": "ראש השנה ב׳",
+    "category": "major"
+  },
+  {
+    "date": "2026-09-20",
+    "title_he": "ערב יום כיפור",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2026-09-21",
+    "title_he": "יום כיפור",
+    "category": "major"
+  },
+  {
+    "date": "2026-09-25",
+    "title_he": "ערב סוכות",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2026-09-26",
+    "title_he": "סוכות א׳",
+    "category": "major"
+  },
+  {
+    "date": "2026-09-27",
+    "title_he": "סוכות ב׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2026-09-28",
+    "title_he": "סוכות ג׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2026-09-29",
+    "title_he": "סוכות ד׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2026-09-30",
+    "title_he": "סוכות ה׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2026-10-01",
+    "title_he": "סוכות ו׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2026-10-02",
+    "title_he": "סוכות ז׳ (הושענא רבה)",
+    "category": "major"
+  },
+  {
+    "date": "2026-10-03",
+    "title_he": "שמיני עצרת",
+    "category": "major"
+  },
+  {
+    "date": "2026-12-04",
+    "title_he": "חנוכה: א׳ נר",
+    "category": "major"
+  },
+  {
+    "date": "2026-12-05",
+    "title_he": "חנוכה: ב׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2026-12-06",
+    "title_he": "חנוכה: ג׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2026-12-07",
+    "title_he": "חנוכה: ד׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2026-12-08",
+    "title_he": "חנוכה: ה׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2026-12-09",
+    "title_he": "חנוכה: ו׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2026-12-10",
+    "title_he": "חנוכה: ז׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2026-12-11",
+    "title_he": "חנוכה: ח׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2027-01-23",
+    "title_he": "ט״ו בשבט",
+    "category": "minor"
+  },
+  {
+    "date": "2027-03-22",
+    "title_he": "ערב פורים",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2027-03-23",
+    "title_he": "פורים",
+    "category": "major"
+  },
+  {
+    "date": "2027-03-24",
+    "title_he": "שושן פורים",
+    "category": "minor"
+  },
+  {
+    "date": "2027-04-21",
+    "title_he": "ערב פסח",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2027-04-22",
+    "title_he": "פסח א׳",
+    "category": "major"
+  },
+  {
+    "date": "2027-04-23",
+    "title_he": "פסח ב׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2027-04-24",
+    "title_he": "פסח ג׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2027-04-25",
+    "title_he": "פסח ד׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2027-04-26",
+    "title_he": "פסח ה׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2027-04-27",
+    "title_he": "פסח ו׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2027-04-28",
+    "title_he": "פסח ז׳",
+    "category": "major"
+  },
+  {
+    "date": "2027-05-04",
+    "title_he": "יום השואה",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2027-05-11",
+    "title_he": "יום הזכרון",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2027-05-12",
+    "title_he": "יום העצמאות",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2027-05-21",
+    "title_he": "פסח שני",
+    "category": "minor"
+  },
+  {
+    "date": "2027-05-25",
+    "title_he": "ל״ג בעומר",
+    "category": "minor"
+  },
+  {
+    "date": "2027-06-04",
+    "title_he": "יום ירושלים",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2027-06-10",
+    "title_he": "ערב שבועות",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2027-06-11",
+    "title_he": "שבועות",
+    "category": "major"
+  },
+  {
+    "date": "2027-08-11",
+    "title_he": "ערב תשעה באב",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2027-08-12",
+    "title_he": "תשעה באב",
+    "category": "major"
+  },
+  {
+    "date": "2027-08-18",
+    "title_he": "ט״ו באב",
+    "category": "minor"
+  },
+  {
+    "date": "2027-10-01",
+    "title_he": "ערב ראש השנה",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2027-10-02",
+    "title_he": "ראש השנה 5788",
+    "category": "major"
+  },
+  {
+    "date": "2027-10-03",
+    "title_he": "ראש השנה ב׳",
+    "category": "major"
+  },
+  {
+    "date": "2027-10-10",
+    "title_he": "ערב יום כיפור",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2027-10-11",
+    "title_he": "יום כיפור",
+    "category": "major"
+  },
+  {
+    "date": "2027-10-15",
+    "title_he": "ערב סוכות",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2027-10-16",
+    "title_he": "סוכות א׳",
+    "category": "major"
+  },
+  {
+    "date": "2027-10-17",
+    "title_he": "סוכות ב׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2027-10-18",
+    "title_he": "סוכות ג׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2027-10-19",
+    "title_he": "סוכות ד׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2027-10-20",
+    "title_he": "סוכות ה׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2027-10-21",
+    "title_he": "סוכות ו׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2027-10-22",
+    "title_he": "סוכות ז׳ (הושענא רבה)",
+    "category": "major"
+  },
+  {
+    "date": "2027-10-23",
+    "title_he": "שמיני עצרת",
+    "category": "major"
+  },
+  {
+    "date": "2027-12-24",
+    "title_he": "חנוכה: א׳ נר",
+    "category": "major"
+  },
+  {
+    "date": "2027-12-25",
+    "title_he": "חנוכה: ב׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2027-12-26",
+    "title_he": "חנוכה: ג׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2027-12-27",
+    "title_he": "חנוכה: ד׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2027-12-28",
+    "title_he": "חנוכה: ה׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2027-12-29",
+    "title_he": "חנוכה: ו׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2027-12-30",
+    "title_he": "חנוכה: ז׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2027-12-31",
+    "title_he": "חנוכה: ח׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2028-02-12",
+    "title_he": "ט״ו בשבט",
+    "category": "minor"
+  },
+  {
+    "date": "2028-03-11",
+    "title_he": "ערב פורים",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2028-03-12",
+    "title_he": "פורים",
+    "category": "major"
+  },
+  {
+    "date": "2028-03-13",
+    "title_he": "שושן פורים",
+    "category": "minor"
+  },
+  {
+    "date": "2028-04-10",
+    "title_he": "ערב פסח",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2028-04-11",
+    "title_he": "פסח א׳",
+    "category": "major"
+  },
+  {
+    "date": "2028-04-12",
+    "title_he": "פסח ב׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2028-04-13",
+    "title_he": "פסח ג׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2028-04-14",
+    "title_he": "פסח ד׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2028-04-15",
+    "title_he": "פסח ה׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2028-04-16",
+    "title_he": "פסח ו׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2028-04-17",
+    "title_he": "פסח ז׳",
+    "category": "major"
+  },
+  {
+    "date": "2028-04-24",
+    "title_he": "יום השואה",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2028-05-01",
+    "title_he": "יום הזכרון",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2028-05-02",
+    "title_he": "יום העצמאות",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2028-05-10",
+    "title_he": "פסח שני",
+    "category": "minor"
+  },
+  {
+    "date": "2028-05-14",
+    "title_he": "ל״ג בעומר",
+    "category": "minor"
+  },
+  {
+    "date": "2028-05-24",
+    "title_he": "יום ירושלים",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2028-05-30",
+    "title_he": "ערב שבועות",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2028-05-31",
+    "title_he": "שבועות",
+    "category": "major"
+  },
+  {
+    "date": "2028-07-31",
+    "title_he": "ערב תשעה באב",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2028-08-01",
+    "title_he": "תשעה באב",
+    "category": "major"
+  },
+  {
+    "date": "2028-08-07",
+    "title_he": "ט״ו באב",
+    "category": "minor"
+  },
+  {
+    "date": "2028-09-20",
+    "title_he": "ערב ראש השנה",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2028-09-21",
+    "title_he": "ראש השנה 5789",
+    "category": "major"
+  },
+  {
+    "date": "2028-09-22",
+    "title_he": "ראש השנה ב׳",
+    "category": "major"
+  },
+  {
+    "date": "2028-09-29",
+    "title_he": "ערב יום כיפור",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2028-09-30",
+    "title_he": "יום כיפור",
+    "category": "major"
+  },
+  {
+    "date": "2028-10-04",
+    "title_he": "ערב סוכות",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2028-10-05",
+    "title_he": "סוכות א׳",
+    "category": "major"
+  },
+  {
+    "date": "2028-10-06",
+    "title_he": "סוכות ב׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2028-10-07",
+    "title_he": "סוכות ג׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2028-10-08",
+    "title_he": "סוכות ד׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2028-10-09",
+    "title_he": "סוכות ה׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2028-10-10",
+    "title_he": "סוכות ו׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2028-10-11",
+    "title_he": "סוכות ז׳ (הושענא רבה)",
+    "category": "major"
+  },
+  {
+    "date": "2028-10-12",
+    "title_he": "שמיני עצרת",
+    "category": "major"
+  },
+  {
+    "date": "2028-12-12",
+    "title_he": "חנוכה: א׳ נר",
+    "category": "major"
+  },
+  {
+    "date": "2028-12-13",
+    "title_he": "חנוכה: ב׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2028-12-14",
+    "title_he": "חנוכה: ג׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2028-12-15",
+    "title_he": "חנוכה: ד׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2028-12-16",
+    "title_he": "חנוכה: ה׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2028-12-17",
+    "title_he": "חנוכה: ו׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2028-12-18",
+    "title_he": "חנוכה: ז׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2028-12-19",
+    "title_he": "חנוכה: ח׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2029-01-31",
+    "title_he": "ט״ו בשבט",
+    "category": "minor"
+  },
+  {
+    "date": "2029-02-28",
+    "title_he": "ערב פורים",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2029-03-01",
+    "title_he": "פורים",
+    "category": "major"
+  },
+  {
+    "date": "2029-03-02",
+    "title_he": "שושן פורים",
+    "category": "minor"
+  },
+  {
+    "date": "2029-03-30",
+    "title_he": "ערב פסח",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2029-03-31",
+    "title_he": "פסח א׳",
+    "category": "major"
+  },
+  {
+    "date": "2029-04-01",
+    "title_he": "פסח ב׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2029-04-02",
+    "title_he": "פסח ג׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2029-04-03",
+    "title_he": "פסח ד׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2029-04-04",
+    "title_he": "פסח ה׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2029-04-05",
+    "title_he": "פסח ו׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2029-04-06",
+    "title_he": "פסח ז׳",
+    "category": "major"
+  },
+  {
+    "date": "2029-04-12",
+    "title_he": "יום השואה",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2029-04-18",
+    "title_he": "יום הזכרון",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2029-04-19",
+    "title_he": "יום העצמאות",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2029-04-29",
+    "title_he": "פסח שני",
+    "category": "minor"
+  },
+  {
+    "date": "2029-05-03",
+    "title_he": "ל״ג בעומר",
+    "category": "minor"
+  },
+  {
+    "date": "2029-05-13",
+    "title_he": "יום ירושלים",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2029-05-19",
+    "title_he": "ערב שבועות",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2029-05-20",
+    "title_he": "שבועות",
+    "category": "major"
+  },
+  {
+    "date": "2029-07-21",
+    "title_he": "ערב תשעה באב",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2029-07-22",
+    "title_he": "(תשעה באב (נדחה",
+    "category": "major"
+  },
+  {
+    "date": "2029-07-27",
+    "title_he": "ט״ו באב",
+    "category": "minor"
+  },
+  {
+    "date": "2029-09-09",
+    "title_he": "ערב ראש השנה",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2029-09-10",
+    "title_he": "ראש השנה 5790",
+    "category": "major"
+  },
+  {
+    "date": "2029-09-11",
+    "title_he": "ראש השנה ב׳",
+    "category": "major"
+  },
+  {
+    "date": "2029-09-18",
+    "title_he": "ערב יום כיפור",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2029-09-19",
+    "title_he": "יום כיפור",
+    "category": "major"
+  },
+  {
+    "date": "2029-09-23",
+    "title_he": "ערב סוכות",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2029-09-24",
+    "title_he": "סוכות א׳",
+    "category": "major"
+  },
+  {
+    "date": "2029-09-25",
+    "title_he": "סוכות ב׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2029-09-26",
+    "title_he": "סוכות ג׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2029-09-27",
+    "title_he": "סוכות ד׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2029-09-28",
+    "title_he": "סוכות ה׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2029-09-29",
+    "title_he": "סוכות ו׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2029-09-30",
+    "title_he": "סוכות ז׳ (הושענא רבה)",
+    "category": "major"
+  },
+  {
+    "date": "2029-10-01",
+    "title_he": "שמיני עצרת",
+    "category": "major"
+  },
+  {
+    "date": "2029-12-01",
+    "title_he": "חנוכה: א׳ נר",
+    "category": "major"
+  },
+  {
+    "date": "2029-12-02",
+    "title_he": "חנוכה: ב׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2029-12-03",
+    "title_he": "חנוכה: ג׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2029-12-04",
+    "title_he": "חנוכה: ד׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2029-12-05",
+    "title_he": "חנוכה: ה׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2029-12-06",
+    "title_he": "חנוכה: ו׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2029-12-07",
+    "title_he": "חנוכה: ז׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2029-12-08",
+    "title_he": "חנוכה: ח׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2030-01-19",
+    "title_he": "ט״ו בשבט",
+    "category": "minor"
+  },
+  {
+    "date": "2030-03-18",
+    "title_he": "ערב פורים",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2030-03-19",
+    "title_he": "פורים",
+    "category": "major"
+  },
+  {
+    "date": "2030-03-20",
+    "title_he": "שושן פורים",
+    "category": "minor"
+  },
+  {
+    "date": "2030-04-17",
+    "title_he": "ערב פסח",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2030-04-18",
+    "title_he": "פסח א׳",
+    "category": "major"
+  },
+  {
+    "date": "2030-04-19",
+    "title_he": "פסח ב׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2030-04-20",
+    "title_he": "פסח ג׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2030-04-21",
+    "title_he": "פסח ד׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2030-04-22",
+    "title_he": "פסח ה׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2030-04-23",
+    "title_he": "פסח ו׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2030-04-24",
+    "title_he": "פסח ז׳",
+    "category": "major"
+  },
+  {
+    "date": "2030-04-30",
+    "title_he": "יום השואה",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2030-05-07",
+    "title_he": "יום הזכרון",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2030-05-08",
+    "title_he": "יום העצמאות",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2030-05-17",
+    "title_he": "פסח שני",
+    "category": "minor"
+  },
+  {
+    "date": "2030-05-21",
+    "title_he": "ל״ג בעומר",
+    "category": "minor"
+  },
+  {
+    "date": "2030-05-31",
+    "title_he": "יום ירושלים",
+    "category": "national_holiday"
+  },
+  {
+    "date": "2030-06-06",
+    "title_he": "ערב שבועות",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2030-06-07",
+    "title_he": "שבועות",
+    "category": "major"
+  },
+  {
+    "date": "2030-08-07",
+    "title_he": "ערב תשעה באב",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2030-08-08",
+    "title_he": "תשעה באב",
+    "category": "major"
+  },
+  {
+    "date": "2030-08-14",
+    "title_he": "ט״ו באב",
+    "category": "minor"
+  },
+  {
+    "date": "2030-09-27",
+    "title_he": "ערב ראש השנה",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2030-09-28",
+    "title_he": "ראש השנה 5791",
+    "category": "major"
+  },
+  {
+    "date": "2030-09-29",
+    "title_he": "ראש השנה ב׳",
+    "category": "major"
+  },
+  {
+    "date": "2030-10-06",
+    "title_he": "ערב יום כיפור",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2030-10-07",
+    "title_he": "יום כיפור",
+    "category": "major"
+  },
+  {
+    "date": "2030-10-11",
+    "title_he": "ערב סוכות",
+    "category": "erev_chag"
+  },
+  {
+    "date": "2030-10-12",
+    "title_he": "סוכות א׳",
+    "category": "major"
+  },
+  {
+    "date": "2030-10-13",
+    "title_he": "סוכות ב׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2030-10-14",
+    "title_he": "סוכות ג׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2030-10-15",
+    "title_he": "סוכות ד׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2030-10-16",
+    "title_he": "סוכות ה׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2030-10-17",
+    "title_he": "סוכות ו׳ (חוה״מ)",
+    "category": "major"
+  },
+  {
+    "date": "2030-10-18",
+    "title_he": "סוכות ז׳ (הושענא רבה)",
+    "category": "major"
+  },
+  {
+    "date": "2030-10-19",
+    "title_he": "שמיני עצרת",
+    "category": "major"
+  },
+  {
+    "date": "2030-12-20",
+    "title_he": "חנוכה: א׳ נר",
+    "category": "major"
+  },
+  {
+    "date": "2030-12-21",
+    "title_he": "חנוכה: ב׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2030-12-22",
+    "title_he": "חנוכה: ג׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2030-12-23",
+    "title_he": "חנוכה: ד׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2030-12-24",
+    "title_he": "חנוכה: ה׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2030-12-25",
+    "title_he": "חנוכה: ו׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2030-12-26",
+    "title_he": "חנוכה: ז׳ נרות",
+    "category": "major"
+  },
+  {
+    "date": "2030-12-27",
+    "title_he": "חנוכה: ח׳ נרות",
+    "category": "major"
+  }
+]

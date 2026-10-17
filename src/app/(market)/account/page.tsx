@@ -135,7 +135,7 @@ export default async function AccountPage() {
     { href: "/bookings", label: "השיעורים שלי", icon: CalendarDays, tone: "bg-tint-indigo text-tint-indigo-fg" },
     { href: "/messages", label: "הודעות", icon: MessageCircle, tone: "bg-tint-sky text-tint-sky-fg" },
     ...(isTeacher
-      ? [{ href: "/account/schedule", label: "ניהול זמינות", icon: CalendarClock, tone: "bg-tint-peach text-tint-peach-fg" }]
+      ? [{ href: "/account/schedule", label: "יומן זמינות", icon: CalendarClock, tone: "bg-tint-peach text-tint-peach-fg" }]
       : [
           { href: "/saved", label: "מורים ששמרתי", icon: Heart, tone: "bg-tint-rose text-tint-rose-fg" },
           { href: "/search", label: "מציאת מורה", icon: Search, tone: "bg-tint-mint text-tint-mint-fg" },

@@ -9,6 +9,7 @@ interface AccountHeaderProps {
   back?: { href: string; label: string };
   /** Right-aligned actions / stats. */
   aside?: React.ReactNode;
+  wide?: boolean;
 }
 
 // Compact header for signed-in pages (lessons, messages, saved, schedule):
@@ -20,11 +21,12 @@ export default function AccountHeader({
   tone = "bg-tint-indigo text-tint-indigo-fg",
   back,
   aside,
+  wide = false,
 }: AccountHeaderProps) {
   return (
     <div className="relative isolate">
       <div aria-hidden="true" className="absolute inset-x-0 top-0 -z-10 h-[260px]" style={{ background: "var(--hero-wash)" }} />
-      <div className="mx-auto max-w-[960px] px-4 pb-6 pt-8 sm:px-6 sm:pt-12">
+      <div className={`mx-auto ${wide ? "max-w-[1180px]" : "max-w-[960px]"} px-4 pb-6 pt-8 sm:px-6 sm:pt-12`}>
         {back && (
           <Link
             href={back.href}

@@ -29,4 +29,4 @@ npm run dev                  # http://localhost:3000
 
 ## כללי מותג
 
-רדיוסים רק דרך `rounded-[var(--r-*)]` / `rounded-full`, צבעים רק מהטוקנים. `src/lib/__tests__/brand-guards.test.ts` נכשל אם הכללים נשברים.
+רדיוסים רק דרך משתני הרדיוס (`--r-sm`, `--r-md`, `--r-lg`, `--r-pill`), צבעים רק מהטוקנים. `src/lib/__tests__/brand-guards.test.ts` נכשל אם הכללים נשברים.

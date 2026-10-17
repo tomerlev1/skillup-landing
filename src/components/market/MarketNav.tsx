@@ -194,7 +194,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
                   {[
                     { href: "/account", label: "הפרופיל שלי", icon: UserRound },
                     ...(profile.role === "teacher"
-                      ? [{ href: "/account/schedule", label: "ניהול זמינות", icon: Calendar }]
+                      ? [{ href: "/account/schedule", label: "יומן זמינות", icon: Calendar }]
                       : []),
                     { href: "/messages", label: "הודעות", icon: MessageCircle },
                     { href: "/bookings", label: "השיעורים שלי", icon: Calendar },
