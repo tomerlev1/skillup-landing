@@ -1,28 +1,44 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 import TeacherCard from "@/components/market/TeacherCard";
 import { createClient } from "@/lib/supabase/client";
-import type { SearchParams, SearchResult, TeacherCard as TeacherCardData } from "@/lib/types";
+import { fetchNextSlots } from "@/lib/data/availability";
+import type {
+  AvailabilitySlot,
+  SearchParams,
+  SearchResult,
+  TeacherCard as TeacherCardData,
+} from "@/lib/types";
 
 interface ResultsGridProps {
   initial: SearchResult;
   applied: SearchParams;
   pageSize: number;
+  initialNextSlots?: Record<string, AvailabilitySlot>;
 }
 
 // First page arrives server-rendered (SEO + instant paint); "load more"
 // pages are fetched client-side straight from the anon RPC. Pagination,
 // not infinite scroll — comparison shopping needs landmarks.
-export default function ResultsGrid({ initial, applied, pageSize }: ResultsGridProps) {
+export default function ResultsGrid({
+  initial,
+  applied,
+  pageSize,
+  initialNextSlots = {},
+}: ResultsGridProps) {
   const supabase = useMemo(() => createClient(), []);
   const [items, setItems] = useState<TeacherCardData[]>(initial.items);
+  const [nextSlots, setNextSlots] = useState(initialNextSlots);
   const [pending, startTransition] = useTransition();
 
   // New filters (new server render) reset the accumulated pages.
-  useEffect(() => {
+  const [prevInitial, setPrevInitial] = useState(initial);
+  if (prevInitial !== initial) {
+    setPrevInitial(initial);
     setItems(initial.items);
-  }, [initial]);
+    setNextSlots(initialNextSlots);
+  }
 
   const hasMore = items.length < initial.total;
 
@@ -46,14 +62,26 @@ export default function ResultsGrid({ initial, applied, pageSize }: ResultsGridP
         const seen = new Set(prev.map((t) => t.id));
         return [...prev, ...next.filter((t) => !seen.has(t.id))];
       });
+      // Availability is display-only; a failed fetch just hides the label.
+      const slots = await fetchNextSlots(
+        supabase,
+        next.map((t) => t.id),
+      );
+      setNextSlots((prev) => ({ ...prev, ...slots }));
     });
   }
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:gap-x-6">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-x-4 md:gap-y-8 xl:grid-cols-4 lg:gap-x-6">
         {items.map((t, i) => (
-          <TeacherCard key={t.id} teacher={t} priority={i < 4} />
+          <TeacherCard
+            key={t.id}
+            teacher={t}
+            variant="auto"
+            nextSlot={nextSlots[t.id]}
+            priority={i < 4}
+          />
         ))}
       </div>
 
@@ -63,11 +91,11 @@ export default function ResultsGrid({ initial, applied, pageSize }: ResultsGridP
             type="button"
             onClick={loadMore}
             disabled={pending}
-            className="inline-flex h-12 cursor-pointer items-center rounded-full border border-[var(--mk-ink)] px-8 text-sm font-semibold text-[var(--mk-ink)] transition-colors hover:bg-paper-25 disabled:opacity-50"
+            className="inline-flex h-12 cursor-pointer items-center rounded-full border border-ink px-8 text-sm font-semibold text-ink transition-colors hover:bg-canvas disabled:opacity-50"
           >
             {pending ? "טוען..." : "הצגת מורים נוספים"}
           </button>
-          <p className="tnum mt-3 text-xs text-[var(--mk-ink-3)]">
+          <p className="tnum mt-3 text-sm text-ink-3">
             {items.length} מתוך {initial.total}
           </p>
         </div>

@@ -5,6 +5,7 @@ import { ChevronLeft } from "lucide-react";
 import CategoryIcon from "@/components/market/CategoryIcon";
 import TeacherCard from "@/components/market/TeacherCard";
 import Chip from "@/components/ui/Chip";
+import { getNextSlots } from "@/lib/data/availability";
 import { searchTeachers } from "@/lib/data/teachers";
 import {
   getCategories,
@@ -75,6 +76,8 @@ export default async function CategoryLandingPage({ params }: PageProps) {
     getMajorCities(),
   ]);
 
+  const nextSlots = await getNextSlots(result.items.map((t) => t.id));
+
   const intro = CATEGORY_INTROS[slug] ?? category.description_he ?? "";
 
   const itemListLd = {
@@ -138,7 +141,7 @@ export default async function CategoryLandingPage({ params }: PageProps) {
               className="text-[var(--mk-ink)]"
             />
           </span>
-          <h1 className="font-display text-3xl font-extrabold text-[var(--mk-ink)] sm:text-4xl">
+          <h1 className="font-ed text-3xl font-bold text-[var(--mk-ink)] sm:text-4xl">
             מורים פרטיים ל{category.name_he}
           </h1>
         </div>
@@ -181,9 +184,15 @@ export default async function CategoryLandingPage({ params }: PageProps) {
         </div>
 
         {result.items.length > 0 ? (
-          <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-x-4 md:gap-y-8 xl:grid-cols-4 lg:gap-x-6">
             {result.items.map((t, i) => (
-              <TeacherCard key={t.id} teacher={t} priority={i < 4} />
+              <TeacherCard
+                key={t.id}
+                teacher={t}
+                variant="auto"
+                nextSlot={nextSlots[t.id]}
+                priority={i < 4}
+              />
             ))}
           </div>
         ) : (

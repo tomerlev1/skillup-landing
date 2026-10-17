@@ -6,8 +6,9 @@ import { Heart } from "lucide-react";
 import TeacherCard from "@/components/market/TeacherCard";
 import { TeacherGridSkeleton } from "@/components/ui/Skeleton";
 import { createClient } from "@/lib/supabase/client";
+import { fetchNextSlots } from "@/lib/data/availability";
 import { FAVORITES_EVENT, getFavorites } from "@/lib/favorites";
-import type { TeacherCard as TeacherCardData, SearchResult } from "@/lib/types";
+import type { AvailabilitySlot, TeacherCard as TeacherCardData, SearchResult } from "@/lib/types";
 
 // Saved tutors — favorites live in localStorage (works for guests too),
 // hydrated into full cards via the anon search RPC.
@@ -15,6 +16,7 @@ export default function SavedTutorsPage() {
   const supabase = useMemo(() => createClient(), []);
   const [ids, setIds] = useState<string[] | null>(null);
   const [teachers, setTeachers] = useState<TeacherCardData[]>([]);
+  const [nextSlots, setNextSlots] = useState<Record<string, AvailabilitySlot>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -58,7 +60,9 @@ export default function SavedTutorsPage() {
         ((enriched as SearchResult | null)?.items ?? []).map((t) => [t.id, t]),
       );
       const merged = results.map((t) => enrichedMap.get(t.id) ?? t);
+      const slots = await fetchNextSlots(supabase, ids);
       if (!cancelled) {
+        setNextSlots(slots);
         // Preserve the user's save order.
         setTeachers(
           ids
@@ -75,7 +79,7 @@ export default function SavedTutorsPage() {
 
   return (
     <div className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6">
-      <h1 className="font-display text-2xl font-bold text-[var(--mk-ink)]">
+      <h1 className="font-ed text-2xl font-bold text-ink">
         מורים ששמרתי
       </h1>
 
@@ -84,7 +88,7 @@ export default function SavedTutorsPage() {
           <TeacherGridSkeleton count={4} />
         </div>
       ) : teachers.length === 0 ? (
-        <div className="mt-10 rounded-3xl bg-[var(--mk-band)] px-6 py-16 text-center">
+        <div className="mt-10 rounded-[var(--r-md)] bg-canvas px-6 py-16 text-center">
           <Heart size={36} className="mx-auto text-[var(--mk-ink-3)]" />
           <h2 className="mt-4 text-lg font-semibold text-[var(--mk-ink)]">
             עדיין לא שמרתם מורים
@@ -95,15 +99,20 @@ export default function SavedTutorsPage() {
           </p>
           <Link
             href="/search"
-            className="mt-6 inline-flex h-11 items-center rounded-full bg-brand-600 px-6 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+            className="mt-6 inline-flex h-11 items-center rounded-full bg-action px-6 text-sm font-semibold text-on-action transition-opacity hover:opacity-90"
           >
             למציאת מורה
           </Link>
         </div>
       ) : (
-        <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+        <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-x-4 md:gap-y-8 xl:grid-cols-4 lg:gap-x-6">
           {teachers.map((t) => (
-            <TeacherCard key={t.id} teacher={t} />
+            <TeacherCard
+              key={t.id}
+              teacher={t}
+              variant="auto"
+              nextSlot={nextSlots[t.id]}
+            />
           ))}
         </div>
       )}

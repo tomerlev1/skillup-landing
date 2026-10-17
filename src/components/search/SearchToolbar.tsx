@@ -40,8 +40,8 @@ export default function SearchToolbar({
 
   return (
     <div className="flex items-center justify-between gap-3">
-      <p className="text-sm text-[var(--mk-ink-2)]">
-        <span className="tnum font-semibold text-[var(--mk-ink)]">{total}</span>{" "}
+      <p className="text-sm text-ink-2">
+        <span className="tnum font-semibold text-ink">{total}</span>{" "}
         מורים נמצאו
       </p>
 
@@ -53,7 +53,7 @@ export default function SearchToolbar({
             onClick={() => setSortOpen((v) => !v)}
             aria-expanded={sortOpen}
             aria-haspopup="listbox"
-            className="inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-full border border-[var(--mk-hairline)] bg-white px-4 text-sm font-medium text-[var(--mk-ink)] transition-colors hover:border-[var(--mk-ink)]"
+            className="inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-full border border-line bg-surface px-4 text-sm font-medium text-ink transition-colors hover:border-ink"
           >
             {SORT_LABELS[sort]}
             <ChevronDown size={14} className={sortOpen ? "rotate-180" : ""} />
@@ -61,7 +61,7 @@ export default function SearchToolbar({
           {sortOpen && (
             <div
               role="listbox"
-              className="mk-shadow absolute top-full end-0 z-40 mt-1.5 w-52 overflow-hidden rounded-xl border border-[var(--mk-hairline)] bg-white py-1"
+              className="mk-shadow absolute top-full end-0 z-40 mt-1.5 w-52 overflow-hidden rounded-[var(--r-sm)] border border-line bg-surface py-1"
             >
               {(Object.keys(SORT_LABELS) as SortOption[]).map((option) => (
                 <button
@@ -75,10 +75,10 @@ export default function SearchToolbar({
                       scroll: false,
                     });
                   }}
-                  className={`block w-full cursor-pointer px-4 py-2.5 text-start text-sm hover:bg-paper-25 ${
+                  className={`block w-full cursor-pointer px-4 py-3 text-start text-sm hover:bg-canvas ${
                     option === sort
-                      ? "font-semibold text-[var(--mk-ink)]"
-                      : "text-[var(--mk-ink-2)]"
+                      ? "font-semibold text-ink"
+                      : "text-ink-2"
                   }`}
                 >
                   {SORT_LABELS[option]}
@@ -92,7 +92,7 @@ export default function SearchToolbar({
         <button
           type="button"
           onClick={() => setSheetOpen(true)}
-          className="inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-full border border-[var(--mk-hairline)] bg-white px-4 text-sm font-medium text-[var(--mk-ink)] transition-colors hover:border-[var(--mk-ink)] lg:hidden"
+          className="inline-flex h-11 cursor-pointer items-center gap-1.5 rounded-full border border-line bg-surface px-4 text-sm font-medium text-ink transition-colors hover:border-ink lg:hidden"
         >
           <SlidersHorizontal size={15} />
           סינון
@@ -110,7 +110,7 @@ export default function SearchToolbar({
             <button
               type="button"
               onClick={apply}
-              className="h-12 w-full cursor-pointer rounded-full bg-brand-600 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+              className="h-12 w-full cursor-pointer rounded-full bg-action text-sm font-semibold text-on-action transition-opacity hover:opacity-90"
             >
               {count != null ? (
                 <>

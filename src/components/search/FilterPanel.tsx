@@ -132,7 +132,7 @@ export default function FilterPanel({
     <div className="space-y-7">
       {/* Category */}
       <fieldset>
-        <legend className="mb-3 text-sm font-semibold text-[var(--mk-ink)]">תחום</legend>
+        <legend className="mb-3 text-sm font-semibold text-ink">תחום</legend>
         <div className="flex flex-wrap gap-2">
           {categories.map((cat) => {
             const selected = draft.categoryId === cat.id;
@@ -158,7 +158,7 @@ export default function FilterPanel({
       {/* Subject (within category) */}
       {subjects.length > 0 && (
         <fieldset>
-          <legend className="mb-3 text-sm font-semibold text-[var(--mk-ink)]">מקצוע</legend>
+          <legend className="mb-3 text-sm font-semibold text-ink">מקצוע</legend>
           <div className="flex max-h-44 flex-wrap gap-2 overflow-y-auto">
             {subjects.map((s) => {
               const selected = draft.subjectIds?.[0] === s.id;
@@ -181,9 +181,9 @@ export default function FilterPanel({
 
       {/* City */}
       <fieldset>
-        <legend className="mb-3 text-sm font-semibold text-[var(--mk-ink)]">עיר</legend>
+        <legend className="mb-3 text-sm font-semibold text-ink">עיר</legend>
         {draft.cityId && cityName ? (
-          <span className="inline-flex items-center gap-2 rounded-full bg-[var(--mk-ink)] py-2 ps-4 pe-2 text-sm font-medium text-white">
+          <span className="inline-flex items-center gap-2 rounded-full bg-ink py-2 ps-4 pe-2 text-sm font-medium text-surface">
             <MapPin size={14} />
             {cityName}
             <button
@@ -193,7 +193,7 @@ export default function FilterPanel({
                 update({ cityId: undefined });
                 setCityName(null);
               }}
-              className="grid h-6 w-6 cursor-pointer place-items-center rounded-full hover:bg-white/20"
+              className="grid h-8 w-8 cursor-pointer place-items-center rounded-full hover:bg-surface/20"
             >
               <X size={13} />
             </button>
@@ -204,10 +204,10 @@ export default function FilterPanel({
               value={cityQuery}
               onChange={(e) => setCityQuery(e.target.value)}
               placeholder="חיפוש עיר..."
-              className="h-11 w-full rounded-xl border border-[var(--mk-hairline)] bg-white px-4 text-sm outline-none transition-colors placeholder:text-[var(--mk-ink-3)] focus:border-[var(--mk-ink)]"
+              className="h-11 w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 text-sm outline-none transition-colors placeholder:text-ink-3 focus:border-ink"
             />
             {cityOptions.length > 0 && (
-              <div className="mk-shadow absolute top-full inset-x-0 z-30 mt-1 overflow-hidden rounded-xl border border-[var(--mk-hairline)] bg-white py-1">
+              <div className="mk-shadow absolute top-full inset-x-0 z-30 mt-1 overflow-hidden rounded-[var(--r-sm)] border border-line bg-surface py-1">
                 {cityOptions.map((c) => (
                   <button
                     key={c.id}
@@ -218,7 +218,7 @@ export default function FilterPanel({
                       setCityOptions([]);
                       update({ cityId: c.id });
                     }}
-                    className="block w-full cursor-pointer px-4 py-2.5 text-start text-sm hover:bg-paper-25"
+                    className="block w-full cursor-pointer px-4 py-2.5 text-start text-sm hover:bg-canvas"
                   >
                     {c.name_he}
                   </button>
@@ -231,7 +231,7 @@ export default function FilterPanel({
 
       {/* Lesson mode */}
       <fieldset>
-        <legend className="mb-3 text-sm font-semibold text-[var(--mk-ink)]">אופן הלימוד</legend>
+        <legend className="mb-3 text-sm font-semibold text-ink">אופן הלימוד</legend>
         <div className="flex flex-wrap gap-2">
           {(Object.keys(LESSON_MODE_LABELS) as LessonMode[]).map((mode) => {
             const selected = draft.modes?.includes(mode) ?? false;
@@ -257,7 +257,7 @@ export default function FilterPanel({
 
       {/* Price */}
       <fieldset>
-        <legend className="mb-3 text-sm font-semibold text-[var(--mk-ink)]">מחיר לשעה</legend>
+        <legend className="mb-3 text-sm font-semibold text-ink">מחיר לשעה</legend>
         <div className="flex flex-wrap gap-2">
           {PRICE_RANGES.map((range) => {
             const selected =
@@ -284,7 +284,7 @@ export default function FilterPanel({
 
       {/* Rating */}
       <fieldset>
-        <legend className="mb-3 text-sm font-semibold text-[var(--mk-ink)]">דירוג</legend>
+        <legend className="mb-3 text-sm font-semibold text-ink">דירוג</legend>
         <div className="flex flex-wrap gap-2">
           {RATING_OPTIONS.map((opt) => {
             const selected = draft.minRating === opt.value;

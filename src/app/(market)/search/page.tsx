@@ -5,6 +5,7 @@ import FilterPanel from "@/components/search/FilterPanel";
 import ResultsGrid from "@/components/search/ResultsGrid";
 import SearchToolbar from "@/components/search/SearchToolbar";
 import Chip from "@/components/ui/Chip";
+import { getNextSlots } from "@/lib/data/availability";
 import { searchTeachers } from "@/lib/data/teachers";
 import { getCategories } from "@/lib/data/taxonomy";
 import { createPublicClient } from "@/lib/supabase/public";
@@ -67,6 +68,8 @@ export default async function SearchPage({
       : Promise.resolve(null),
   ]);
 
+  const nextSlots = await getNextSlots(result.items.map((t) => t.id));
+
   const categoryName = applied.categoryId
     ? (categories.find((c) => c.id === applied.categoryId)?.name_he ?? null)
     : null;
@@ -81,7 +84,7 @@ export default async function SearchPage({
 
   return (
     <div className="mx-auto max-w-[1280px] px-4 py-8 sm:px-6">
-      <h1 className="font-display text-2xl font-bold text-[var(--mk-ink)] sm:text-3xl">
+      <h1 className="font-ed text-2xl font-bold text-ink sm:text-3xl">
         {heading}
         {cityName && <span> ב{cityName}</span>}
       </h1>
@@ -90,7 +93,7 @@ export default async function SearchPage({
         {/* Filter sidebar — first in DOM = the RIGHT side in RTL */}
         <aside className="hidden lg:block" aria-label="סינון תוצאות">
           <div className="sticky top-20">
-            <h2 className="mb-5 text-base font-semibold text-[var(--mk-ink)]">סינון</h2>
+            <h2 className="mb-5 text-base font-semibold text-ink">סינון</h2>
             <FilterPanel
               categories={categories}
               applied={applied}
@@ -117,20 +120,24 @@ export default async function SearchPage({
 
           <div className="mt-6">
             {result.items.length > 0 ? (
-              <ResultsGrid initial={result} applied={applied} pageSize={PAGE_SIZE} />
+              <ResultsGrid
+                initial={result}
+                applied={applied}
+                pageSize={PAGE_SIZE}
+                initialNextSlots={nextSlots}
+              />
             ) : (
-              <div className="rounded-3xl bg-[var(--mk-band)] px-6 py-16 text-center">
+              <div className="rounded-[var(--r-md)] bg-canvas px-6 py-16 text-center">
                 <SearchX
                   size={36}
-                  className="mx-auto text-[var(--mk-ink-3)]"
+                  className="mx-auto text-ink-3"
                   aria-hidden="true"
                 />
-                <h2 className="mt-4 text-lg font-semibold text-[var(--mk-ink)]">
-                  לא נמצאו מורים שמתאימים לסינון הזה
+                <h2 className="mt-4 text-lg font-semibold text-ink">
+                  לא מצאנו מורים שמתאימים לחיפוש הזה
                 </h2>
-                <p className="mx-auto mt-2 max-w-[380px] text-sm leading-relaxed text-[var(--mk-ink-2)]">
-                  נסו להסיר חלק מהסינונים, לחפש בעיר אחרת או לבחור שיעורים
-                  אונליין. הרבה מורים מלמדים מרחוק, מכל מקום בארץ.
+                <p className="mx-auto mt-2 max-w-[380px] text-sm leading-relaxed text-ink-2">
+                  נסו להסיר חלק מהסינונים או לחפש מקצוע קרוב.
                 </p>
                 <div className="mt-6 flex flex-wrap justify-center gap-2">
                   <Chip href="/search" size="sm">

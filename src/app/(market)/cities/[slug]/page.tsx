@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ChevronLeft, MapPin } from "lucide-react";
 import TeacherCard from "@/components/market/TeacherCard";
 import Chip from "@/components/ui/Chip";
+import { getNextSlots } from "@/lib/data/availability";
 import { searchTeachers } from "@/lib/data/teachers";
 import { getCategories, getMajorCities } from "@/lib/data/taxonomy";
 import { SITE_URL } from "@/lib/constants";
@@ -59,6 +60,11 @@ export default async function CityLandingPage({ params }: PageProps) {
     (t) => !inCity.items.some((c) => c.id === t.id),
   );
 
+  const nextSlots = await getNextSlots([
+    ...inCity.items.map((t) => t.id),
+    ...onlineExtra.slice(0, 4).map((t) => t.id),
+  ]);
+
   const breadcrumbLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -87,7 +93,7 @@ export default async function CityLandingPage({ params }: PageProps) {
           <span className="text-[var(--mk-ink)]">מורה פרטי ב{shortName}</span>
         </nav>
 
-        <h1 className="flex items-center gap-3 font-display text-3xl font-extrabold text-[var(--mk-ink)] sm:text-4xl">
+        <h1 className="flex items-center gap-3 font-ed text-3xl font-bold text-[var(--mk-ink)] sm:text-4xl">
           <MapPin size={30} className="shrink-0 text-[var(--mk-ink-3)]" />
           מורה פרטי ב{shortName}
         </h1>
@@ -116,9 +122,15 @@ export default async function CityLandingPage({ params }: PageProps) {
         </div>
 
         {inCity.items.length > 0 ? (
-          <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-x-4 md:gap-y-8 xl:grid-cols-4 lg:gap-x-6">
             {inCity.items.map((t, i) => (
-              <TeacherCard key={t.id} teacher={t} priority={i < 4} />
+              <TeacherCard
+                key={t.id}
+                teacher={t}
+                variant="auto"
+                nextSlot={nextSlots[t.id]}
+                priority={i < 4}
+              />
             ))}
           </div>
         ) : (
@@ -135,9 +147,14 @@ export default async function CityLandingPage({ params }: PageProps) {
           <h2 className="mb-5 font-display text-xl font-bold text-[var(--mk-ink)]">
             מורים אונליין שזמינים גם ל{shortName}
           </h2>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-6">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-x-4 md:gap-y-8 xl:grid-cols-4 lg:gap-x-6">
             {onlineExtra.slice(0, 4).map((t) => (
-              <TeacherCard key={t.id} teacher={t} />
+              <TeacherCard
+                key={t.id}
+                teacher={t}
+                variant="auto"
+                nextSlot={nextSlots[t.id]}
+              />
             ))}
           </div>
         </div>

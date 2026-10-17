@@ -34,10 +34,10 @@ export default function SaveButton({ teacherId, teacherName, variant = "overlay"
       }}
       aria-label={saved ? `הסרת ${teacherName} מהשמורים` : `שמירת ${teacherName}`}
       aria-pressed={saved}
-      className={`grid cursor-pointer place-items-center rounded-full transition-transform hover:scale-110 active:scale-95 ${
+      className={`relative grid cursor-pointer place-items-center rounded-full transition-transform hover:scale-110 active:scale-95 ${
         plain
           ? "h-11 w-11 border border-line bg-surface"
-          : "h-8 w-8 bg-white/90 shadow-sm"
+          : "h-[34px] w-[34px] bg-white/90 shadow-sm after:absolute after:-inset-[5px] after:content-['']"
       }`}
     >
       <Heart
