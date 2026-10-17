@@ -1,27 +1,21 @@
 import type { Metadata } from "next";
-import { Rubik, Heebo, JetBrains_Mono } from "next/font/google";
+import { Rubik, Frank_Ruhl_Libre } from "next/font/google";
 import "./globals.css";
 import { SITE_URL } from "@/lib/constants";
 import { JSON_LD_BLOCKS } from "@/lib/structured-data";
+import { themeInitScript } from "@/lib/theme";
 
 const rubik = Rubik({
   variable: "--font-family-rubik",
   subsets: ["hebrew", "latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const heebo = Heebo({
-  variable: "--font-family-heebo",
+const frank = Frank_Ruhl_Libre({
+  variable: "--font-family-frank",
   subsets: ["hebrew", "latin"],
-  weight: ["500", "700", "800", "900"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-family-jetbrains-mono",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["700", "900"],
   display: "swap",
 });
 
@@ -144,8 +138,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="he" dir="rtl">
+    <html
+      lang="he"
+      dir="rtl"
+      suppressHydrationWarning
+      className={`${rubik.variable} ${frank.variable}`}
+    >
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         {JSON_LD_BLOCKS.map((block, i) => (
           <script
             key={i}
@@ -154,7 +154,7 @@ export default function RootLayout({
           />
         ))}
       </head>
-      <body className={`${rubik.variable} ${heebo.variable} ${jetbrainsMono.variable} font-[family-name:var(--font-family-rubik)] antialiased`}>
+      <body className="antialiased">
         {children}
       </body>
     </html>
