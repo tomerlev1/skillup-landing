@@ -169,7 +169,8 @@ export default function SupportWidget() {
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "סגירת עזרה" : "פתיחת עזרה"}
         aria-expanded={open}
-        className="fixed bottom-20 end-4 z-[70] grid h-13 w-13 cursor-pointer place-items-center rounded-full bg-[var(--mk-ink)] text-white shadow-[var(--mk-shadow)] transition-transform hover:scale-105 lg:bottom-6 lg:end-6"
+        style={{ bottom: "calc(16px + var(--sticky-bar-h, 0px) + env(safe-area-inset-bottom))" }}
+        className="fixed end-4 z-[70] grid h-13 w-13 cursor-pointer place-items-center rounded-pill border border-line bg-surface text-ink shadow-[var(--shadow-lift)] transition-[transform,bottom] duration-200 hover:scale-105 lg:end-6"
       >
         {open ? <X size={21} /> : <Headset size={21} />}
       </button>
@@ -178,22 +179,23 @@ export default function SupportWidget() {
         <div
           role="dialog"
           aria-label="עזרה ותמיכה"
-          className="mk-shadow fixed bottom-36 end-4 z-[70] flex h-[min(560px,calc(100dvh-140px))] w-[min(380px,calc(100vw-32px))] flex-col overflow-hidden rounded-3xl border border-[var(--mk-hairline)] bg-white lg:bottom-24 lg:end-6"
+          style={{ bottom: "calc(16px + 52px + 12px + var(--sticky-bar-h, 0px) + env(safe-area-inset-bottom))" }}
+          className="fixed end-4 z-[70] flex h-[min(560px,calc(100dvh-160px))] w-[min(380px,calc(100vw-32px))] flex-col overflow-hidden rounded-[var(--r-md)] border border-line bg-surface shadow-[var(--shadow-lift)] lg:end-6"
         >
           {/* Header */}
-          <div className="flex items-center gap-3 bg-[var(--mk-ink)] px-5 py-4 text-white">
-            <span className="grid h-9 w-9 place-items-center rounded-full bg-white/15">
+          <div className="flex items-center gap-3 border-b border-line bg-surface px-5 py-4 text-ink">
+            <span className="grid h-9 w-9 place-items-center rounded-pill bg-action-soft text-action">
               <Headset size={17} />
             </span>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold">התמיכה של SkillUp</p>
-              <p className="text-xs text-white/70">כאן לכל שאלה על האתר והשיעורים</p>
+              <p className="text-sm text-ink-3">כאן לכל שאלה על האתר והשיעורים</p>
             </div>
             {!escalated && (
               <button
                 type="button"
                 onClick={() => setEscalating(true)}
-                className="shrink-0 cursor-pointer rounded-full border border-white/25 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-white/10"
+                className="shrink-0 cursor-pointer rounded-pill border border-line px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:bg-canvas"
               >
                 <UserRound size={12} className="mb-0.5 inline" /> נציג
               </button>
@@ -201,10 +203,10 @@ export default function SupportWidget() {
           </div>
 
           {/* Conversation */}
-          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto bg-[var(--mk-band)] px-4 py-4">
+          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto bg-canvas px-4 py-4">
             {messages.map((m, i) =>
               m.kind === "system" ? (
-                <p key={i} className="text-center text-xs text-rose-500">
+                <p key={i} className="text-center text-sm text-danger">
                   {m.text}
                 </p>
               ) : (
@@ -213,17 +215,17 @@ export default function SupportWidget() {
                   className={`flex ${m.kind === "user" ? "justify-start" : "justify-end"}`}
                 >
                   <div
-                    className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
+                    className={`max-w-[85%] rounded-[var(--r-md)] px-3.5 py-2.5 text-sm leading-relaxed ${
                       m.kind === "user"
-                        ? "rounded-ee-md bg-brand-600 text-white"
-                        : "rounded-es-md border border-[var(--mk-hairline)] bg-white text-[var(--mk-ink)]"
+                        ? "rounded-ee-md bg-action text-white"
+                        : "rounded-es-md border border-line bg-surface text-ink"
                     }`}
                   >
                     <p className="whitespace-pre-wrap">{m.text}</p>
                     {m.kind === "bot" && m.linkHref && (
                       <a
                         href={m.linkHref}
-                        className="mt-1.5 inline-block text-[13px] font-semibold text-brand-700 hover:underline"
+                        className="mt-1.5 inline-block text-sm font-semibold text-action hover:underline"
                       >
                         {m.linkLabel ?? "מעבר"} ←
                       </a>
@@ -235,7 +237,7 @@ export default function SupportWidget() {
 
             {thinking && (
               <div className="flex justify-end">
-                <div className="rounded-2xl rounded-es-md border border-[var(--mk-hairline)] bg-white px-3.5 py-2.5 text-sm text-[var(--mk-ink-3)]">
+                <div className="rounded-[var(--r-md)] rounded-es-md border border-line bg-surface px-3.5 py-2.5 text-sm text-ink-3">
                   חושב...
                 </div>
               </div>
@@ -253,7 +255,7 @@ export default function SupportWidget() {
                     key={t.id}
                     type="button"
                     onClick={() => pickTopic(t.id)}
-                    className="cursor-pointer rounded-full border border-[var(--mk-hairline)] bg-white px-3 py-1.5 text-[13px] font-medium text-[var(--mk-ink)] transition-colors hover:border-[var(--mk-ink)]"
+                    className="cursor-pointer rounded-pill border border-line bg-surface px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:border-ink"
                   >
                     {t.question}
                   </button>
@@ -262,7 +264,7 @@ export default function SupportWidget() {
                   <button
                     type="button"
                     onClick={() => setSuggestions("menu")}
-                    className="cursor-pointer rounded-full border border-[var(--mk-ink)] bg-white px-3 py-1.5 text-[13px] font-semibold text-[var(--mk-ink)] transition-colors hover:bg-paper-25"
+                    className="cursor-pointer rounded-pill border border-ink bg-surface px-3 py-1.5 text-sm font-semibold text-ink transition-colors hover:bg-canvas"
                   >
                     {MAIN_MENU_LABEL}
                   </button>
@@ -274,9 +276,9 @@ export default function SupportWidget() {
             {escalating && (
               <form
                 onSubmit={submitEscalation}
-                className="space-y-2.5 rounded-2xl border border-[var(--mk-hairline)] bg-white p-4"
+                className="space-y-2.5 rounded-[var(--r-md)] border border-line bg-surface p-4"
               >
-                <p className="text-sm font-semibold text-[var(--mk-ink)]">
+                <p className="text-sm font-semibold text-ink">
                   השארת הודעה לנציג
                 </p>
                 <input
@@ -284,7 +286,7 @@ export default function SupportWidget() {
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
                   placeholder="שם"
-                  className="h-10 w-full rounded-lg border border-[var(--mk-hairline)] px-3 text-sm outline-none focus:border-[var(--mk-ink)]"
+                  className="h-10 w-full rounded-[var(--r-sm)] border border-line px-3 text-sm outline-none focus:border-ink"
                 />
                 <input
                   required
@@ -292,7 +294,7 @@ export default function SupportWidget() {
                   onChange={(e) => setContactDetail(e.target.value)}
                   placeholder="אימייל או טלפון לחזרה"
                   dir="auto"
-                  className="h-10 w-full rounded-lg border border-[var(--mk-hairline)] px-3 text-sm outline-none focus:border-[var(--mk-ink)]"
+                  className="h-10 w-full rounded-[var(--r-sm)] border border-line px-3 text-sm outline-none focus:border-ink"
                 />
                 <textarea
                   required
@@ -300,20 +302,20 @@ export default function SupportWidget() {
                   value={contactMessage}
                   onChange={(e) => setContactMessage(e.target.value)}
                   placeholder="במה נוכל לעזור?"
-                  className="w-full rounded-lg border border-[var(--mk-hairline)] px-3 py-2 text-sm outline-none focus:border-[var(--mk-ink)]"
+                  className="w-full rounded-[var(--r-sm)] border border-line px-3 py-2 text-sm outline-none focus:border-ink"
                 />
                 <div className="flex gap-2">
                   <button
                     type="submit"
                     disabled={sendingEscalation}
-                    className="h-10 flex-1 cursor-pointer rounded-full bg-brand-600 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
+                    className="h-10 flex-1 cursor-pointer rounded-pill bg-action text-sm font-semibold text-white transition-colors hover:bg-action-hover disabled:opacity-60"
                   >
                     {sendingEscalation ? "שולחים..." : "שליחה לנציג"}
                   </button>
                   <button
                     type="button"
                     onClick={() => setEscalating(false)}
-                    className="h-10 cursor-pointer rounded-full border border-[var(--mk-hairline)] px-4 text-sm font-medium text-[var(--mk-ink)]"
+                    className="h-10 cursor-pointer rounded-pill border border-line px-4 text-sm font-medium text-ink"
                   >
                     ביטול
                   </button>
@@ -331,20 +333,20 @@ export default function SupportWidget() {
                 e.preventDefault();
                 sendFreeText();
               }}
-              className="mk-hairline-t flex items-center gap-2 bg-white px-3 py-2.5"
+              className="border-t border-line flex items-center gap-2 bg-surface px-3 py-2.5"
             >
               <input
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 placeholder="כתבו שאלה..."
                 aria-label="שאלה לתמיכה"
-                className="h-11 min-w-0 flex-1 rounded-full border border-[var(--mk-hairline)] bg-white px-4 text-sm outline-none transition-colors focus:border-[var(--mk-ink)]"
+                className="h-11 min-w-0 flex-1 rounded-pill border border-line bg-surface px-4 text-sm outline-none transition-colors focus:border-ink"
               />
               <button
                 type="submit"
                 disabled={!draft.trim() || thinking}
                 aria-label="שליחה"
-                className="grid h-11 w-11 shrink-0 cursor-pointer place-items-center rounded-full bg-brand-600 text-white transition-colors hover:bg-brand-700 disabled:opacity-40"
+                className="grid h-11 w-11 shrink-0 cursor-pointer place-items-center rounded-pill bg-action text-white transition-colors hover:bg-action-hover disabled:opacity-40"
               >
                 <SendHorizontal size={16} className="-scale-x-100" />
               </button>

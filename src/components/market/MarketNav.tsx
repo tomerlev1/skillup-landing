@@ -16,6 +16,7 @@ import {
 import { useAuth } from "@/components/auth/AuthProvider";
 import Avatar from "@/components/ui/Avatar";
 import CategoryIcon from "@/components/market/CategoryIcon";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 import { categorySlug } from "@/lib/slugs";
 import type { Category } from "@/lib/types";
 
@@ -25,10 +26,10 @@ interface MarketNavProps {
 
 const NAV_LINKS = [
   { href: "/how-it-works", label: "איך זה עובד" },
-  { href: "/for-tutors", label: "מידע למורים" },
+  { href: "/for-tutors", label: "למורים" },
 ];
 
-// Marketplace nav: 64px, white, hairline appears on scroll. One indigo
+// Marketplace nav: 64px, surface, hairline appears on scroll. One indigo
 // element (the primary CTA); everything else is ink. Subjects live in a
 // compact 2-column panel (not a mega-nav) linking the SEO category pages.
 export default function MarketNav({ categories }: MarketNavProps) {
@@ -85,14 +86,14 @@ export default function MarketNav({ categories }: MarketNavProps) {
   const linkClass = (href: string) =>
     `inline-flex h-16 items-center text-sm font-medium transition-colors ${
       pathname === href
-        ? "text-[var(--mk-ink)]"
-        : "text-[var(--mk-ink-2)] hover:text-[var(--mk-ink)]"
+        ? "text-ink"
+        : "text-ink-2 hover:text-ink"
     }`;
 
   return (
     <header
-      className={`sticky top-0 z-50 bg-white transition-[box-shadow,border-color] ${
-        scrolled ? "border-b border-[var(--mk-hairline)]" : "border-b border-transparent"
+      className={`sticky top-0 z-50 bg-surface transition-[box-shadow,border-color] ${
+        scrolled ? "border-b border-line" : "border-b border-transparent"
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-[1280px] items-center gap-6 px-4 sm:px-6">
@@ -118,7 +119,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
               onClick={() => setSubjectsOpen((v) => !v)}
               aria-expanded={subjectsOpen}
               aria-haspopup="menu"
-              className="inline-flex h-16 cursor-pointer items-center gap-1 text-sm font-medium text-[var(--mk-ink-2)] transition-colors hover:text-[var(--mk-ink)]"
+              className="inline-flex h-16 cursor-pointer items-center gap-1 text-sm font-medium text-ink-2 transition-colors hover:text-ink"
             >
               מקצועות
               <ChevronDown
@@ -130,28 +131,25 @@ export default function MarketNav({ categories }: MarketNavProps) {
             {subjectsOpen && (
               <div
                 role="menu"
-                className="mk-shadow absolute top-full start-0 z-50 mt-1 grid w-[420px] grid-cols-2 gap-1 rounded-2xl border border-[var(--mk-hairline)] bg-white p-3"
+                className="absolute top-full start-0 z-50 mt-1 grid w-[420px] grid-cols-2 gap-1 rounded-[var(--r-md)] border border-line bg-surface p-3 shadow-[var(--shadow-lift)]"
               >
                 {categories.map((cat) => (
                   <Link
                     key={cat.id}
                     role="menuitem"
                     href={`/categories/${categorySlug(cat)}`}
-                    className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-[var(--mk-ink)] transition-colors hover:bg-paper-25"
+                    className="flex items-center gap-2.5 rounded-[var(--r-sm)] px-3 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-action-soft"
                   >
-                    <CategoryIcon
-                      iconName={cat.icon_name}
-                      size={17}
-                      color={cat.color_hex}
-                      className="shrink-0 text-[var(--mk-ink-3)]"
-                    />
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-[var(--r-sm)] bg-canvas text-ink">
+                      <CategoryIcon iconName={cat.icon_name} size={17} />
+                    </span>
                     {cat.name_he}
                   </Link>
                 ))}
                 <Link
                   role="menuitem"
                   href="/search"
-                  className="col-span-2 mt-1 rounded-xl border-t border-[var(--mk-hairline)] px-3 pt-3 pb-1.5 text-sm font-semibold text-brand-700 hover:underline"
+                  className="col-span-2 mt-1 rounded-[var(--r-sm)] border-t border-line px-3 pt-3 pb-1.5 text-sm font-semibold text-action hover:underline"
                 >
                   לכל המקצועות והמורים ←
                 </Link>
@@ -175,23 +173,23 @@ export default function MarketNav({ categories }: MarketNavProps) {
                 aria-expanded={accountOpen}
                 aria-haspopup="menu"
                 aria-label="תפריט חשבון"
-                className="flex cursor-pointer items-center gap-2 rounded-full border border-[var(--mk-hairline)] p-1 pe-2 transition-colors hover:border-[var(--mk-ink)]"
+                className="flex cursor-pointer items-center gap-2 rounded-pill border border-line p-1 pe-2 transition-colors hover:border-ink"
               >
                 <Avatar src={profile.avatarUrl} name={profile.displayName} size={30} />
-                <ChevronDown size={14} className="text-[var(--mk-ink-3)]" />
+                <ChevronDown size={14} className="text-ink-3" />
               </button>
 
               {accountOpen && (
                 <div
                   role="menu"
-                  className="mk-shadow absolute top-full end-0 z-50 mt-2 w-56 rounded-2xl border border-[var(--mk-hairline)] bg-white p-2"
+                  className="absolute top-full end-0 z-50 mt-2 w-64 rounded-[var(--r-md)] border border-line bg-surface p-2 shadow-[var(--shadow-lift)]"
                 >
-                  <div className="border-b border-[var(--mk-hairline)] px-3 pb-2 pt-1">
-                    <p className="truncate text-sm font-semibold text-[var(--mk-ink)]">
+                  <div className="border-b border-line px-3 pb-2 pt-1">
+                    <p className="truncate text-sm font-semibold text-ink">
                       {profile.displayName}
                     </p>
-                    <p className="text-xs text-[var(--mk-ink-3)]">
-                      {profile.role === "teacher" ? "חשבון מורה" : "חשבון תלמיד/ה"}
+                    <p className="text-sm text-ink-3">
+                      {profile.role === "teacher" ? "חשבון מורה" : "חשבון לומדים"}
                     </p>
                   </div>
                   {[
@@ -210,19 +208,23 @@ export default function MarketNav({ categories }: MarketNavProps) {
                       key={href}
                       role="menuitem"
                       href={href}
-                      className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-[var(--mk-ink)] transition-colors hover:bg-paper-25"
+                      className="flex items-center gap-2.5 rounded-[var(--r-sm)] px-3 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-action-soft"
                     >
-                      <Icon size={16} className="text-[var(--mk-ink-3)]" />
+                      <Icon size={16} strokeWidth={1.75} className="text-ink-3" />
                       {label}
                     </Link>
                   ))}
+                  <div className="px-3 py-2.5">
+                    <p className="mb-2 text-sm font-medium text-ink">ערכת צבע</p>
+                    <ThemeToggle />
+                  </div>
                   <button
                     type="button"
                     role="menuitem"
                     onClick={() => signOut()}
-                    className="flex w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium text-[var(--mk-ink)] transition-colors hover:bg-paper-25"
+                    className="flex w-full cursor-pointer items-center gap-2.5 rounded-[var(--r-sm)] px-3 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-action-soft"
                   >
-                    <LogOut size={16} className="text-[var(--mk-ink-3)]" />
+                    <LogOut size={16} className="text-ink-3" />
                     התנתקות
                   </button>
                 </div>
@@ -232,13 +234,13 @@ export default function MarketNav({ categories }: MarketNavProps) {
             <>
               <Link
                 href="/login"
-                className="hidden text-sm font-medium text-[var(--mk-ink-2)] transition-colors hover:text-[var(--mk-ink)] sm:block"
+                className="hidden text-sm font-medium text-ink-2 transition-colors hover:text-ink sm:block"
               >
                 התחברות
               </Link>
               <Link
                 href="/signup"
-                className="inline-flex h-10 items-center rounded-full bg-brand-600 px-4 text-sm font-semibold text-white transition-colors hover:bg-brand-700 sm:px-5"
+                className="inline-flex h-10 items-center rounded-pill bg-action px-4 text-sm font-semibold text-white transition-colors hover:bg-action-hover sm:px-5"
               >
                 הרשמה
               </Link>
@@ -250,7 +252,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
             type="button"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label={mobileOpen ? "סגירת תפריט" : "פתיחת תפריט"}
-            className="grid h-10 w-10 cursor-pointer place-items-center rounded-full text-[var(--mk-ink)] transition-colors hover:bg-paper-25 md:hidden"
+            className="grid h-10 w-10 cursor-pointer place-items-center rounded-pill text-ink transition-colors hover:bg-action-soft md:hidden"
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -259,15 +261,17 @@ export default function MarketNav({ categories }: MarketNavProps) {
 
       {/* Mobile panel */}
       {mobileOpen && (
-        <div className="border-t border-[var(--mk-hairline)] bg-white md:hidden">
+        <div className="border-t border-line bg-surface md:hidden">
           <div className="max-h-[calc(100dvh-64px)] space-y-1 overflow-y-auto px-4 py-4">
             <Link
               href="/search"
-              className="block rounded-xl px-4 py-3 text-base font-medium text-[var(--mk-ink)] hover:bg-paper-25"
+              className={`block rounded-[var(--r-sm)] px-4 py-3 text-base font-medium text-ink hover:bg-action-soft ${
+                pathname === "/search" ? "bg-action-soft" : ""
+              }`}
             >
               מציאת מורה
             </Link>
-            <p className="px-4 pt-3 pb-1 text-xs font-semibold uppercase tracking-wide text-[var(--mk-ink-3)]">
+            <p className="px-4 pt-3 pb-1 text-sm font-semibold text-ink-3">
               מקצועות
             </p>
             <div className="grid grid-cols-2 gap-1">
@@ -275,14 +279,11 @@ export default function MarketNav({ categories }: MarketNavProps) {
                 <Link
                   key={cat.id}
                   href={`/categories/${categorySlug(cat)}`}
-                  className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium text-[var(--mk-ink)] hover:bg-paper-25"
+                  className="flex items-center gap-2 rounded-[var(--r-sm)] px-4 py-2.5 text-sm font-medium text-ink hover:bg-action-soft"
                 >
-                  <CategoryIcon
-                    iconName={cat.icon_name}
-                    size={16}
-                    color={cat.color_hex}
-                    className="shrink-0 text-[var(--mk-ink-3)]"
-                  />
+                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-[var(--r-sm)] bg-canvas text-ink">
+                    <CategoryIcon iconName={cat.icon_name} size={16} />
+                  </span>
                   {cat.name_he}
                 </Link>
               ))}
@@ -291,22 +292,24 @@ export default function MarketNav({ categories }: MarketNavProps) {
               <Link
                 key={l.href}
                 href={l.href}
-                className="block rounded-xl px-4 py-3 text-base font-medium text-[var(--mk-ink)] hover:bg-paper-25"
+                className={`block rounded-[var(--r-sm)] px-4 py-3 text-base font-medium text-ink hover:bg-action-soft ${
+                  pathname === l.href ? "bg-action-soft" : ""
+                }`}
               >
                 {l.label}
               </Link>
             ))}
             {!user && (
-              <div className="mt-3 flex gap-2 border-t border-[var(--mk-hairline)] px-4 pt-4">
+              <div className="mt-3 flex gap-2 border-t border-line px-4 pt-4">
                 <Link
                   href="/login"
-                  className="flex h-11 flex-1 items-center justify-center rounded-full border border-[var(--mk-hairline)] text-sm font-semibold text-[var(--mk-ink)]"
+                  className="flex h-11 flex-1 items-center justify-center rounded-pill border border-line text-sm font-semibold text-ink"
                 >
                   התחברות
                 </Link>
                 <Link
                   href="/signup"
-                  className="flex h-11 flex-1 items-center justify-center rounded-full bg-brand-600 text-sm font-semibold text-white"
+                  className="flex h-11 flex-1 items-center justify-center rounded-pill bg-action text-sm font-semibold text-white"
                 >
                   הרשמה
                 </Link>

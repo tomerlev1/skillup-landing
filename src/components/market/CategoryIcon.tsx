@@ -30,7 +30,7 @@ interface CategoryIconProps {
   iconName: string | null;
   size?: number;
   className?: string;
-  /** categories.color_hex — colors the icon itself when provided. */
+  /** Kept for call-site compatibility. Ignored: no per-category colors in v2. */
   color?: string | null;
 }
 
@@ -38,14 +38,14 @@ export default function CategoryIcon({
   iconName,
   size = 20,
   className = "",
-  color,
 }: CategoryIconProps) {
   const Icon = (iconName && ICONS[iconName]) || Sparkles;
   return (
     <Icon
       size={size}
+      strokeWidth={1.75}
+      color="currentColor"
       className={className}
-      style={color ? { color } : undefined}
       aria-hidden="true"
     />
   );

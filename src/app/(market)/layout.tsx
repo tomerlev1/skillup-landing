@@ -5,8 +5,8 @@ import SupportWidget from "@/components/support/SupportWidget";
 import { getCategories, getMajorCities } from "@/lib/data/taxonomy";
 
 // Shared shell for every marketplace surface (home, search, profiles,
-// booking, messages, auth). Deep-link app shells and legal pages live
-// outside this group and keep their own chrome.
+// booking, messages, auth, legal pages). Deep-link app shells live outside
+// this group and keep their own chrome.
 //
 // Deliberately NO server-side session read here: touching cookies() in the
 // layout would force every public page (home, categories, profiles — the
