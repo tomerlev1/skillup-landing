@@ -1,4 +1,4 @@
-const STEPS = [
+export const HOW_IT_WORKS_STEPS = [
   {
     title: "מוצאים מורה",
     text: "מחפשים לפי מקצוע ועיר, ומשווים פרופילים, ביקורות ומחירים.",
@@ -22,7 +22,7 @@ export default function HowItWorks() {
           איך זה עובד
         </h2>
         <ol className="mt-8 grid gap-8 sm:grid-cols-3 sm:gap-10">
-          {STEPS.map((s, i) => (
+          {HOW_IT_WORKS_STEPS.map((s, i) => (
             <li key={s.title} className="flex items-start gap-4">
               <span
                 aria-hidden="true"

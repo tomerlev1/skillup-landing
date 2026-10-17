@@ -53,15 +53,15 @@ export default function SearchToolbar({
             onClick={() => setSortOpen((v) => !v)}
             aria-expanded={sortOpen}
             aria-haspopup="listbox"
-            className="inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-full border border-line bg-surface px-4 text-sm font-medium text-ink transition-colors hover:border-ink"
+            className="hit-44 inline-flex h-10 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full border border-line bg-surface px-4 text-sm font-medium text-ink transition-colors hover:border-ink"
           >
             {SORT_LABELS[sort]}
-            <ChevronDown size={14} className={sortOpen ? "rotate-180" : ""} />
+            <ChevronDown strokeWidth={1.75} size={16} className={sortOpen ? "rotate-180" : ""} />
           </button>
           {sortOpen && (
             <div
               role="listbox"
-              className="mk-shadow absolute top-full end-0 z-40 mt-1.5 w-52 overflow-hidden rounded-[var(--r-sm)] border border-line bg-surface py-1"
+              className="shadow-[var(--shadow-lift)] absolute top-full end-0 z-40 mt-1.5 w-52 overflow-hidden rounded-[var(--r-sm)] border border-line bg-surface py-1"
             >
               {(Object.keys(SORT_LABELS) as SortOption[]).map((option) => (
                 <button
@@ -94,7 +94,7 @@ export default function SearchToolbar({
           onClick={() => setSheetOpen(true)}
           className="inline-flex h-11 cursor-pointer items-center gap-1.5 rounded-full border border-line bg-surface px-4 text-sm font-medium text-ink transition-colors hover:border-ink lg:hidden"
         >
-          <SlidersHorizontal size={15} />
+          <SlidersHorizontal strokeWidth={1.75} size={16} />
           סינון
         </button>
       </div>

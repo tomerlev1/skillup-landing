@@ -137,7 +137,7 @@ export default function AccountForm({
         </div>
       )}
 
-      <h1 className="font-display text-2xl font-bold text-ink">
+      <h1 className="font-ed text-2xl font-bold text-ink">
         הפרופיל שלי
       </h1>
       <p className="mt-1.5 text-sm text-ink-2">
@@ -147,7 +147,7 @@ export default function AccountForm({
 
       {isTeacher && !initial.profile_completed && (
         <p className="mt-4 flex items-start gap-2 rounded-[var(--r-md)] bg-warn/10 px-4 py-3 text-sm leading-relaxed text-warn">
-          <BadgeCheck size={15} className="mt-0.5 shrink-0" />
+          <BadgeCheck strokeWidth={1.75} size={16} className="mt-0.5 shrink-0" />
           הפרופיל עדיין לא מוצג בחיפוש. מילוי שם תצוגה, תיאור, מחיר ועיר יפרסם
           אותו אוטומטית.
         </p>
@@ -191,7 +191,7 @@ export default function AccountForm({
             <span className="mb-1.5 block text-sm font-medium text-ink">עיר</span>
             {cityId && cityName ? (
               <span className="inline-flex items-center gap-2 rounded-[var(--r-pill)] bg-ink py-2 ps-4 pe-2 text-sm font-medium text-surface">
-                <MapPin size={14} />
+                <MapPin strokeWidth={1.75} size={16} />
                 {cityName}
                 <button
                   type="button"
@@ -202,7 +202,7 @@ export default function AccountForm({
                   }}
                   className="grid h-6 w-6 cursor-pointer place-items-center rounded-[var(--r-pill)] hover:bg-surface/20"
                 >
-                  <X size={13} />
+                  <X strokeWidth={1.75} size={16} />
                 </button>
               </span>
             ) : (
@@ -244,7 +244,7 @@ export default function AccountForm({
         )}
         {saved && (
           <p className="flex items-center gap-2 rounded-[var(--r-sm)] bg-ok/10 px-4 py-3 text-sm text-ok-text">
-            <CheckCircle2 size={16} />
+            <CheckCircle2 strokeWidth={1.75} size={16} />
             הפרטים נשמרו.
           </p>
         )}
@@ -265,7 +265,7 @@ export default function AccountForm({
             className="mt-8 flex items-center gap-3.5 rounded-[var(--r-md)] border border-line bg-surface p-4 transition-colors hover:border-ink"
           >
             <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
-              <CalendarClock size={19} />
+              <CalendarClock strokeWidth={1.75} size={20} />
             </span>
             <span className="min-w-0 flex-1">
               <span className="block text-sm font-semibold text-ink">
@@ -275,7 +275,7 @@ export default function AccountForm({
                 הוספה והסרה של חלונות לשיעורים. מסתנכרן מיד עם האפליקציה.
               </span>
             </span>
-            <ChevronLeft size={18} className="shrink-0 text-ink-3" />
+            <ChevronLeft strokeWidth={1.75} size={20} className="shrink-0 text-ink-3" />
           </Link>
 
           <p className="mt-4 rounded-[var(--r-md)] bg-canvas px-5 py-4 text-sm leading-relaxed text-ink-2">

@@ -128,8 +128,8 @@ export default async function SearchPage({
               />
             ) : (
               <div className="rounded-[var(--r-md)] bg-canvas px-6 py-16 text-center">
-                <SearchX
-                  size={36}
+                <SearchX strokeWidth={1.75}
+                  size={24}
                   className="mx-auto text-ink-3"
                   aria-hidden="true"
                 />

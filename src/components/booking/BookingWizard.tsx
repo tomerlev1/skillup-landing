@@ -178,7 +178,7 @@ export default function BookingWizard({
     misfits.length === 0;
   const canContinue =
     step === 0
-      ? selectedSlots.length > 0
+      ? selectedSlots.length > 0 && misfits.length === 0
       : detailsValid && selectedSlots.length > 0;
 
   async function submit() {
@@ -245,7 +245,10 @@ export default function BookingWizard({
     );
   }
 
-  const noSlots = slots.length === 0;
+  // Empty state follows what can actually be booked: no day groups left once
+  // the selected/fixed mode filter is applied (not just an empty calendar).
+  const noSlots = slotsByDay.length === 0;
+  const fixedMode = teacher.lesson_modes.length === 1;
   const inputClass =
     "min-h-12 w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 text-[15px] text-ink outline-none transition-colors focus:border-ink";
   const secondaryBtn =
@@ -260,7 +263,7 @@ export default function BookingWizard({
           aria-label="חזרה לפרופיל"
           className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-line text-ink transition-colors hover:border-ink"
         >
-          <ChevronRight size={18} aria-hidden="true" />
+          <ChevronRight strokeWidth={1.75} size={20} aria-hidden="true" />
         </Link>
         <Avatar src={teacher.avatar_url} name={name} size={44} />
         <div>
@@ -296,9 +299,28 @@ export default function BookingWizard({
                 role="status"
                 className="mb-5 flex items-start gap-2 rounded-[var(--r-sm)] border border-warn/40 bg-warn/10 px-4 py-3 text-sm text-ink"
               >
-                <TriangleAlert size={18} className="mt-0.5 shrink-0 text-warn" aria-hidden="true" />
+                <TriangleAlert strokeWidth={1.75} size={20} className="mt-0.5 shrink-0 text-warn" aria-hidden="true" />
                 המועד שבחרתם כבר לא פנוי, בחרו מועד אחר
               </p>
+            )}
+
+            {misfits.length > 0 && mode && (
+              <div
+                role="alert"
+                className="mb-5 rounded-[var(--r-sm)] border border-warn/40 bg-warn/10 px-4 py-3 text-sm text-ink"
+              >
+                <ul className="space-y-1">
+                  {misfits.map((s) => (
+                    <li key={s.id} className="flex items-start gap-2">
+                      <TriangleAlert strokeWidth={1.75} size={16} className="mt-0.5 shrink-0 text-warn" aria-hidden="true" />
+                      <span>
+                        המועד <span className="tnum">{slotWhen(s)}</span> לא זמין ל{lessonModeLabel(mode)}.
+                        הסירו אותו ובחרו מועד אחר.
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
 
             <h2 className="text-base font-semibold text-ink">מתי נוח לכם?</h2>
@@ -306,7 +328,12 @@ export default function BookingWizard({
             {noSlots ? (
               <div className="mt-5 rounded-[var(--r-md)] border border-line bg-surface p-6 text-center text-sm leading-relaxed text-ink-2">
                 היומן של {name} מלא כרגע. שלחו הודעה ותתאמו מועד ישירות.
-                <div className="mt-4">
+                <div className="mt-4 flex flex-wrap justify-center gap-3">
+                  {mode && !fixedMode && (
+                    <button type="button" onClick={() => setMode(null)} className={secondaryBtn}>
+                      הצגת כל המועדים
+                    </button>
+                  )}
                   <Link
                     href={`/messages/new?teacher=${teacher.id}`}
                     className="inline-flex min-h-11 items-center rounded-[var(--r-pill)] bg-action px-5 text-sm font-semibold text-on-action transition-colors hover:bg-action-hover"
@@ -392,7 +419,7 @@ export default function BookingWizard({
                       >
                         {jerusalemWeekday(s.start_at)} {jerusalemDateShort(s.start_at)} ·{" "}
                         <span className="tnum ltr-isolate">{availabilityTime(s.start_at)}</span>
-                        <X size={16} aria-hidden="true" className="text-ink-3" />
+                        <X strokeWidth={1.75} size={16} aria-hidden="true" className="text-ink-3" />
                       </button>
                     ))}
                   </div>
@@ -447,7 +474,7 @@ export default function BookingWizard({
                 <ul className="space-y-1">
                   {misfits.map((s) => (
                     <li key={s.id} className="flex items-start gap-2">
-                      <TriangleAlert size={18} className="mt-0.5 shrink-0 text-warn" aria-hidden="true" />
+                      <TriangleAlert strokeWidth={1.75} size={20} className="mt-0.5 shrink-0 text-warn" aria-hidden="true" />
                       <span>
                         המועד <span className="tnum">{slotWhen(s)}</span> לא זמין ל{lessonModeLabel(mode)}.
                         חזרו לבחור מועד אחר.

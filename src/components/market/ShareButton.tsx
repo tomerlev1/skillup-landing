@@ -46,12 +46,12 @@ export default function ShareButton({ teacherName, className = "" }: ShareButton
     >
       {copied ? (
         <>
-          <Check size={15} className="text-ok-text" />
+          <Check strokeWidth={1.75} size={16} className="text-ok-text" />
           <span className="hidden sm:inline">הקישור הועתק</span>
         </>
       ) : (
         <>
-          <Share2 size={15} />
+          <Share2 strokeWidth={1.75} size={16} />
           <span className="hidden sm:inline">שיתוף</span>
         </>
       )}

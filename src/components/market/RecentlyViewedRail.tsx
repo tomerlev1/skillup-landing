@@ -24,7 +24,7 @@ export default function RecentlyViewedRail() {
 
   return (
     <section className="mx-auto max-w-[1280px] px-4 pt-14 sm:px-6">
-      <h2 className="mb-5 font-display text-xl font-bold text-[var(--mk-ink)] sm:text-2xl">
+      <h2 className="mb-5 font-ed text-[22px] font-bold leading-tight text-balance text-ink sm:text-[28px]">
         מורים שצפיתם בהם לאחרונה
       </h2>
       <div className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
@@ -32,7 +32,7 @@ export default function RecentlyViewedRail() {
           <Link
             key={t.id}
             href={`/tutors/${t.id}`}
-            className="flex w-64 shrink-0 items-center gap-3 rounded-2xl border border-[var(--mk-hairline)] bg-white p-3 transition-colors hover:border-[var(--mk-ink)]"
+            className="flex w-64 shrink-0 items-center gap-3 rounded-[var(--r-md)] border border-line bg-surface p-3 transition-colors hover:border-ink"
           >
             {t.image ? (
               <Image
@@ -40,24 +40,24 @@ export default function RecentlyViewedRail() {
                 alt=""
                 width={52}
                 height={52}
-                className="h-13 w-13 shrink-0 rounded-xl object-cover"
+                className="h-13 w-13 shrink-0 rounded-[var(--r-sm)] object-cover"
               />
             ) : (
-              <span className="grid h-13 w-13 shrink-0 place-items-center rounded-xl bg-brand-50 font-display text-lg font-bold text-brand-300">
+              <span className="grid h-13 w-13 shrink-0 place-items-center rounded-[var(--r-sm)] bg-action-soft font-ed text-[22px] font-black text-action">
                 {t.display_name.slice(0, 1)}
               </span>
             )}
             <span className="min-w-0">
-              <span className="block truncate text-sm font-semibold text-[var(--mk-ink)]">
+              <span className="block truncate text-sm font-semibold text-ink">
                 {t.display_name}
               </span>
-              <span className="block truncate text-xs text-[var(--mk-ink-3)]">
+              <span className="block truncate text-sm text-ink-3">
                 {[t.subject, t.city_name].filter(Boolean).join(" · ")}
               </span>
-              <span className="mt-0.5 flex items-center gap-2 text-xs text-[var(--mk-ink-2)]">
+              <span className="mt-0.5 flex items-center gap-2 text-sm text-ink-2">
                 {t.review_count > 0 && (
                   <span className="inline-flex items-center gap-0.5">
-                    <Star size={11} style={{ fill: "#F5A623", color: "#F5A623" }} />
+                    <Star size={16} strokeWidth={1.75} aria-hidden="true" className="fill-star text-star" />
                     <span className="tnum">{formatRating(t.rating_avg)}</span>
                   </span>
                 )}

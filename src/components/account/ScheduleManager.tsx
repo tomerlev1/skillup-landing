@@ -124,10 +124,10 @@ export default function ScheduleManager({
     <div>
       <div className="flex items-center gap-2.5">
         <span className="grid h-9 w-9 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
-          <CalendarClock size={18} />
+          <CalendarClock strokeWidth={1.75} size={20} />
         </span>
         <div>
-          <h2 className="font-display text-lg font-bold text-ink">
+          <h2 className="text-lg font-semibold text-ink">
             ניהול הזמינות שלי
           </h2>
           <p className="text-sm text-ink-3">
@@ -203,16 +203,16 @@ export default function ScheduleManager({
                 booked
                   ? "cursor-not-allowed border-warn/30 bg-warn/10 text-warn"
                   : open
-                    ? "border-ok bg-ok/10 text-ok-text hover:bg-ok/20"
+                    ? "border-ok bg-ok/10 text-ok-text hover:bg-ok/15"
                     : past
                       ? "cursor-not-allowed border-line bg-canvas text-ink-3 opacity-50"
                       : "border-line bg-surface text-ink hover:border-ink"
               }`}
             >
               {booked ? (
-                <Lock size={13} aria-hidden="true" />
+                <Lock strokeWidth={1.75} size={16} aria-hidden="true" />
               ) : open ? (
-                <Check size={14} aria-hidden="true" />
+                <Check strokeWidth={1.75} size={16} aria-hidden="true" />
               ) : null}
               {time}
             </button>

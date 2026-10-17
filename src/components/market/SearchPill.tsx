@@ -342,13 +342,13 @@ export default function SearchPill({
             >
               <span className="grid size-9 shrink-0 place-items-center rounded-[var(--r-sm)] bg-canvas text-ink">
                 {s.kind === "category" ? (
-                  <CategoryIcon iconName={s.iconName ?? null} size={18} />
+                  <CategoryIcon iconName={s.iconName ?? null} size={20} />
                 ) : s.kind === "subject" ? (
-                  <GraduationCap size={18} strokeWidth={1.75} />
+                  <GraduationCap size={20} strokeWidth={1.75} />
                 ) : s.kind === "teacher" ? (
-                  <User size={18} strokeWidth={1.75} />
+                  <User size={20} strokeWidth={1.75} />
                 ) : (
-                  <MapPin size={18} strokeWidth={1.75} />
+                  <MapPin size={20} strokeWidth={1.75} />
                 )}
               </span>
               <span className="min-w-0">

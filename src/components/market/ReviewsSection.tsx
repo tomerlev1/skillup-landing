@@ -33,9 +33,9 @@ export default function ReviewsSection({ stats, reviews }: ReviewsSectionProps) 
           </p>
           <div className="mt-1 flex justify-center gap-0.5">
             {[1, 2, 3, 4, 5].map((i) => (
-              <Star
+              <Star strokeWidth={1.75}
                 key={i}
-                size={14}
+                size={16}
                 className={
                   i <= Math.round(stats.avg)
                     ? "fill-star text-star"
@@ -87,9 +87,9 @@ export default function ReviewsSection({ stats, reviews }: ReviewsSectionProps) 
                   </p>
                   <div className="mt-0.5 flex items-center gap-1">
                     {[1, 2, 3, 4, 5].map((i) => (
-                      <Star
+                      <Star strokeWidth={1.75}
                         key={i}
-                        size={12}
+                        size={16}
                         className={
                           i <= review.rating
                             ? "fill-star text-star"

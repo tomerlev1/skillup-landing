@@ -8,7 +8,7 @@ import { getNextSlots } from "@/lib/data/availability";
 import { searchTeachers } from "@/lib/data/teachers";
 import { getCategories, getMajorCities } from "@/lib/data/taxonomy";
 import { SITE_URL } from "@/lib/constants";
-import { categorySlug, citySlug, findCityBySlug } from "@/lib/slugs";
+import { citySlug, findCityBySlug } from "@/lib/slugs";
 import { searchHref } from "@/lib/search-params";
 
 export const revalidate = 3600; // city landing pages: hourly ISR
@@ -87,17 +87,17 @@ export default async function CityLandingPage({ params }: PageProps) {
       />
 
       <div className="max-w-[720px]">
-        <nav aria-label="פירורי לחם" className="mb-4 flex items-center gap-1.5 text-[13px] text-[var(--mk-ink-3)]">
-          <Link href="/" className="hover:text-[var(--mk-ink)] hover:underline">ראשי</Link>
-          <ChevronLeft size={13} aria-hidden="true" />
-          <span className="text-[var(--mk-ink)]">מורה פרטי ב{shortName}</span>
+        <nav aria-label="פירורי לחם" className="mb-4 flex flex-wrap items-center gap-1.5 text-sm text-ink-3">
+          <Link href="/" className="hit-44 hover:text-ink hover:underline">ראשי</Link>
+          <ChevronLeft size={16} strokeWidth={1.75} aria-hidden="true" />
+          <span className="text-ink">מורה פרטי ב{shortName}</span>
         </nav>
 
-        <h1 className="flex items-center gap-3 font-ed text-3xl font-bold text-[var(--mk-ink)] sm:text-4xl">
-          <MapPin size={30} className="shrink-0 text-[var(--mk-ink-3)]" />
+        <h1 className="flex items-center gap-3 font-ed text-[28px] font-bold leading-tight text-balance text-ink sm:text-[36px]">
+          <MapPin size={24} strokeWidth={1.75} aria-hidden="true" className="shrink-0 text-ink-3" />
           מורה פרטי ב{shortName}
         </h1>
-        <p className="mt-5 text-base leading-[1.75] text-[var(--mk-ink-2)]">
+        <p className="mt-5 text-base leading-[1.75] text-ink-2">
           מחפשים שיעורים פרטיים ב{shortName} והסביבה? ב-SkillUp תמצאו מורים
           מאומתים שמלמדים באזור {shortName}, אצל המורה, אצלכם בבית או אונליין.
           משווים מחירים, קוראים ביקורות אמיתיות של תלמידים וקובעים שיעור ישירות
@@ -108,14 +108,14 @@ export default async function CityLandingPage({ params }: PageProps) {
       {/* Teachers in the city */}
       <div className="mt-12">
         <div className="mb-5 flex items-baseline justify-between gap-4">
-          <h2 className="font-display text-xl font-bold text-[var(--mk-ink)] sm:text-2xl">
+          <h2 className="font-ed text-[22px] font-bold leading-tight text-balance text-ink sm:text-[28px]">
             {inCity.total > 0
               ? `${inCity.total} מורים ב${shortName}`
               : `מורים ב${shortName}`}
           </h2>
           <Link
             href={searchHref({ cityId: city.id })}
-            className="shrink-0 text-sm font-medium text-[var(--mk-ink-2)] hover:text-[var(--mk-ink)] hover:underline"
+            className="inline-flex min-h-11 shrink-0 items-center text-sm font-medium text-ink-2 hover:text-ink hover:underline"
           >
             לחיפוש עם סינון
           </Link>
@@ -134,9 +134,9 @@ export default async function CityLandingPage({ params }: PageProps) {
             ))}
           </div>
         ) : (
-          <p className="rounded-2xl bg-[var(--mk-band)] px-5 py-8 text-sm leading-relaxed text-[var(--mk-ink-2)]">
-            עדיין אין מורים שמלמדים פרונטלית ב{shortName}, אבל יש מורים מעולים
-            שמלמדים אונליין מכל מקום בארץ. הנה כמה מהם:
+          <p className="rounded-[var(--r-md)] border border-line bg-surface px-5 py-8 text-base leading-relaxed text-ink-2">
+            עדיין אין מורים שמלמדים פרונטלית ב{shortName}, אבל יש מורים שמלמדים
+            אונליין מכל מקום בארץ. הנה כמה מהם:
           </p>
         )}
       </div>
@@ -144,7 +144,7 @@ export default async function CityLandingPage({ params }: PageProps) {
       {/* Online alternative rail */}
       {onlineExtra.length > 0 && (
         <div className="mt-14">
-          <h2 className="mb-5 font-display text-xl font-bold text-[var(--mk-ink)]">
+          <h2 className="mb-5 font-ed text-[22px] font-bold leading-tight text-balance text-ink sm:text-[28px]">
             מורים אונליין שזמינים גם ל{shortName}
           </h2>
           <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-x-4 md:gap-y-8 xl:grid-cols-4 lg:gap-x-6">
@@ -161,8 +161,8 @@ export default async function CityLandingPage({ params }: PageProps) {
       )}
 
       {/* Category cross-links */}
-      <div className="mt-14 rounded-3xl bg-[var(--mk-band)] p-6 sm:p-8">
-        <h2 className="text-base font-semibold text-[var(--mk-ink)]">
+      <div className="mt-14 rounded-[var(--r-md)] border border-line bg-surface p-6 sm:p-8">
+        <h2 className="text-base font-semibold text-ink">
           שיעורים פרטיים ב{shortName} לפי תחום
         </h2>
         <div className="mt-4 flex flex-wrap gap-2">
@@ -176,7 +176,7 @@ export default async function CityLandingPage({ params }: PageProps) {
             </Chip>
           ))}
         </div>
-        <div className="mk-hairline-t mt-5 flex flex-wrap gap-2 pt-4">
+        <div className="mt-5 flex flex-wrap gap-x-4 border-t border-line pt-3">
           {majorCities
             .filter((c) => c.id !== city.id)
             .slice(0, 8)
@@ -184,7 +184,7 @@ export default async function CityLandingPage({ params }: PageProps) {
               <Link
                 key={c.id}
                 href={`/cities/${citySlug(c)}`}
-                className="text-[13px] text-[var(--mk-ink-3)] hover:text-[var(--mk-ink)] hover:underline"
+                className="inline-flex min-h-11 items-center text-sm text-ink-2 hover:text-ink hover:underline"
               >
                 מורה פרטי ב{c.name_he.split(" - ")[0]}
               </Link>

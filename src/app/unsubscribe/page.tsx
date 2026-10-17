@@ -12,7 +12,7 @@ import AppLinkShell from "@/components/layout/AppLinkShell";
 export default function UnsubscribePage() {
   return (
     <Suspense
-      fallback={<AppLinkShell title="מבטל את הרישום..." subtitle="רק רגע." />}
+      fallback={<AppLinkShell title="מבטלים את הרישום..." subtitle="רק רגע." />}
     >
       <UnsubscribeContent />
     </Suspense>
@@ -37,13 +37,13 @@ function UnsubscribeContent() {
   }, [searchParams]);
 
   if (state === "loading") {
-    return <AppLinkShell title="מבטל את הרישום..." subtitle="רק רגע." />;
+    return <AppLinkShell title="מבטלים את הרישום..." subtitle="רק רגע." />;
   }
   if (state === "ok") {
     return (
       <AppLinkShell
-        title="הוסרת מרשימת התפוצה"
-        subtitle="לא תקבל עוד מיילים שיווקיים. התראות תפעוליות (שיעורים, תשלומים) ימשיכו לפי ההעדפות שלך באפליקציה."
+        title="הוסרתם מרשימת התפוצה"
+        subtitle="לא תקבלו עוד מיילים שיווקיים. התראות על שיעורים והודעות ימשיכו לפי ההעדפות שלכם באפליקציה."
         tone="ok"
       />
     );
@@ -51,8 +51,8 @@ function UnsubscribeContent() {
   return (
     <AppLinkShell
       title="לא הצלחנו לבטל את הרישום"
-      subtitle="ייתכן שהקישור פג תוקף. אפשר לבטל את ההרשמה ישירות באפליקציה: הגדרות → התראות → חומר שיווקי."
-      ctaLabel="פתח את ההגדרות ב-SkillUp"
+      subtitle="ייתכן שהקישור פג תוקף. אפשר לבטל את ההרשמה ישירות באפליקציה: הגדרות ← התראות ← חומר שיווקי."
+      ctaLabel="פתיחת ההגדרות ב-SkillUp"
       ctaHref="https://skillupwebsite.vercel.app/settings/notifications"
       tone="err"
     />

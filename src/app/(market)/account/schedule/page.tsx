@@ -29,7 +29,7 @@ export default async function SchedulePage() {
         href="/account"
         className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-ink-2 hover:text-ink"
       >
-        <ChevronRight size={16} />
+        <ChevronRight strokeWidth={1.75} size={16} />
         לפרופיל שלי
       </Link>
       <ScheduleManager

@@ -540,3 +540,30 @@ button:focus-visible {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ===== LOGO (light/dark swap, see components/ui/BrandLogo.tsx) =====
+   Unlayered, so display:none beats layout utilities on the hidden variant;
+   revert-layer hands the visible one back to its Tailwind classes. */
+.logo-dark { display: none; }
+:root[data-theme="dark"] .logo-light { display: none; }
+:root[data-theme="dark"] .logo-dark { display: revert-layer; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo-light { display: none; }
+  :root:not([data-theme="light"]) .logo-dark { display: revert-layer; }
+}
+
+/* ===== 44px HIT AREA =====
+   Keeps a compact visual (e.g. 36px chip) while the tap target is at least
+   44x44, centred on the element (spec §7.3). */
+@utility hit-44 {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+}

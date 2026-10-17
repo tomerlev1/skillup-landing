@@ -88,12 +88,12 @@ export default function SavedTutorsPage() {
           <TeacherGridSkeleton count={4} />
         </div>
       ) : teachers.length === 0 ? (
-        <div className="mt-10 rounded-[var(--r-md)] bg-canvas px-6 py-16 text-center">
-          <Heart size={36} className="mx-auto text-[var(--mk-ink-3)]" />
-          <h2 className="mt-4 text-lg font-semibold text-[var(--mk-ink)]">
+        <div className="mt-10 rounded-[var(--r-md)] border border-line bg-surface px-6 py-16 text-center">
+          <Heart strokeWidth={1.75} size={24} className="mx-auto text-ink-3" />
+          <h2 className="mt-4 text-lg font-semibold text-ink">
             עדיין לא שמרתם מורים
           </h2>
-          <p className="mx-auto mt-2 max-w-[360px] text-sm leading-relaxed text-[var(--mk-ink-2)]">
+          <p className="mx-auto mt-2 max-w-[360px] text-sm leading-relaxed text-ink-2">
             לחצו על הלב בכרטיס של מורה כדי לשמור אותו כאן. ככה קל להשוות
             ולחזור אליו אחר כך.
           </p>

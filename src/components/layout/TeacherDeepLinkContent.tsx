@@ -11,7 +11,7 @@ export default function TeacherDeepLinkContent() {
       title="פותחים את SkillUp..."
       subtitle="פרופיל המורה ייפתח באפליקציה. אם האפליקציה לא מותקנת, הורידו אותה כאן:"
     >
-      <div style={{ marginTop: 8, display: "flex", justifyContent: "center" }}>
+      <div className="mt-2 flex justify-center">
         <UAAwareStoreCTAs />
       </div>
     </AppLinkShell>

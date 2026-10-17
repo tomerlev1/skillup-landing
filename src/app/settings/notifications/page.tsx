@@ -11,8 +11,8 @@ export default function NotificationSettingsDeepLinkPage() {
   return (
     <AppLinkShell
       title="ניהול התראות"
-      subtitle="העדפות ההתראות מנוהלות באפליקציה. פתחו את SkillUp והיכנסו להגדרות → התראות."
-      ctaLabel="פתח את ההגדרות ב-SkillUp"
+      subtitle="העדפות ההתראות מנוהלות באפליקציה. פתחו את SkillUp והיכנסו להגדרות ← התראות."
+      ctaLabel="פתיחת ההגדרות ב-SkillUp"
       ctaHref="https://skillupwebsite.vercel.app/settings/notifications"
     />
   );

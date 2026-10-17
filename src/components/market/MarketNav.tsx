@@ -17,6 +17,7 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import Avatar from "@/components/ui/Avatar";
 import CategoryIcon from "@/components/market/CategoryIcon";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import BrandLogo from "@/components/ui/BrandLogo";
 import { categorySlug } from "@/lib/slugs";
 import type { Category } from "@/lib/types";
 
@@ -98,13 +99,8 @@ export default function MarketNav({ categories }: MarketNavProps) {
     >
       <nav className="mx-auto flex h-16 max-w-[1280px] items-center gap-6 px-4 sm:px-6">
         {/* Logo (start side = right in RTL) */}
-        <Link href="/" className="flex shrink-0 items-center" aria-label="SkillUp, דף הבית">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/images/SkillUpLoginLogo-Light.svg"
-            alt="SkillUp"
-            className="h-9 w-auto"
-          />
+        <Link href="/" className="flex h-11 shrink-0 items-center" aria-label="SkillUp, דף הבית">
+          <BrandLogo className="h-9 w-auto" />
         </Link>
 
         {/* Desktop links */}
@@ -122,8 +118,8 @@ export default function MarketNav({ categories }: MarketNavProps) {
               className="inline-flex h-16 cursor-pointer items-center gap-1 text-sm font-medium text-ink-2 transition-colors hover:text-ink"
             >
               מקצועות
-              <ChevronDown
-                size={14}
+              <ChevronDown strokeWidth={1.75}
+                size={16}
                 className={`transition-transform ${subjectsOpen ? "rotate-180" : ""}`}
               />
             </button>
@@ -141,7 +137,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
                     className="flex items-center gap-2.5 rounded-[var(--r-sm)] px-3 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-action-soft"
                   >
                     <span className="grid h-8 w-8 shrink-0 place-items-center rounded-[var(--r-sm)] bg-canvas text-ink">
-                      <CategoryIcon iconName={cat.icon_name} size={17} />
+                      <CategoryIcon iconName={cat.icon_name} size={16} />
                     </span>
                     {cat.name_he}
                   </Link>
@@ -176,7 +172,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
                 className="flex cursor-pointer items-center gap-2 rounded-pill border border-line p-1 pe-2 transition-colors hover:border-ink"
               >
                 <Avatar src={profile.avatarUrl} name={profile.displayName} size={30} />
-                <ChevronDown size={14} className="text-ink-3" />
+                <ChevronDown strokeWidth={1.75} size={16} className="text-ink-3" />
               </button>
 
               {accountOpen && (
@@ -214,7 +210,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
                       {label}
                     </Link>
                   ))}
-                  <div className="px-3 py-2.5">
+                  <div role="none" className="px-3 py-2.5">
                     <p className="mb-2 text-sm font-medium text-ink">ערכת צבע</p>
                     <ThemeToggle />
                   </div>
@@ -224,7 +220,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
                     onClick={() => signOut()}
                     className="flex w-full cursor-pointer items-center gap-2.5 rounded-[var(--r-sm)] px-3 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-action-soft"
                   >
-                    <LogOut size={16} className="text-ink-3" />
+                    <LogOut strokeWidth={1.75} size={16} className="text-ink-3" />
                     התנתקות
                   </button>
                 </div>
@@ -234,7 +230,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
             <>
               <Link
                 href="/login"
-                className="hidden text-sm font-medium text-ink-2 transition-colors hover:text-ink sm:block"
+                className="hit-44 hidden text-sm font-medium text-ink-2 transition-colors hover:text-ink sm:block"
               >
                 התחברות
               </Link>
@@ -252,9 +248,9 @@ export default function MarketNav({ categories }: MarketNavProps) {
             type="button"
             onClick={() => setMobileOpen((v) => !v)}
             aria-label={mobileOpen ? "סגירת תפריט" : "פתיחת תפריט"}
-            className="grid h-10 w-10 cursor-pointer place-items-center rounded-pill text-ink transition-colors hover:bg-action-soft md:hidden"
+            className="grid h-11 w-11 cursor-pointer place-items-center rounded-pill text-ink transition-colors hover:bg-action-soft md:hidden"
           >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            {mobileOpen ? <X strokeWidth={1.75} size={20} /> : <Menu strokeWidth={1.75} size={20} />}
           </button>
         </div>
       </nav>

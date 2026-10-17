@@ -51,14 +51,14 @@ export default function BottomSheet({
             aria-label="סגירה"
             className="grid h-11 w-11 cursor-pointer place-items-center rounded-full hover:bg-canvas"
           >
-            <X size={18} />
+            <X strokeWidth={1.75} size={20} />
           </button>
         </div>
-        <div className="mk-hairline-t min-h-0 flex-1 overflow-y-auto px-5 py-4">
+        <div className="border-t border-line min-h-0 flex-1 overflow-y-auto px-5 py-4">
           {children}
         </div>
         {footer && (
-          <div className="mk-hairline-t bg-surface px-5 py-3 pb-[max(12px,env(safe-area-inset-bottom))]">
+          <div className="border-t border-line bg-surface px-5 py-3 pb-[max(12px,env(safe-area-inset-bottom))]">
             {footer}
           </div>
         )}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import AppStoreButtons from "@/components/market/AppStoreButtons";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import BrandLogo from "@/components/ui/BrandLogo";
 import { APP_STORE_URL, CONTACT_EMAIL } from "@/lib/constants";
 import { categorySlug, citySlug } from "@/lib/slugs";
 import type { Category, City } from "@/lib/types";
@@ -128,8 +129,7 @@ export default function MarketFooter({ categories, majorCities }: MarketFooterPr
             <ThemeToggle />
           </div>
           <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/SkillUpLoginLogo-Light.svg" alt="SkillUp" className="h-7 w-auto" />
+            <BrandLogo className="h-7 w-auto" />
             <p className="text-sm text-ink-3">
               © {new Date().getFullYear()} SkillUp. כל הזכויות שמורות.
             </p>

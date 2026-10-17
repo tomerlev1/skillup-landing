@@ -11,13 +11,13 @@ const COPY: Record<
   verified: {
     title: "האימייל אומת בהצלחה",
     subtitle:
-      "החשבון שלך פעיל. אפשר לחזור לאפליקציה ולהתחיל לקבל תלמידים.",
+      "החשבון שלכם פעיל. אפשר לחזור לאפליקציה ולהמשיך.",
     tone: "ok",
   },
   already: {
     title: "האימייל כבר אומת",
     subtitle:
-      "החשבון שלך כבר פעיל. אפשר לפתוח את האפליקציה ולהמשיך.",
+      "החשבון שלכם כבר פעיל. אפשר לפתוח את האפליקציה ולהמשיך.",
     tone: "ok",
   },
   not_found: {
@@ -44,7 +44,7 @@ export default function VerifyEmailPage() {
   // boundary around components that read it so static prerender works.
   return (
     <Suspense
-      fallback={<AppLinkShell title="מאמת את האימייל..." subtitle="רק רגע." />}
+      fallback={<AppLinkShell title="מאמתים את האימייל..." subtitle="רק רגע." />}
     >
       <VerifyEmailContent />
     </Suspense>
@@ -91,7 +91,7 @@ function VerifyEmailContent() {
   }, [searchParams]);
 
   if (!status) {
-    return <AppLinkShell title="מאמת את האימייל..." subtitle="רק רגע." />;
+    return <AppLinkShell title="מאמתים את האימייל..." subtitle="רק רגע." />;
   }
   const copy = COPY[status] ?? COPY.not_found;
   return (

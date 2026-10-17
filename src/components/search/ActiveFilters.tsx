@@ -88,15 +88,15 @@ export default function ActiveFilters({
         <Link
           key={chip.key}
           href={searchHref(chip.without)}
-          className="inline-flex h-9 items-center gap-1.5 rounded-full bg-ink ps-3.5 pe-2.5 text-sm font-medium text-surface"
+          className="hit-44 inline-flex h-9 items-center gap-1.5 rounded-full bg-ink ps-3.5 pe-2.5 text-sm font-medium text-surface"
         >
           {chip.label}
-          <X size={13} aria-hidden="true" />
+          <X size={16} strokeWidth={1.75} aria-hidden="true" />
         </Link>
       ))}
       <Link
         href="/search"
-        className="inline-flex h-9 items-center text-sm font-medium text-ink-2 underline hover:text-ink"
+        className="hit-44 inline-flex h-9 items-center text-sm font-medium text-ink-2 underline hover:text-ink"
       >
         ניקוי הכול
       </Link>

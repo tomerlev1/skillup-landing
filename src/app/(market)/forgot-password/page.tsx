@@ -34,14 +34,14 @@ export default function ForgotPasswordPage() {
       subtitle="נשלח אליכם קישור לבחירת סיסמה חדשה."
     >
       {sent ? (
-        <p className="rounded-2xl bg-[var(--mk-band)] p-5 text-center text-sm leading-relaxed text-[var(--mk-ink-2)]">
+        <p className="rounded-[var(--r-sm)] bg-ok/10 p-5 text-center text-[15px] leading-relaxed text-ink">
           אם קיים אצלנו חשבון עם האימייל הזה, קישור לאיפוס כבר בדרך לתיבת
           הדואר שלכם.
         </p>
       ) : (
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-[var(--mk-ink)]">
+            <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-ink">
               אימייל
             </label>
             <input
@@ -52,18 +52,18 @@ export default function ForgotPasswordPage() {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-12 w-full rounded-xl border border-[var(--mk-hairline)] bg-white px-4 text-start text-[15px] outline-none transition-colors focus:border-[var(--mk-ink)]"
+              className="h-12 w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 text-start text-[15px] text-ink outline-none transition-colors focus:border-action"
             />
           </div>
           {error && (
-            <p role="alert" className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-600">
+            <p role="alert" className="rounded-[var(--r-sm)] bg-danger/10 px-4 py-3 text-sm text-danger">
               {error}
             </p>
           )}
           <button
             type="submit"
             disabled={pending}
-            className="h-12 w-full cursor-pointer rounded-full bg-brand-600 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
+            className="min-h-12 w-full cursor-pointer rounded-full bg-action text-[15px] font-semibold text-on-action transition-colors hover:bg-action-hover disabled:opacity-60"
           >
             {pending ? "שולחים..." : "שליחת קישור איפוס"}
           </button>

@@ -17,7 +17,7 @@ export default async function ChatDeepLinkPage({
     <AppLinkShell
       title="הודעה חדשה ממתינה"
       subtitle="פתחו את אפליקציית SkillUp כדי להמשיך את השיחה."
-      ctaLabel="פתח ב-SkillUp"
+      ctaLabel="פתיחה ב-SkillUp"
       ctaHref={`https://skillupwebsite.vercel.app/chat/${id}`}
     />
   );

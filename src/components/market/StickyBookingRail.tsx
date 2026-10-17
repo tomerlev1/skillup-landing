@@ -111,7 +111,7 @@ export default function StickyBookingRail({
           href={messageHref}
           className="mt-2.5 inline-flex h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-[var(--r-pill)] border border-ink text-sm font-semibold text-ink transition-colors hover:bg-action-soft"
         >
-          <MessageCircle size={16} />
+          <MessageCircle strokeWidth={1.75} size={16} />
           שליחת הודעה
         </GatedLink>
 
@@ -142,7 +142,7 @@ export default function StickyBookingRail({
               href={messageHref}
               className="grid h-11 w-11 cursor-pointer place-items-center rounded-[var(--r-pill)] border border-ink text-ink"
             >
-              <MessageCircle size={17} />
+              <MessageCircle strokeWidth={1.75} size={16} />
               <span className="sr-only">שליחת הודעה</span>
             </GatedLink>
             <GatedLink

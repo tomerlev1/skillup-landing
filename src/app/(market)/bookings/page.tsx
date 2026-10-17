@@ -211,19 +211,19 @@ export default async function BookingsPage() {
             rel="noopener noreferrer"
             className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-action hover:underline"
           >
-            <Video size={15} />
+            <Video strokeWidth={1.75} size={16} />
             קישור לשיעור אונליין
           </a>
         )}
         {revealed && (
           <p className="mt-3 flex items-center gap-2 text-sm text-ink">
-            <MapPin size={15} className="shrink-0 text-ink-3" />
+            <MapPin strokeWidth={1.75} size={16} className="shrink-0 text-ink-3" />
             {revealed}
           </p>
         )}
         {booking.mode === "student_location" && booking.location && (
           <p className="mt-3 flex items-center gap-2 text-sm text-ink">
-            <MapPin size={15} className="shrink-0 text-ink-3" />
+            <MapPin strokeWidth={1.75} size={16} className="shrink-0 text-ink-3" />
             {booking.location}
           </p>
         )}
@@ -233,13 +233,13 @@ export default async function BookingsPage() {
 
   return (
     <div className="mx-auto max-w-[760px] px-4 py-8 sm:px-6">
-      <h1 className="font-display text-2xl font-bold text-ink">
+      <h1 className="font-ed text-2xl font-bold text-ink">
         השיעורים שלי
       </h1>
 
       {bookings.length === 0 ? (
         <div className="mt-10 rounded-[var(--r-md)] bg-canvas px-6 py-16 text-center">
-          <CalendarX2 size={36} className="mx-auto text-ink-3" />
+          <CalendarX2 strokeWidth={1.75} size={24} className="mx-auto text-ink-3" />
           <h2 className="mt-4 text-lg font-semibold text-ink">
             עדיין אין שיעורים
           </h2>

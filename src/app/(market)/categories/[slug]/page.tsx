@@ -119,42 +119,30 @@ export default async function CategoryLandingPage({ params }: PageProps) {
 
       {/* Header */}
       <div className="max-w-[720px]">
-        <nav aria-label="פירורי לחם" className="mb-4 flex items-center gap-1.5 text-[13px] text-[var(--mk-ink-3)]">
-          <Link href="/" className="hover:text-[var(--mk-ink)] hover:underline">ראשי</Link>
-          <ChevronLeft size={13} aria-hidden="true" />
-          <span className="text-[var(--mk-ink)]">מורים ל{category.name_he}</span>
+        <nav aria-label="פירורי לחם" className="mb-4 flex flex-wrap items-center gap-1.5 text-sm text-ink-3">
+          <Link href="/" className="hit-44 hover:text-ink hover:underline">ראשי</Link>
+          <ChevronLeft size={16} strokeWidth={1.75} aria-hidden="true" />
+          <span className="text-ink">מורים ל{category.name_he}</span>
         </nav>
 
         <div className="flex items-center gap-4">
-          <span
-            className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-[var(--mk-band)]"
-            style={
-              category.color_hex
-                ? { backgroundColor: `${category.color_hex}1a` }
-                : undefined
-            }
-          >
-            <CategoryIcon
-              iconName={category.icon_name}
-              size={26}
-              color={category.color_hex}
-              className="text-[var(--mk-ink)]"
-            />
+          <span className="grid h-14 w-14 shrink-0 place-items-center rounded-[var(--r-md)] border border-line bg-surface">
+            <CategoryIcon iconName={category.icon_name} size={24} className="text-ink" />
           </span>
-          <h1 className="font-ed text-3xl font-bold text-[var(--mk-ink)] sm:text-4xl">
+          <h1 className="font-ed text-[28px] font-bold leading-tight text-balance text-ink sm:text-[36px]">
             מורים פרטיים ל{category.name_he}
           </h1>
         </div>
 
         {intro && (
-          <p className="mt-5 text-base leading-[1.75] text-[var(--mk-ink-2)]">{intro}</p>
+          <p className="mt-5 text-base leading-[1.75] text-ink-2">{intro}</p>
         )}
       </div>
 
       {/* Subject chips — deep links into filtered search */}
       {subjects.length > 0 && (
         <div className="mt-8">
-          <h2 className="text-sm font-semibold text-[var(--mk-ink)]">
+          <h2 className="text-sm font-semibold text-ink">
             מקצועות ב{category.name_he}
           </h2>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -170,14 +158,14 @@ export default async function CategoryLandingPage({ params }: PageProps) {
       {/* Teachers */}
       <div className="mt-12">
         <div className="mb-5 flex items-baseline justify-between gap-4">
-          <h2 className="font-display text-xl font-bold text-[var(--mk-ink)] sm:text-2xl">
+          <h2 className="font-ed text-[22px] font-bold leading-tight text-balance text-ink sm:text-[28px]">
             {result.total > 0
               ? `${result.total} מורים ל${category.name_he} ב-SkillUp`
               : `מורים ל${category.name_he}`}
           </h2>
           <Link
             href={searchHref({ categoryId: category.id })}
-            className="shrink-0 text-sm font-medium text-[var(--mk-ink-2)] hover:text-[var(--mk-ink)] hover:underline"
+            className="inline-flex min-h-11 shrink-0 items-center text-sm font-medium text-ink-2 hover:text-ink hover:underline"
           >
             לכל המורים עם סינון
           </Link>
@@ -196,7 +184,7 @@ export default async function CategoryLandingPage({ params }: PageProps) {
             ))}
           </div>
         ) : (
-          <p className="rounded-2xl bg-[var(--mk-band)] px-5 py-8 text-sm text-[var(--mk-ink-2)]">
+          <p className="rounded-[var(--r-md)] border border-line bg-surface px-5 py-8 text-base leading-relaxed text-ink-2">
             המורים הראשונים בתחום הזה בדרך אלינו. בינתיים אפשר לחפש בתחומים
             אחרים או להירשם ולקבל עדכון.
           </p>
@@ -204,11 +192,11 @@ export default async function CategoryLandingPage({ params }: PageProps) {
       </div>
 
       {/* Geo cross-links */}
-      <div className="mt-14 rounded-3xl bg-[var(--mk-band)] p-6 sm:p-8">
-        <h2 className="text-base font-semibold text-[var(--mk-ink)]">
+      <div className="mt-14 rounded-[var(--r-md)] border border-line bg-surface p-6 sm:p-8">
+        <h2 className="text-base font-semibold text-ink">
           {category.name_he} לפי עיר
         </h2>
-        <p className="mt-1 text-sm text-[var(--mk-ink-3)]">
+        <p className="mt-1 text-sm text-ink-3">
           מורים פרטיים ליד הבית, או אונליין מכל מקום בארץ.
         </p>
         <div className="mt-4 flex flex-wrap gap-2">

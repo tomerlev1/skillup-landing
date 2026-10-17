@@ -174,21 +174,21 @@ export default async function TutorProfilePage({ params }: PageProps) {
 
       {/* Breadcrumbs */}
       <nav aria-label="פירורי לחם" className="mb-4 flex items-center gap-1.5 text-sm text-ink-3 md:mb-6">
-        <Link href="/" className="hover:text-ink hover:underline">ראשי</Link>
-        <ChevronLeft size={13} aria-hidden="true" />
+        <Link href="/" className="hit-44 hover:text-ink hover:underline">ראשי</Link>
+        <ChevronLeft strokeWidth={1.75} size={16} aria-hidden="true" />
         {subjects[0] ? (
           <Link
             href={searchHref({ subjectIds: [subjects[0].id] })}
-            className="hover:text-ink hover:underline"
+            className="hit-44 hover:text-ink hover:underline"
           >
             מורים ל{subjects[0].name_he}
           </Link>
         ) : (
-          <Link href="/search" className="hover:text-ink hover:underline">
+          <Link href="/search" className="hit-44 hover:text-ink hover:underline">
             מורים
           </Link>
         )}
-        <ChevronLeft size={13} aria-hidden="true" />
+        <ChevronLeft strokeWidth={1.75} size={16} aria-hidden="true" />
         <span className="text-ink">{teacher.display_name}</span>
       </nav>
 
@@ -232,7 +232,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
                 <RatingStars value={stats.avg} count={stats.count} size="md" />
                 {cityName && (
                   <span className="inline-flex items-center gap-1">
-                    <MapPin size={14} aria-hidden="true" />
+                    <MapPin strokeWidth={1.75} size={16} aria-hidden="true" />
                     {cityName}
                   </span>
                 )}
@@ -255,7 +255,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
                   <div>
                     <dt className="text-sm text-ink-3">תלמידים</dt>
                     <dd className="tnum mt-0.5 flex items-center gap-1 text-base font-semibold text-ink">
-                      <Users size={14} aria-hidden="true" />
+                      <Users strokeWidth={1.75} size={16} aria-hidden="true" />
                       {teacher.total_students}+
                     </dd>
                   </div>
@@ -316,7 +316,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
                   >
                     {s.name_he}
                     {s.experience_years != null && s.experience_years > 0 && (
-                      <span className="tnum rounded-[var(--r-pill)] bg-action-soft px-2 py-0.5 text-[11px] font-semibold text-action">
+                      <span className="tnum rounded-[var(--r-pill)] border border-line bg-canvas px-2 py-0.5 text-xs font-medium text-ink-2">
                         {s.experience_years} שנ׳ ניסיון
                       </span>
                     )}
@@ -343,7 +343,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="grid h-8 w-8 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
-                        <GraduationCap size={17} />
+                        <GraduationCap strokeWidth={1.75} size={16} />
                       </span>
                       <h3 className="text-sm font-semibold text-ink">השכלה</h3>
                     </div>
@@ -361,7 +361,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="grid h-8 w-8 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
-                        <Languages size={17} />
+                        <Languages strokeWidth={1.75} size={16} />
                       </span>
                       <h3 className="text-sm font-semibold text-ink">שפות הוראה</h3>
                     </div>
@@ -375,7 +375,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="grid h-8 w-8 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
-                        <Award size={17} />
+                        <Award strokeWidth={1.75} size={16} />
                       </span>
                       <h3 className="text-sm font-semibold text-ink">ניסיון</h3>
                     </div>
@@ -392,7 +392,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="grid h-8 w-8 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
-                        <Sparkles size={17} />
+                        <Sparkles strokeWidth={1.75} size={16} />
                       </span>
                       <h3 className="text-sm font-semibold text-ink">סגנון הוראה</h3>
                     </div>
@@ -422,7 +422,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
                         target="_blank"
                         className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-line px-3 text-sm font-medium text-ink-2 transition-colors hover:border-ink hover:text-ink"
                       >
-                        <ExternalLink size={12} aria-hidden="true" />
+                        <ExternalLink strokeWidth={1.75} size={16} aria-hidden="true" />
                         {s.label}
                       </a>
                     ))}
@@ -435,7 +435,7 @@ export default async function TutorProfilePage({ params }: PageProps) {
         </div>
 
         {/* ===== Sticky booking rail (LEFT column in RTL) ===== */}
-        <aside aria-label="הזמנת שיעור">
+        <aside aria-label="קביעת שיעור">
           <div className="sticky top-20">
             <StickyBookingRail
               teacherId={id}

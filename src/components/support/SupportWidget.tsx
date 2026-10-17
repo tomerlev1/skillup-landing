@@ -155,7 +155,7 @@ export default function SupportWidget() {
       ...prev,
       {
         kind: "bot",
-        text: `תודה, ${contactName.trim()}! הפנייה התקבלה אצלנו ונציג יחזור אליכם בהקדם דרך ${contactDetail.trim()}. בינתיים, אם יש עוד משהו, אני כאן.`,
+        text: `תודה, ${contactName.trim()}. הפנייה התקבלה אצלנו ונציג יחזור אליכם בהקדם דרך ${contactDetail.trim()}. בינתיים, אם יש עוד משהו, אני כאן.`,
       },
     ]);
     setSuggestions("menu");
@@ -172,7 +172,7 @@ export default function SupportWidget() {
         style={{ bottom: "calc(16px + var(--sticky-bar-h, 0px) + env(safe-area-inset-bottom))" }}
         className="fixed end-4 z-[70] grid h-13 w-13 cursor-pointer place-items-center rounded-pill border border-line bg-surface text-ink shadow-[var(--shadow-lift)] transition-[transform,bottom] duration-200 hover:scale-105 lg:end-6"
       >
-        {open ? <X size={21} /> : <Headset size={21} />}
+        {open ? <X strokeWidth={1.75} size={20} /> : <Headset strokeWidth={1.75} size={20} />}
       </button>
 
       {open && (
@@ -185,7 +185,7 @@ export default function SupportWidget() {
           {/* Header */}
           <div className="flex items-center gap-3 border-b border-line bg-surface px-5 py-4 text-ink">
             <span className="grid h-9 w-9 place-items-center rounded-pill bg-action-soft text-action">
-              <Headset size={17} />
+              <Headset strokeWidth={1.75} size={16} />
             </span>
             <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold">התמיכה של SkillUp</p>
@@ -197,7 +197,7 @@ export default function SupportWidget() {
                 onClick={() => setEscalating(true)}
                 className="shrink-0 cursor-pointer rounded-pill border border-line px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:bg-canvas"
               >
-                <UserRound size={12} className="mb-0.5 inline" /> נציג
+                <UserRound strokeWidth={1.75} size={16} className="mb-0.5 inline" /> נציג
               </button>
             )}
           </div>
@@ -348,7 +348,7 @@ export default function SupportWidget() {
                 aria-label="שליחה"
                 className="grid h-11 w-11 shrink-0 cursor-pointer place-items-center rounded-pill bg-action text-on-action transition-colors hover:bg-action-hover disabled:opacity-40"
               >
-                <SendHorizontal size={16} className="-scale-x-100" />
+                <SendHorizontal strokeWidth={1.75} size={16} className="-scale-x-100" />
               </button>
             </form>
           )}

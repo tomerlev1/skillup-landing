@@ -184,7 +184,7 @@ export default function FilterPanel({
         <legend className="mb-3 text-sm font-semibold text-ink">עיר</legend>
         {draft.cityId && cityName ? (
           <span className="inline-flex items-center gap-2 rounded-full bg-ink py-2 ps-4 pe-2 text-sm font-medium text-surface">
-            <MapPin size={14} />
+            <MapPin strokeWidth={1.75} size={16} />
             {cityName}
             <button
               type="button"
@@ -193,9 +193,9 @@ export default function FilterPanel({
                 update({ cityId: undefined });
                 setCityName(null);
               }}
-              className="grid h-8 w-8 cursor-pointer place-items-center rounded-full hover:bg-surface/20"
+              className="hit-44 grid h-8 w-8 cursor-pointer place-items-center rounded-full hover:bg-surface/20"
             >
-              <X size={13} />
+              <X strokeWidth={1.75} size={16} />
             </button>
           </span>
         ) : (
@@ -207,7 +207,7 @@ export default function FilterPanel({
               className="h-11 w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 text-sm outline-none transition-colors placeholder:text-ink-3 focus:border-ink"
             />
             {cityOptions.length > 0 && (
-              <div className="mk-shadow absolute top-full inset-x-0 z-30 mt-1 overflow-hidden rounded-[var(--r-sm)] border border-line bg-surface py-1">
+              <div className="shadow-[var(--shadow-lift)] absolute top-full inset-x-0 z-30 mt-1 overflow-hidden rounded-[var(--r-sm)] border border-line bg-surface py-1">
                 {cityOptions.map((c) => (
                   <button
                     key={c.id}

@@ -27,7 +27,7 @@ export default function Chip({
   const look = selected
     ? "border-ink bg-ink text-surface"
     : "border-line bg-surface text-ink hover:border-ink";
-  const classes = `inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full border font-medium transition-colors ${sizing} ${look} ${className}`;
+  const classes = `hit-44 inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full border font-medium transition-colors ${sizing} ${look} ${className}`;
 
   if (href) {
     return (

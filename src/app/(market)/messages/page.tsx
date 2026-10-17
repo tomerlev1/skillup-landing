@@ -20,11 +20,11 @@ export default async function MessagesPage() {
 
   return (
     <div className="mx-auto max-w-[760px] px-4 py-8 sm:px-6">
-      <h1 className="font-display text-2xl font-bold text-ink">הודעות</h1>
+      <h1 className="font-ed text-2xl font-bold text-ink">הודעות</h1>
 
       {conversations.length === 0 ? (
         <div className="mt-10 rounded-[var(--r-md)] bg-canvas px-6 py-16 text-center">
-          <MessageCircle size={36} className="mx-auto text-ink-3" />
+          <MessageCircle strokeWidth={1.75} size={24} className="mx-auto text-ink-3" />
           <h2 className="mt-4 text-lg font-semibold text-ink">
             עדיין אין שיחות
           </h2>

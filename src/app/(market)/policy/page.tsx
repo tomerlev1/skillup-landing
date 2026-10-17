@@ -14,8 +14,8 @@ export default function PolicyDeepLinkPage() {
   return (
     <AppLinkShell
       title="מדיניות ותנאי שימוש"
-      subtitle="מסמכי המדיניות המעודכנים זמינים באפליקציה תחת הגדרות → מידע משפטי."
-      ctaLabel="פתח ב-SkillUp"
+      subtitle="מסמכי המדיניות המעודכנים זמינים באפליקציה תחת הגדרות ← מידע משפטי."
+      ctaLabel="פתיחה ב-SkillUp"
       ctaHref="https://skillupwebsite.vercel.app/policy"
     />
   );

@@ -40,11 +40,11 @@ export default function SaveButton({ teacherId, teacherName, variant = "overlay"
           : "h-[34px] w-[34px] bg-white/90 shadow-sm after:absolute after:-inset-[5px] after:content-['']"
       }`}
     >
-      <Heart
+      <Heart strokeWidth={1.75}
         size={16}
         className={
           saved
-            ? "fill-red-500 text-red-500"
+            ? "fill-danger text-danger"
             : plain
               ? "text-ink-2"
               : "fill-black/25 text-white"

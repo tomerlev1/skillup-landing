@@ -221,7 +221,7 @@ export default function ChatThread({
           aria-label="חזרה להודעות"
           className="grid h-11 w-11 shrink-0 place-items-center rounded-[var(--r-pill)] transition-colors hover:bg-canvas"
         >
-          <ChevronRight size={18} />
+          <ChevronRight strokeWidth={1.75} size={20} />
         </Link>
         {peerProfileHref ? (
           <Link href={peerProfileHref} className="flex min-w-0 items-center gap-3">
@@ -260,7 +260,7 @@ export default function ChatThread({
                 )}
                 {(m.image_url || m.file_url || m.attachment_path) && (
                   <p className={`mt-1 inline-flex items-center gap-1.5 text-sm ${mine ? "text-on-action/85" : "text-ink-3"}`}>
-                    <Paperclip size={13} />
+                    <Paperclip strokeWidth={1.75} size={16} />
                     {m.file_name ?? "קובץ מצורף (זמין באפליקציה)"}
                   </p>
                 )}
@@ -317,7 +317,7 @@ export default function ChatThread({
           aria-label="שליחה"
           className="grid h-12 w-12 shrink-0 cursor-pointer place-items-center rounded-[var(--r-pill)] bg-action text-on-action transition-colors hover:bg-action-hover disabled:opacity-40"
         >
-          <SendHorizontal size={18} className="-scale-x-100" />
+          <SendHorizontal strokeWidth={1.75} size={20} className="-scale-x-100" />
         </button>
       </form>
     </div>

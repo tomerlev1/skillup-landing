@@ -14,10 +14,10 @@ export const metadata: Metadata = {
 export default function ArticlesPage() {
   return (
     <div className="mx-auto max-w-[840px] px-4 py-12 sm:px-6">
-      <h1 className="font-display text-3xl font-extrabold text-[var(--mk-ink)]">
+      <h1 className="font-ed text-[clamp(36px,5vw,48px)] font-black leading-[1.1] text-balance text-ink">
         מדריכים ומאמרים
       </h1>
-      <p className="mt-3 max-w-[520px] text-base leading-relaxed text-[var(--mk-ink-2)]">
+      <p className="mt-3 max-w-[520px] text-base leading-relaxed text-ink-2">
         כל מה שכדאי לדעת לפני שבוחרים מורה פרטי, כתוב בגובה העיניים ובלי
         סיסמאות שיווקיות.
       </p>
@@ -27,22 +27,24 @@ export default function ArticlesPage() {
           <article key={article.slug}>
             <Link
               href={`/articles/${article.slug}`}
-              className="group block rounded-3xl border border-[var(--mk-hairline)] bg-white p-6 transition-all hover:-translate-y-0.5 hover:shadow-[var(--mk-shadow)] sm:p-7"
+              className="group block rounded-[var(--r-md)] border border-line bg-surface p-6 transition-[transform,box-shadow] duration-200 ease-[var(--ease)] hover:-translate-y-[3px] hover:shadow-[var(--shadow-lift)] sm:p-7"
             >
-              <p className="text-xs text-[var(--mk-ink-3)]">
+              <p className="text-sm text-ink-3">
                 {formatDateFull(article.datePublished)} · {article.readingMinutes} דקות
                 קריאה
               </p>
-              <h2 className="mt-2 font-display text-xl font-bold leading-snug text-[var(--mk-ink)]">
+              <h2 className="mt-2 text-xl font-semibold leading-snug text-balance text-ink">
                 {article.title}
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-[var(--mk-ink-2)]">
+              <p className="mt-2 text-base leading-relaxed text-ink-2">
                 {article.description}
               </p>
-              <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-brand-700">
+              <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-ink group-hover:underline">
                 לקריאה
                 <ChevronLeft
-                  size={15}
+                  size={16}
+                  strokeWidth={1.75}
+                  aria-hidden="true"
                   className="transition-transform group-hover:-translate-x-0.5"
                 />
               </span>

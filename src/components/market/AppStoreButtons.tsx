@@ -33,7 +33,7 @@ export default function AppStoreButtons({
 }: AppStoreButtonsProps) {
   const pad = size === "compact" ? "h-11 px-3.5" : "h-14 px-5";
   const glyph = size === "compact" ? "h-5 w-5" : "h-7 w-7";
-  const small = size === "compact" ? "text-[9px]" : "text-[10px]";
+  const small = "text-xs"; // 12px: tiny badge label (spec §7.2)
   const big = size === "compact" ? "text-sm" : "text-base";
 
   return (
@@ -44,7 +44,7 @@ export default function AppStoreButtons({
         target="_blank"
         rel="noopener noreferrer"
         aria-label="הורדת אפליקציית SkillUp מ-App Store"
-        className={`inline-flex ${pad} items-center gap-2.5 rounded-2xl bg-[var(--mk-ink)] text-white transition-transform hover:-translate-y-0.5`}
+        className={`inline-flex ${pad} items-center gap-2.5 rounded-[var(--r-sm)] bg-ink text-surface transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5`}
       >
         <AppleGlyph className={glyph} />
         <span className="flex flex-col items-start leading-none">
@@ -60,7 +60,7 @@ export default function AppStoreButtons({
           target="_blank"
           rel="noopener noreferrer"
           aria-label="הורדת אפליקציית SkillUp מ-Google Play"
-          className={`inline-flex ${pad} items-center gap-2.5 rounded-2xl bg-[var(--mk-ink)] text-white transition-transform hover:-translate-y-0.5`}
+          className={`inline-flex ${pad} items-center gap-2.5 rounded-[var(--r-sm)] bg-ink text-surface transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5`}
         >
           <PlayGlyph className={glyph} />
           <span className="flex flex-col items-start leading-none">
@@ -71,11 +71,11 @@ export default function AppStoreButtons({
       ) : (
         <span
           aria-disabled="true"
-          className={`relative inline-flex ${pad} cursor-default items-center gap-2.5 rounded-2xl border border-[var(--mk-hairline)] bg-white text-[var(--mk-ink-3)]`}
+          className={`relative inline-flex ${pad} cursor-default items-center gap-2.5 rounded-[var(--r-sm)] border border-line bg-surface text-ink-3`}
         >
           <PlayGlyph className={`${glyph} opacity-40`} />
-          <span className={`${big} font-semibold text-[var(--mk-ink-2)]`}>Google Play</span>
-          <span className="absolute -top-2 end-2 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700">
+          <span className={`${big} font-semibold text-ink-2`}>Google Play</span>
+          <span className="absolute -top-2 end-2 rounded-full border border-line bg-surface px-2 py-0.5 text-xs font-semibold text-ink-2">
             בקרוב
           </span>
         </span>

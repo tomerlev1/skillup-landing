@@ -83,7 +83,7 @@ export default function BookingSuccess({ teacher, subjectName, outcome }: Bookin
               }`}
             >
               {item.done ? (
-                <Check size={16} strokeWidth={3} />
+                <Check size={16} strokeWidth={1.75} />
               ) : (
                 <span className="tnum text-xs font-semibold">{i + 1}</span>
               )}
@@ -111,7 +111,7 @@ export default function BookingSuccess({ teacher, subjectName, outcome }: Bookin
         </Link>
         {event && (
           <button type="button" onClick={() => downloadIcs(event)} className={secondaryBtn}>
-            <CalendarPlus size={18} aria-hidden="true" />
+            <CalendarPlus strokeWidth={1.75} size={20} aria-hidden="true" />
             הוספה ליומן
           </button>
         )}

@@ -16,8 +16,8 @@ export default async function LessonDeepLinkPage({
   return (
     <AppLinkShell
       title="פרטי השיעור"
-      subtitle="השיעור שלך נמצא באפליקציית SkillUp. לחצו על הכפתור כדי לפתוח את האפליקציה או להתקין אותה."
-      ctaLabel="פתח ב-SkillUp"
+      subtitle="השיעור שלכם נמצא באפליקציית SkillUp. לחצו על הכפתור כדי לפתוח את האפליקציה או להתקין אותה."
+      ctaLabel="פתיחה ב-SkillUp"
       ctaHref={`https://skillupwebsite.vercel.app/lesson/${id}`}
     />
   );

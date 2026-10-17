@@ -59,39 +59,39 @@ export default async function ArticlePage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(articleLd) }}
       />
 
-      <nav aria-label="פירורי לחם" className="mb-6 flex items-center gap-1.5 text-[13px] text-[var(--mk-ink-3)]">
-        <Link href="/" className="hover:text-[var(--mk-ink)] hover:underline">ראשי</Link>
-        <ChevronLeft size={13} aria-hidden="true" />
-        <Link href="/articles" className="hover:text-[var(--mk-ink)] hover:underline">
+      <nav aria-label="פירורי לחם" className="mb-6 flex flex-wrap items-center gap-1.5 text-sm text-ink-3">
+        <Link href="/" className="hit-44 hover:text-ink hover:underline">ראשי</Link>
+        <ChevronLeft size={16} strokeWidth={1.75} aria-hidden="true" />
+        <Link href="/articles" className="hit-44 hover:text-ink hover:underline">
           מאמרים
         </Link>
       </nav>
 
       <article>
         <header>
-          <p className="text-sm text-[var(--mk-ink-3)]">
+          <p className="text-sm text-ink-3">
             {formatDateFull(article.datePublished)} · {article.readingMinutes} דקות קריאה
           </p>
-          <h1 className="mt-3 font-display text-3xl font-extrabold leading-[1.2] text-[var(--mk-ink)] sm:text-4xl">
+          <h1 className="mt-3 font-ed text-[clamp(28px,4.5vw,40px)] font-black leading-[1.15] text-balance text-ink">
             {article.title}
           </h1>
-          <p className="mt-4 text-lg leading-relaxed text-[var(--mk-ink-2)]">
+          <p className="mt-4 text-lg leading-relaxed text-ink-2">
             {article.description}
           </p>
         </header>
 
-        <div className="mk-hairline-t mt-8 space-y-8 pt-8">
+        <div className="border-t border-line mt-8 space-y-8 pt-8">
           {article.sections.map((section, i) => (
             <section key={i}>
               {section.heading && (
-                <h2 className="mb-3 font-display text-xl font-bold text-[var(--mk-ink)]">
+                <h2 className="mb-3 font-ed text-[22px] font-bold leading-tight text-balance text-ink">
                   {section.heading}
                 </h2>
               )}
               {section.paragraphs.map((p, j) => (
                 <p
                   key={j}
-                  className="mb-4 text-[16px] leading-[1.8] text-[var(--mk-ink)] last:mb-0"
+                  className="mb-4 text-[16px] leading-[1.8] text-ink last:mb-0"
                 >
                   {p}
                 </p>
@@ -102,17 +102,17 @@ export default async function ArticlePage({ params }: PageProps) {
       </article>
 
       {/* Conversion band */}
-      <div className="mt-12 rounded-3xl bg-[var(--mk-band)] p-7 text-center">
-        <h2 className="font-display text-lg font-bold text-[var(--mk-ink)]">
+      <div className="mt-12 rounded-[var(--r-md)] border border-line bg-surface p-7 text-center">
+        <h2 className="font-ed text-[22px] font-bold leading-tight text-balance text-ink">
           מוכנים למצוא את המורה שלכם?
         </h2>
-        <p className="mx-auto mt-2 max-w-[380px] text-sm leading-relaxed text-[var(--mk-ink-2)]">
-          מורים מנוסים עם ביקורות אמיתיות מחכים כאן. משווים, בוחרים וקובעים
-          שיעור בכמה דקות.
+        <p className="mx-auto mt-2 max-w-[420px] text-base leading-relaxed text-ink-2">
+          משווים מורים, קוראים ביקורות של לומדים ושולחים בקשה
+          ביומן של המורה.
         </p>
         <Link
           href="/search"
-          className="mt-5 inline-flex h-12 items-center rounded-full bg-brand-600 px-7 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+          className="mt-5 inline-flex h-12 items-center rounded-full bg-action px-7 text-[15px] font-semibold text-on-action transition-colors duration-200 hover:bg-action-hover"
         >
           למציאת מורה
         </Link>
@@ -120,13 +120,13 @@ export default async function ArticlePage({ params }: PageProps) {
 
       {/* More articles */}
       <div className="mt-10">
-        <h2 className="text-sm font-semibold text-[var(--mk-ink)]">עוד מאמרים</h2>
-        <ul className="mt-3 space-y-2">
+        <h2 className="text-base font-semibold text-ink">עוד מאמרים</h2>
+        <ul className="mt-2">
           {ARTICLES.filter((a) => a.slug !== slug).map((a) => (
             <li key={a.slug}>
               <Link
                 href={`/articles/${a.slug}`}
-                className="text-sm text-[var(--mk-ink-2)] hover:text-[var(--mk-ink)] hover:underline"
+                className="inline-flex min-h-11 items-center text-base text-ink-2 hover:text-ink hover:underline"
               >
                 {a.title}
               </Link>
