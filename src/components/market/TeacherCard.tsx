@@ -3,6 +3,7 @@ import Link from "next/link";
 import RatingStars from "@/components/ui/RatingStars";
 import VerifiedMark from "@/components/ui/VerifiedMark";
 import { monogram } from "@/components/ui/Avatar";
+import LiveAvailability from "@/components/market/LiveAvailability";
 import SaveButton from "@/components/market/SaveButton";
 import { availabilityLabel } from "@/lib/availability-label";
 import { teacherCardLines } from "@/lib/teacher-card";
@@ -24,18 +25,6 @@ interface TeacherCardProps {
 }
 
 const NUM = new Intl.NumberFormat("he-IL", { maximumFractionDigits: 0 });
-
-/** "יש מקום מחר · 17:00" → day text + LTR-isolated time. */
-function AvailabilityText({ label }: { label: string }) {
-  const i = label.lastIndexOf(" · ");
-  if (i < 0) return <>{label}</>;
-  return (
-    <>
-      {label.slice(0, i)} ·{" "}
-      <span className="ltr-isolate tnum">{label.slice(i + 3)}</span>
-    </>
-  );
-}
 
 /** Photo, or a serif monogram on the soft action tint (spec §7.4). */
 function Photo({
@@ -78,19 +67,6 @@ function Photo({
   );
 }
 
-function GreenAvailability({ label, className = "" }: { label: string; className?: string }) {
-  return (
-    <p
-      className={`flex min-w-0 items-center gap-1.5 text-sm font-semibold leading-5 text-ok-text ${className}`}
-    >
-      <span aria-hidden="true" className="size-[7px] shrink-0 rounded-full bg-ok" />
-      <span className="truncate">
-        <AvailabilityText label={label} />
-      </span>
-    </p>
-  );
-}
-
 // The marketplace's most-seen component. Information order mirrors how people
 // decide: face → availability → name + verified + rating → what they teach →
 // experience → where + price. The whole card is one link; the save heart sits
@@ -129,7 +105,14 @@ export default function TeacherCard({
           {teacher.subjects[0] && (
             <p className="mt-0.5 truncate text-sm text-ink-2">{teacher.subjects[0]}</p>
           )}
-          {available && <GreenAvailability label={available} className="mt-1" />}
+          {nextSlot && (
+            <LiveAvailability
+              startIso={nextSlot.start_at}
+              initialLabel={available}
+              variant="green"
+              className="mt-1"
+            />
+          )}
         </Link>
         <div className="absolute end-2.5 top-2.5">
           <SaveButton teacherId={teacher.id} teacherName={name} />
@@ -164,19 +147,13 @@ export default function TeacherCard({
                 : "(max-width: 640px) 72vw, (max-width: 1200px) 33vw, 300px"
             }
           />
-          {available && (
-            // White in both themes on purpose: it sits on a photo.
-            <span
-              className={`absolute bottom-2.5 start-2.5 inline-flex max-w-[calc(100%-20px)] items-center gap-1.5 whitespace-nowrap rounded-[var(--r-pill)] bg-white/95 py-[5px] ps-2.5 pe-3 text-[13px] font-semibold leading-[18px] text-[#0B7A55] shadow-[0_1px_3px_rgba(0,0,0,0.12)] ${row("max-md:hidden")}`}
-            >
-              <span
-                aria-hidden="true"
-                className="size-[7px] shrink-0 rounded-full bg-[#0E9F6E] shadow-[0_0_0_3px_rgba(14,159,110,0.18)]"
-              />
-              <span className="truncate">
-                <AvailabilityText label={available} />
-              </span>
-            </span>
+          {nextSlot && (
+            <LiveAvailability
+              startIso={nextSlot.start_at}
+              initialLabel={available}
+              variant="pill"
+              className={row("max-md:hidden")}
+            />
           )}
         </div>
 
@@ -204,7 +181,14 @@ export default function TeacherCard({
           )}
 
           {/* Row layout: availability as green text instead of the photo pill */}
-          {auto && available && <GreenAvailability label={available} className="mt-1 md:hidden" />}
+          {auto && nextSlot && (
+            <LiveAvailability
+              startIso={nextSlot.start_at}
+              initialLabel={available}
+              variant="green"
+              className="mt-1 md:hidden"
+            />
+          )}
 
           {/* Flexible gap keeps the price row pinned to the bottom */}
           <div className={`min-h-3 flex-1 ${row("max-md:min-h-1")}`} />

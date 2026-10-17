@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 export default function PolicyDeepLinkPage() {
   return (
     <AppLinkShell
+      bare
       title="מדיניות ותנאי שימוש"
       subtitle="מסמכי המדיניות המעודכנים זמינים באפליקציה תחת הגדרות ← מידע משפטי."
       ctaLabel="פתיחה ב-SkillUp"

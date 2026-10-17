@@ -21,6 +21,11 @@ interface AppLinkShellProps {
   ctaHref?: string;
   tone?: Tone;
   children?: ReactNode;
+  /**
+   * Rendered inside a shell that already has its own <main> and logo (e.g.
+   * the (market) layout): drop the outer <main> and the card logo.
+   */
+  bare?: boolean;
 }
 
 const TONE: Record<Tone, { Icon: LucideIcon; className: string }> = {
@@ -36,15 +41,19 @@ export default function AppLinkShell({
   ctaHref,
   tone,
   children,
+  bare = false,
 }: AppLinkShellProps) {
   const t = tone ? TONE[tone] : null;
+  const Outer = bare ? "div" : "main";
   return (
-    <main
+    <Outer
       dir="rtl"
-      className="flex min-h-dvh items-center justify-center bg-canvas p-6 text-ink"
+      className={`flex items-center justify-center bg-canvas p-6 text-ink ${
+        bare ? "py-14 sm:py-20" : "min-h-dvh"
+      }`}
     >
       <section className="w-full max-w-[520px] rounded-[var(--r-md)] border border-line bg-surface px-6 py-10 text-center sm:px-8">
-        <BrandLogo className="mx-auto mb-6 h-9 w-auto" />
+        {!bare && <BrandLogo className="mx-auto mb-6 h-9 w-auto" />}
         {t && (
           <div
             aria-hidden="true"
@@ -70,6 +79,6 @@ export default function AppLinkShell({
         )}
         <p className="mt-8 text-sm text-ink-3">SkillUp · פלטפורמה לחיבור לומדים ומורים</p>
       </section>
-    </main>
+    </Outer>
   );
 }
