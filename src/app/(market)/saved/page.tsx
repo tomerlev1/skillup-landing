@@ -111,7 +111,7 @@ export default function SavedTutorsPage() {
         </div>
       ) : teachers.length === 0 ? (
         <div className="rounded-[var(--r-lg)] bg-surface px-6 py-16 text-center shadow-[var(--shadow-card)] ring-1 ring-line/60">
-          <span className="float-y mx-auto grid size-16 place-items-center rounded-[var(--r-lg)] bg-tint-rose text-tint-rose-fg">
+          <span className="mx-auto grid size-16 place-items-center rounded-[var(--r-lg)] bg-tint-rose text-tint-rose-fg">
             <Heart strokeWidth={2} size={30} fill="currentColor" />
           </span>
           <h2 className="mt-5 text-xl font-extrabold text-ink">
