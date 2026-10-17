@@ -279,7 +279,7 @@ export default function ChatThread({
         {peerTyping && (
           <div className="flex justify-end">
             <div className="rounded-[var(--r-md)] rounded-es-md border border-line bg-surface px-4 py-2.5 text-sm text-ink-3">
-              {peerName} מקלידים...
+              {peerName}: הקלדה…
             </div>
           </div>
         )}

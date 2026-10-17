@@ -235,7 +235,7 @@ export default function SignupForm() {
             ? "נרשמים..."
             : role === "teacher"
               ? "פתיחת חשבון מורה"
-              : "יצירת חשבון"}
+              : "הרשמה"}
         </button>
 
         {role === "teacher" && (
