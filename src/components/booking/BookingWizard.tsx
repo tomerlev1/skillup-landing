@@ -1,19 +1,19 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, ChevronRight, Clock } from "lucide-react";
+import { ChevronRight, TriangleAlert, X } from "lucide-react";
 import Avatar from "@/components/ui/Avatar";
-import Chip from "@/components/ui/Chip";
+import BookingSuccess, { type BookingOutcome } from "@/components/booking/BookingSuccess";
 import { createClient } from "@/lib/supabase/client";
 import {
-  formatDateShort,
-  formatPrice,
-  formatTime,
-  formatWeekday,
-  lessonModeLabel,
-  lessonModePrice,
-} from "@/lib/format";
+  availabilityTime,
+  jerusalemDateShort,
+  jerusalemDayKey,
+  jerusalemWeekday,
+} from "@/lib/availability-label";
+import { resolvePreselectedSlot, slotFitsMode, submitLabel } from "@/lib/booking";
+import { formatPrice, lessonModeLabel, lessonModePrice } from "@/lib/format";
 import type { AvailabilitySlot, LessonMode } from "@/lib/types";
 
 interface WizardTeacher {
@@ -31,6 +31,8 @@ interface BookingWizardProps {
   subjects: { id: string; name_he: string }[];
   slots: AvailabilitySlot[];
   studentId: string;
+  /** `?slot=` from the profile's availability pills. */
+  preselectedSlotId?: string;
 }
 
 // create_booking's booking_mode enum keys differ from teachers.lesson_modes.
@@ -43,27 +45,65 @@ const MODE_TO_BOOKING: Record<LessonMode, string> = {
 const LEVEL_CATEGORIES = ["יסודי", "חטיבת ביניים", "תיכון", "אקדמיה", "מבוגרים"];
 const PROFICIENCIES = ["מתחילים", "בסיס קיים", "מתקדמים"];
 const MAX_SLOTS = 3;
+const MAX_DAYS = 14;
 
-const STEPS = ["פרטי השיעור", "מועדים", "אישור"] as const;
+const STEPS = ["מועד", "פרטים", "סיכום"] as const;
 
-interface SubmitOutcome {
-  created: number;
-  failed: number;
-  anyConfirmed: boolean;
+/** "יום רביעי 17:00": a slot as the user sees it, Jerusalem time. */
+function slotWhen(slot: AvailabilitySlot): string {
+  return `${jerusalemWeekday(slot.start_at)} ${availabilityTime(slot.start_at)}`;
 }
 
-// Three-step booking flow (matches the app): details (subject + mode + level)
-// → pick up to 3 time slots → confirm. Each selected slot becomes its own
-// booking via the hardened create_booking RPC (owner-guarded, idempotent).
+function slotDuration(slot: AvailabilitySlot): number {
+  return Math.round(
+    (new Date(slot.end_at).getTime() - new Date(slot.start_at).getTime()) / 60_000,
+  );
+}
+
+// Toggle pill for subject / mode / level choices. Selected = ink, never
+// indigo: the one indigo action on the screen is the footer button.
+function Option({
+  selected,
+  onClick,
+  children,
+}: {
+  selected: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={selected}
+      className={`inline-flex min-h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-[var(--r-pill)] border px-4 text-sm font-medium transition-colors duration-200 ease-[var(--ease)] ${
+        selected
+          ? "border-ink bg-ink text-canvas"
+          : "border-line bg-surface text-ink hover:border-ink"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+// Time-first booking flow (spec §8.6): pick up to 3 times → lesson details →
+// summary. Each selected slot becomes its own booking via the hardened
+// create_booking RPC (owner-guarded, idempotent).
 export default function BookingWizard({
   teacher,
   subjects,
   slots,
   studentId,
+  preselectedSlotId,
 }: BookingWizardProps) {
   const supabase = useMemo(() => createClient(), []);
-  const [step, setStep] = useState(0);
+  const name = teacher.display_name;
 
+  // Resolved once on mount: the notice should not flip while the user works.
+  const [preselect] = useState(() => resolvePreselectedSlot(slots, preselectedSlotId));
+
+  const [step, setStep] = useState(0);
   const [subjectName, setSubjectName] = useState<string | null>(
     subjects.length === 1 ? subjects[0].name_he : null,
   );
@@ -73,104 +113,85 @@ export default function BookingWizard({
   const [levelCategory, setLevelCategory] = useState<string | null>(null);
   const [proficiency, setProficiency] = useState<string | null>(null);
   const [address, setAddress] = useState("");
-  const [selectedSlots, setSelectedSlots] = useState<AvailabilitySlot[]>([]);
+  const [selectedSlots, setSelectedSlots] = useState<AvailabilitySlot[]>(
+    preselect.slot ? [preselect.slot] : [],
+  );
+  const [selectedDay, setSelectedDay] = useState<string | null>(
+    preselect.slot ? jerusalemDayKey(preselect.slot.start_at) : null,
+  );
   const [notes, setNotes] = useState("");
-  const [useCredits, setUseCredits] = useState(false);
-  const [creditsBalance, setCreditsBalance] = useState(0);
-  const [termsAccepted, setTermsAccepted] = useState(false);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<SubmitOutcome | null>(null);
-
-  useEffect(() => {
-    supabase
-      .from("student_credits")
-      .select("balance")
-      .eq("student_id", studentId)
-      .maybeSingle()
-      .then(({ data }) => setCreditsBalance(Number(data?.balance ?? 0)));
-  }, [supabase, studentId]);
-
-  const eligibleSlots = useMemo(
-    () =>
-      slots.filter(
-        (s) =>
-          !mode ||
-          !s.allowed_modes ||
-          s.allowed_modes.length === 0 ||
-          s.allowed_modes.includes(mode),
-      ),
-    [slots, mode],
-  );
-
-  const slotsByDay = useMemo(() => {
-    const map = new Map<string, AvailabilitySlot[]>();
-    for (const s of eligibleSlots) {
-      const day = s.start_at.slice(0, 10);
-      map.set(day, [...(map.get(day) ?? []), s]);
-    }
-    return [...map.entries()].slice(0, 14);
-  }, [eligibleSlots]);
-
-  const [selectedDay, setSelectedDay] = useState<string | null>(null);
-  const dayKey = selectedDay ?? slotsByDay[0]?.[0] ?? null;
+  const [result, setResult] = useState<BookingOutcome | null>(null);
 
   const selectedIds = useMemo(
     () => new Set(selectedSlots.map((s) => s.id)),
     [selectedSlots],
   );
 
+  // allowed_modes filter: once a mode is known, times that don't support it
+  // are hidden (already-picked ones stay visible so they can be removed).
+  const slotsByDay = useMemo(() => {
+    const map = new Map<string, AvailabilitySlot[]>();
+    for (const s of slots) {
+      if (!slotFitsMode(s, mode) && !selectedIds.has(s.id)) continue;
+      const day = jerusalemDayKey(s.start_at);
+      const list = map.get(day);
+      if (list) list.push(s);
+      else map.set(day, [s]);
+    }
+    return [...map.entries()].slice(0, MAX_DAYS);
+  }, [slots, mode, selectedIds]);
+
+  const dayKey =
+    selectedDay && slotsByDay.some(([d]) => d === selectedDay)
+      ? selectedDay
+      : (slotsByDay[0]?.[0] ?? null);
+
+  const misfits = selectedSlots.filter((s) => !slotFitsMode(s, mode));
+
   function toggleSlot(slot: AvailabilitySlot) {
     setSelectedSlots((prev) => {
-      if (prev.some((s) => s.id === slot.id))
-        return prev.filter((s) => s.id !== slot.id);
-      if (prev.length >= MAX_SLOTS) return prev; // cap at 3
+      if (prev.some((s) => s.id === slot.id)) return prev.filter((s) => s.id !== slot.id);
+      if (prev.length >= MAX_SLOTS) return prev;
       return [...prev, slot].sort((a, b) => a.start_at.localeCompare(b.start_at));
     });
-  }
-
-  function slotDuration(slot: AvailabilitySlot): number {
-    return Math.round(
-      (new Date(slot.end_at).getTime() - new Date(slot.start_at).getTime()) / 60_000,
-    );
   }
 
   // Full per-lesson price = (base + mode surcharge) prorated by duration.
   function slotPrice(slot: AvailabilitySlot): number {
     const perHour =
-      (mode ? lessonModePrice(mode, teacher.hourly_rate, teacher.lesson_mode_prices) : teacher.hourly_rate) ??
+      (mode
+        ? lessonModePrice(mode, teacher.hourly_rate, teacher.lesson_mode_prices)
+        : teacher.hourly_rate) ??
       teacher.hourly_rate ??
       0;
     return Math.round(perHour * (slotDuration(slot) / 60));
   }
 
   const totalPrice = selectedSlots.reduce((sum, s) => sum + slotPrice(s), 0);
-  const creditsToApply = useCredits
-    ? Math.min(Math.floor(creditsBalance), totalPrice)
-    : 0;
-  const amountAfterCredits = Math.max(totalPrice - creditsToApply, 0);
 
   const detailsValid =
     Boolean(subjectName) &&
     Boolean(mode) &&
-    (mode !== "student_home" || address.trim().length > 4);
+    (mode !== "student_home" || address.trim().length > 4) &&
+    misfits.length === 0;
   const canContinue =
-    step === 0 ? detailsValid : step === 1 ? selectedSlots.length > 0 : termsAccepted;
+    step === 0
+      ? selectedSlots.length > 0
+      : detailsValid && selectedSlots.length > 0;
 
   async function submit() {
     if (!subjectName || !mode || selectedSlots.length === 0) return;
     setPending(true);
     setError(null);
 
-    // Credits are applied to the FIRST lesson only, to avoid double-spending
-    // across the batch (create_booking checks balance per call).
-    let created = 0;
+    const createdSlots: AvailabilitySlot[] = [];
     let failed = 0;
     let anyConfirmed = false;
     let firstError: string | null = null;
 
-    for (let i = 0; i < selectedSlots.length; i++) {
-      const slot = selectedSlots[i];
+    for (const slot of selectedSlots) {
       const { data, error: rpcError } = await supabase.rpc("create_booking", {
         p_idempotency_key: `web_${studentId}_${teacher.id}_${slot.start_at}`,
         p_teacher_id: teacher.id,
@@ -184,9 +205,10 @@ export default function BookingWizard({
         p_location: mode === "student_home" ? address.trim() : null,
         p_student_level_category: levelCategory,
         p_student_level_proficiency: proficiency,
-        p_credits_to_apply: i === 0 ? creditsToApply : 0,
+        // SkillUp never charges students: no credits on the web.
+        p_credits_to_apply: 0,
         p_source: "web",
-        p_selected_payment_method: i === 0 && creditsToApply > 0 ? "credits" : "card",
+        p_selected_payment_method: "card",
       });
 
       if (rpcError) {
@@ -194,66 +216,40 @@ export default function BookingWizard({
         if (!firstError) {
           firstError = /already booked|23505/i.test(rpcError.message)
             ? "אחד המועדים נתפס הרגע."
-            : /Insufficient credits/i.test(rpcError.message)
-              ? "יתרת הקרדיטים אינה מספיקה."
-              : /pending bookings/i.test(rpcError.message)
-                ? "יש לכם כבר בקשות ממתינות. המתינו לאישור המורה."
-                : "חלק מהשיעורים לא נקבעו. נסו שוב.";
+            : /pending bookings/i.test(rpcError.message)
+              ? "יש לכם כבר בקשות ממתינות. המתינו לאישור המורה."
+              : "חלק מהבקשות לא נשלחו. נסו שוב.";
         }
       } else {
-        created++;
+        createdSlots.push(slot);
         const status = (data as { status?: string } | null)?.status;
         if (status === "confirmed") anyConfirmed = true;
       }
     }
 
     setPending(false);
-    if (created === 0) {
-      setError(firstError ?? "לא הצלחנו לקבוע את השיעור. נסו שוב.");
+    if (createdSlots.length === 0) {
+      setError(firstError ?? "לא הצלחנו לשלוח את הבקשה. נסו שוב.");
       return;
     }
-    setResult({ created, failed, anyConfirmed });
+    setResult({ createdSlots, failed, anyConfirmed });
   }
 
-  /* ===== Success screen ===== */
   if (result) {
     return (
-      <div className="rounded-3xl border border-[var(--mk-hairline)] bg-white p-8 text-center">
-        <CheckCircle2 size={44} className="mx-auto text-emerald-500" />
-        <h1 className="mt-4 font-display text-2xl font-bold text-[var(--mk-ink)]">
-          {result.created > 1
-            ? `${result.created} בקשות שיעור נשלחו`
-            : result.anyConfirmed
-              ? "השיעור נקבע"
-              : "הבקשה נשלחה למורה"}
-        </h1>
-        <p className="mx-auto mt-3 max-w-[440px] text-sm leading-relaxed text-[var(--mk-ink-2)]">
-          {result.anyConfirmed
-            ? `${teacher.display_name} אישר את השיעור. הפרטים ממתינים לכם באזור ״השיעורים שלי״.`
-            : `${teacher.display_name} קיבל את הבקשה ויאשר אותה בהקדם. נעדכן אתכם ברגע שתהיה תשובה, ואפשר לעקוב באזור ״השיעורים שלי״.`}
-          {result.failed > 0 &&
-            ` (${result.failed} מהמועדים לא נקבעו — ייתכן שנתפסו בינתיים.)`}
-        </p>
-        <div className="mt-7 flex flex-wrap justify-center gap-3">
-          <Link
-            href="/bookings"
-            className="inline-flex h-12 items-center rounded-full bg-brand-600 px-6 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
-          >
-            לשיעורים שלי
-          </Link>
-          <Link
-            href={`/messages/new?teacher=${teacher.id}`}
-            className="inline-flex h-12 items-center rounded-full border border-[var(--mk-ink)] px-6 text-sm font-semibold text-[var(--mk-ink)] transition-colors hover:bg-paper-25"
-          >
-            שליחת הודעה למורה
-          </Link>
-        </div>
-      </div>
+      <BookingSuccess
+        teacher={{ id: teacher.id, display_name: name, avatar_url: teacher.avatar_url }}
+        subjectName={subjectName ?? ""}
+        outcome={result}
+      />
     );
   }
 
+  const noSlots = slots.length === 0;
   const inputClass =
-    "h-12 w-full rounded-xl border border-[var(--mk-hairline)] bg-white px-4 text-[15px] outline-none transition-colors focus:border-[var(--mk-ink)]";
+    "min-h-12 w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 text-[15px] text-ink outline-none transition-colors focus:border-ink";
+  const secondaryBtn =
+    "inline-flex min-h-11 cursor-pointer items-center justify-center rounded-[var(--r-pill)] border border-line bg-surface px-5 text-sm font-semibold text-ink transition-colors hover:border-ink";
 
   return (
     <div>
@@ -262,178 +258,93 @@ export default function BookingWizard({
         <Link
           href={`/tutors/${teacher.id}`}
           aria-label="חזרה לפרופיל"
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-[var(--mk-hairline)] text-[var(--mk-ink)] transition-colors hover:border-[var(--mk-ink)]"
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-line text-ink transition-colors hover:border-ink"
         >
-          <ChevronRight size={18} />
+          <ChevronRight size={18} aria-hidden="true" />
         </Link>
-        <Avatar src={teacher.avatar_url} name={teacher.display_name} size={44} />
+        <Avatar src={teacher.avatar_url} name={name} size={44} />
         <div>
-          <h1 className="font-display text-lg font-bold text-[var(--mk-ink)]">
-            קביעת שיעור עם {teacher.display_name}
-          </h1>
-          <p className="text-sm text-[var(--mk-ink-3)]">
-            {STEPS[step]} · שלב {step + 1} מתוך {STEPS.length}
+          <h1 className="text-lg font-bold text-ink">קביעת שיעור עם {name}</h1>
+          <p className="text-sm text-ink-3">
+            {STEPS[step]} · שלב <span className="tnum">{step + 1}</span> מתוך{" "}
+            <span className="tnum">{STEPS.length}</span>
           </p>
         </div>
       </div>
 
       {/* Step indicator */}
-      <div className="mt-5 flex gap-1.5" aria-hidden="true">
-        {STEPS.map((_, i) => (
-          <span
-            key={i}
-            className={`h-1 flex-1 rounded-full ${i <= step ? "bg-brand-600" : "bg-ink-150"}`}
-          />
+      <ol className="mt-5 grid grid-cols-3 gap-2" aria-label="שלבי קביעת השיעור">
+        {STEPS.map((label, i) => (
+          <li key={label} aria-current={i === step ? "step" : undefined}>
+            <span
+              aria-hidden="true"
+              className={`block h-1 rounded-full ${i <= step ? "bg-ink" : "bg-line"}`}
+            />
+            <span className={`mt-1.5 block text-sm ${i === step ? "font-semibold text-ink" : "text-ink-3"}`}>
+              {label}
+            </span>
+          </li>
         ))}
-      </div>
+      </ol>
 
       <div className="mt-8 min-h-[300px]">
-        {/* ===== Step 1: subject + mode + level (merged) ===== */}
+        {/* ===== Step 1: time ===== */}
         {step === 0 && (
-          <div className="space-y-8">
-            {subjects.length > 1 && (
-              <fieldset>
-                <legend className="text-base font-semibold text-[var(--mk-ink)]">
-                  באיזה מקצוע תרצו שיעור?
-                </legend>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {subjects.map((s) => (
-                    <Chip
-                      key={s.id}
-                      selected={subjectName === s.name_he}
-                      onClick={() => setSubjectName(s.name_he)}
-                    >
-                      {s.name_he}
-                    </Chip>
-                  ))}
-                </div>
-              </fieldset>
-            )}
-
-            <fieldset>
-              <legend className="text-base font-semibold text-[var(--mk-ink)]">
-                איך תרצו ללמוד?
-              </legend>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {teacher.lesson_modes.map((m) => {
-                  const price = lessonModePrice(
-                    m,
-                    teacher.hourly_rate,
-                    teacher.lesson_mode_prices,
-                  );
-                  return (
-                    <Chip key={m} selected={mode === m} onClick={() => setMode(m)}>
-                      {lessonModeLabel(m)}
-                      {price != null && (
-                        <span className="ltr-isolate tnum text-[var(--mk-ink-3)]">
-                          · {formatPrice(price)}
-                        </span>
-                      )}
-                    </Chip>
-                  );
-                })}
-              </div>
-            </fieldset>
-
-            {mode === "student_home" && (
-              <div>
-                <label htmlFor="address" className="mb-1.5 block text-sm font-medium text-[var(--mk-ink)]">
-                  כתובת לשיעור
-                </label>
-                <input
-                  id="address"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  placeholder="רחוב, מספר בית ועיר"
-                  className={inputClass}
-                />
-              </div>
-            )}
-
-            <fieldset>
-              <legend className="text-base font-semibold text-[var(--mk-ink)]">
-                למי השיעור?{" "}
-                <span className="text-sm font-normal text-[var(--mk-ink-3)]">(לא חובה)</span>
-              </legend>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {LEVEL_CATEGORIES.map((c) => (
-                  <Chip
-                    key={c}
-                    size="sm"
-                    selected={levelCategory === c}
-                    onClick={() => setLevelCategory(levelCategory === c ? null : c)}
-                  >
-                    {c}
-                  </Chip>
-                ))}
-              </div>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {PROFICIENCIES.map((p) => (
-                  <Chip
-                    key={p}
-                    size="sm"
-                    selected={proficiency === p}
-                    onClick={() => setProficiency(proficiency === p ? null : p)}
-                  >
-                    {p}
-                  </Chip>
-                ))}
-              </div>
-            </fieldset>
-          </div>
-        )}
-
-        {/* ===== Step 2: slots (up to 3) ===== */}
-        {step === 1 && (
           <div>
-            <div className="flex items-baseline justify-between gap-3">
-              <h2 className="text-base font-semibold text-[var(--mk-ink)]">
-                מתי נוח לכם?
-              </h2>
-              <span className="text-[13px] text-[var(--mk-ink-3)]">
-                אפשר לבחור עד {MAX_SLOTS} שיעורים
-              </span>
-            </div>
+            {preselect.stale && (
+              <p
+                role="status"
+                className="mb-5 flex items-start gap-2 rounded-[var(--r-sm)] border border-warn/40 bg-warn/10 px-4 py-3 text-sm text-ink"
+              >
+                <TriangleAlert size={18} className="mt-0.5 shrink-0 text-warn" aria-hidden="true" />
+                המועד שבחרתם כבר לא פנוי, בחרו מועד אחר
+              </p>
+            )}
 
-            {slotsByDay.length === 0 ? (
-              <div className="mt-5 rounded-2xl bg-[var(--mk-band)] p-6 text-center text-sm leading-relaxed text-[var(--mk-ink-2)]">
-                למורה אין כרגע מועדים פתוחים ביומן.
-                <br />
-                שלחו הודעה ותתאמו מועד ישירות.
+            <h2 className="text-base font-semibold text-ink">מתי נוח לכם?</h2>
+
+            {noSlots ? (
+              <div className="mt-5 rounded-[var(--r-md)] border border-line bg-surface p-6 text-center text-sm leading-relaxed text-ink-2">
+                היומן של {name} מלא כרגע. שלחו הודעה ותתאמו מועד ישירות.
                 <div className="mt-4">
                   <Link
                     href={`/messages/new?teacher=${teacher.id}`}
-                    className="inline-flex h-11 items-center rounded-full bg-brand-600 px-5 text-sm font-semibold text-white"
+                    className="inline-flex min-h-11 items-center rounded-[var(--r-pill)] bg-action px-5 text-sm font-semibold text-on-action transition-colors hover:bg-action-hover"
                   >
-                    שליחת הודעה למורה
+                    שליחת הודעה ל{name}
                   </Link>
                 </div>
               </div>
             ) : (
               <>
-                <div className="no-scrollbar -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+                <p className="mt-1 text-sm text-ink-3">
+                  אפשר לבחור עד 3 מועדים, כל אחד נשלח כבקשה נפרדת
+                </p>
+
+                <div className="no-scrollbar -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pt-2 pb-1 sm:mx-0 sm:px-0">
                   {slotsByDay.map(([day, daySlots]) => {
-                    const selected = day === dayKey;
+                    const active = day === dayKey;
                     const picksHere = daySlots.filter((s) => selectedIds.has(s.id)).length;
                     return (
                       <button
                         key={day}
                         type="button"
                         onClick={() => setSelectedDay(day)}
-                        className={`relative shrink-0 cursor-pointer rounded-2xl border px-4 py-2.5 text-center transition-colors ${
-                          selected
-                            ? "border-[var(--mk-ink)] bg-[var(--mk-ink)] text-white"
-                            : "border-[var(--mk-hairline)] bg-white text-[var(--mk-ink)] hover:border-[var(--mk-ink)]"
+                        aria-pressed={active}
+                        className={`relative min-h-11 shrink-0 cursor-pointer rounded-[var(--r-sm)] border px-4 py-2 text-center transition-colors ${
+                          active
+                            ? "border-ink bg-ink text-canvas"
+                            : "border-line bg-surface text-ink hover:border-ink"
                         }`}
                       >
-                        <span className="block text-[13px] font-semibold">
-                          {formatWeekday(daySlots[0].start_at)}
+                        <span className="block text-sm font-semibold">
+                          {jerusalemWeekday(daySlots[0].start_at)}
                         </span>
-                        <span className={`block text-xs ${selected ? "text-white/80" : "text-[var(--mk-ink-3)]"}`}>
-                          {formatDateShort(daySlots[0].start_at)}
+                        <span className={`block text-sm ${active ? "opacity-80" : "text-ink-3"}`}>
+                          {jerusalemDateShort(daySlots[0].start_at)}
                         </span>
                         {picksHere > 0 && (
-                          <span className="absolute -top-1.5 -end-1.5 grid h-5 w-5 place-items-center rounded-full bg-brand-600 text-[11px] font-bold text-white">
+                          <span className="tnum absolute -top-1.5 -end-1.5 grid h-5 w-5 place-items-center rounded-full border border-action bg-action-soft text-xs font-bold text-action">
                             {picksHere}
                           </span>
                         )}
@@ -452,15 +363,18 @@ export default function BookingWizard({
                         type="button"
                         onClick={() => toggleSlot(s)}
                         disabled={atCap}
-                        className={`tnum cursor-pointer rounded-xl border px-3 py-2.5 text-sm font-medium transition-colors ${
+                        aria-pressed={selected}
+                        className={`tnum min-h-11 cursor-pointer rounded-[var(--r-sm)] border px-3 py-2 text-sm font-medium transition-colors ${
                           selected
-                            ? "border-brand-600 bg-brand-600 text-white"
+                            ? "border-action bg-action-soft text-action"
                             : atCap
-                              ? "cursor-not-allowed border-[var(--mk-hairline)] bg-paper-25 text-[var(--mk-ink-3)] opacity-50"
-                              : "border-[var(--mk-hairline)] bg-white text-[var(--mk-ink)] hover:border-[var(--mk-ink)]"
+                              ? "cursor-not-allowed border-line bg-canvas text-ink-3 opacity-60"
+                              : "border-line bg-surface text-ink hover:border-ink"
                         }`}
                       >
-                        {formatTime(s.start_at)}–{formatTime(s.end_at)}
+                        <span className="ltr-isolate">
+                          {availabilityTime(s.start_at)}–{availabilityTime(s.end_at)}
+                        </span>
                       </button>
                     );
                   })}
@@ -473,11 +387,12 @@ export default function BookingWizard({
                         key={s.id}
                         type="button"
                         onClick={() => toggleSlot(s)}
-                        className="inline-flex items-center gap-1.5 rounded-full bg-brand-50 py-1.5 ps-3 pe-2 text-[13px] font-medium text-brand-800"
+                        aria-label={`הסרת המועד ${slotWhen(s)}`}
+                        className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[var(--r-pill)] border border-line bg-surface ps-4 pe-3 text-sm font-medium text-ink hover:border-ink"
                       >
-                        {formatWeekday(s.start_at)} {formatDateShort(s.start_at)} ·{" "}
-                        {formatTime(s.start_at)}
-                        <span aria-hidden="true" className="text-brand-600">✕</span>
+                        {jerusalemWeekday(s.start_at)} {jerusalemDateShort(s.start_at)} ·{" "}
+                        <span className="tnum ltr-isolate">{availabilityTime(s.start_at)}</span>
+                        <X size={16} aria-hidden="true" className="text-ink-3" />
                       </button>
                     ))}
                   </div>
@@ -487,95 +402,161 @@ export default function BookingWizard({
           </div>
         )}
 
+        {/* ===== Step 2: details ===== */}
+        {step === 1 && (
+          <div className="space-y-8">
+            {subjects.length > 1 && (
+              <fieldset>
+                <legend className="text-base font-semibold text-ink">באיזה מקצוע תרצו שיעור?</legend>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {subjects.map((s) => (
+                    <Option
+                      key={s.id}
+                      selected={subjectName === s.name_he}
+                      onClick={() => setSubjectName(s.name_he)}
+                    >
+                      {s.name_he}
+                    </Option>
+                  ))}
+                </div>
+              </fieldset>
+            )}
+
+            <fieldset>
+              <legend className="text-base font-semibold text-ink">איך תרצו ללמוד?</legend>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {teacher.lesson_modes.map((m) => {
+                  const price = lessonModePrice(m, teacher.hourly_rate, teacher.lesson_mode_prices);
+                  return (
+                    <Option key={m} selected={mode === m} onClick={() => setMode(m)}>
+                      {lessonModeLabel(m)}
+                      {price != null && (
+                        <span className="ltr-isolate tnum opacity-80">· {formatPrice(price)}</span>
+                      )}
+                    </Option>
+                  );
+                })}
+              </div>
+            </fieldset>
+
+            {misfits.length > 0 && mode && (
+              <div
+                role="alert"
+                className="rounded-[var(--r-sm)] border border-warn/40 bg-warn/10 px-4 py-3 text-sm text-ink"
+              >
+                <ul className="space-y-1">
+                  {misfits.map((s) => (
+                    <li key={s.id} className="flex items-start gap-2">
+                      <TriangleAlert size={18} className="mt-0.5 shrink-0 text-warn" aria-hidden="true" />
+                      <span>
+                        המועד <span className="tnum">{slotWhen(s)}</span> לא זמין ל{lessonModeLabel(mode)}.
+                        חזרו לבחור מועד אחר.
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <button type="button" onClick={() => setStep(0)} className={`${secondaryBtn} mt-3`}>
+                  חזרה לבחירת מועד
+                </button>
+              </div>
+            )}
+
+            {mode === "student_home" && (
+              <div>
+                <label htmlFor="address" className="mb-1.5 block text-sm font-medium text-ink">
+                  כתובת לשיעור
+                </label>
+                <input
+                  id="address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  placeholder="רחוב, מספר בית ועיר"
+                  autoComplete="street-address"
+                  className={inputClass}
+                />
+              </div>
+            )}
+
+            <fieldset>
+              <legend className="text-base font-semibold text-ink">
+                למי השיעור? <span className="text-sm font-normal text-ink-3">(לא חובה)</span>
+              </legend>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {LEVEL_CATEGORIES.map((c) => (
+                  <Option
+                    key={c}
+                    selected={levelCategory === c}
+                    onClick={() => setLevelCategory(levelCategory === c ? null : c)}
+                  >
+                    {c}
+                  </Option>
+                ))}
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {PROFICIENCIES.map((p) => (
+                  <Option
+                    key={p}
+                    selected={proficiency === p}
+                    onClick={() => setProficiency(proficiency === p ? null : p)}
+                  >
+                    {p}
+                  </Option>
+                ))}
+              </div>
+            </fieldset>
+          </div>
+        )}
+
         {/* ===== Step 3: summary ===== */}
         {step === 2 && selectedSlots.length > 0 && (
           <div className="space-y-6">
-            <div className="rounded-2xl border border-[var(--mk-hairline)] bg-white p-5">
-              <h2 className="text-base font-semibold text-[var(--mk-ink)]">סיכום</h2>
+            <div className="rounded-[var(--r-md)] border border-line bg-surface p-5">
+              <h2 className="text-base font-semibold text-ink">סיכום</h2>
               <dl className="mt-4 space-y-2.5 text-sm">
                 <div className="flex justify-between gap-4">
-                  <dt className="text-[var(--mk-ink-3)]">מקצוע</dt>
-                  <dd className="text-end font-medium text-[var(--mk-ink)]">{subjectName}</dd>
+                  <dt className="text-ink-3">מקצוע</dt>
+                  <dd className="text-end font-medium text-ink">{subjectName}</dd>
                 </div>
                 <div className="flex justify-between gap-4">
-                  <dt className="text-[var(--mk-ink-3)]">אופן הלימוד</dt>
-                  <dd className="text-end font-medium text-[var(--mk-ink)]">
-                    {mode ? lessonModeLabel(mode) : ""}
-                  </dd>
+                  <dt className="text-ink-3">אופן הלימוד</dt>
+                  <dd className="text-end font-medium text-ink">{mode ? lessonModeLabel(mode) : ""}</dd>
                 </div>
                 {mode === "student_home" && (
                   <div className="flex justify-between gap-4">
-                    <dt className="text-[var(--mk-ink-3)]">כתובת</dt>
-                    <dd className="text-end font-medium text-[var(--mk-ink)]">{address}</dd>
+                    <dt className="text-ink-3">כתובת</dt>
+                    <dd className="text-end font-medium text-ink">{address}</dd>
                   </div>
                 )}
 
-                <div className="mk-hairline-t pt-2.5">
-                  <dt className="mb-2 text-[var(--mk-ink-3)]">
-                    {selectedSlots.length > 1
-                      ? `${selectedSlots.length} שיעורים`
-                      : "מועד"}
+                <div className="border-t border-line pt-2.5">
+                  <dt className="mb-2 text-ink-3">
+                    {selectedSlots.length > 1 ? `${selectedSlots.length} מועדים` : "מועד"}
                   </dt>
                   {selectedSlots.map((s) => (
-                    <div key={s.id} className="flex justify-between gap-4 py-0.5">
-                      <span className="text-[var(--mk-ink)]">
-                        {formatWeekday(s.start_at)}, {formatDateShort(s.start_at)} ·{" "}
-                        <span className="tnum">
-                          {formatTime(s.start_at)}–{formatTime(s.end_at)}
+                    <dd key={s.id} className="flex justify-between gap-4 py-0.5">
+                      <span className="text-ink">
+                        {jerusalemWeekday(s.start_at)}, {jerusalemDateShort(s.start_at)} ·{" "}
+                        <span className="tnum ltr-isolate">
+                          {availabilityTime(s.start_at)}–{availabilityTime(s.end_at)}
                         </span>
                       </span>
-                      <span className="ltr-isolate tnum font-medium text-[var(--mk-ink)]">
+                      <span className="ltr-isolate tnum font-medium text-ink">
                         {formatPrice(slotPrice(s))}
                       </span>
-                    </div>
+                    </dd>
                   ))}
                 </div>
 
-                <div className="mk-hairline-t flex justify-between gap-4 pt-2.5">
-                  <dt className="text-[var(--mk-ink-3)]">סה״כ</dt>
-                  <dd className="ltr-isolate tnum font-semibold text-[var(--mk-ink)]">
-                    {formatPrice(totalPrice)}
-                  </dd>
+                <div className="flex justify-between gap-4 border-t border-line pt-2.5">
+                  <dt className="text-ink-3">סה״כ</dt>
+                  <dd className="ltr-isolate tnum font-semibold text-ink">{formatPrice(totalPrice)}</dd>
                 </div>
-                {creditsToApply > 0 && (
-                  <>
-                    <div className="flex justify-between gap-4">
-                      <dt className="text-[var(--mk-ink-3)]">קרדיטים</dt>
-                      <dd className="ltr-isolate tnum font-medium text-emerald-600">
-                        -{formatPrice(creditsToApply)}
-                      </dd>
-                    </div>
-                    <div className="flex justify-between gap-4">
-                      <dt className="text-[var(--mk-ink-3)]">לתשלום</dt>
-                      <dd className="ltr-isolate tnum font-semibold text-[var(--mk-ink)]">
-                        {formatPrice(amountAfterCredits)}
-                      </dd>
-                    </div>
-                  </>
-                )}
               </dl>
             </div>
 
-            {creditsBalance > 0 && (
-              <label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-[var(--mk-hairline)] bg-white p-4 text-sm">
-                <input
-                  type="checkbox"
-                  checked={useCredits}
-                  onChange={(e) => setUseCredits(e.target.checked)}
-                  className="h-4 w-4 accent-brand-600"
-                />
-                <span className="text-[var(--mk-ink)]">
-                  שימוש ביתרת הקרדיטים שלי{" "}
-                  <span className="ltr-isolate tnum font-medium">
-                    ({formatPrice(creditsBalance)})
-                  </span>
-                </span>
-              </label>
-            )}
-
             <div>
-              <label htmlFor="notes" className="mb-1.5 block text-sm font-medium text-[var(--mk-ink)]">
-                הערה למורה <span className="font-normal text-[var(--mk-ink-3)]">(לא חובה)</span>
+              <label htmlFor="notes" className="mb-1.5 block text-sm font-medium text-ink">
+                הערה ל{name} <span className="font-normal text-ink-3">(לא חובה)</span>
               </label>
               <textarea
                 id="notes"
@@ -583,76 +564,68 @@ export default function BookingWizard({
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 maxLength={500}
-                placeholder="ספרו למורה על מה תרצו לעבוד"
-                className="w-full rounded-xl border border-[var(--mk-hairline)] bg-white px-4 py-3 text-[15px] outline-none transition-colors focus:border-[var(--mk-ink)]"
+                placeholder="ספרו על מה תרצו לעבוד"
+                className="w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 py-3 text-[15px] text-ink outline-none transition-colors focus:border-ink"
               />
             </div>
 
-            <label className="flex cursor-pointer items-start gap-3 text-sm text-[var(--mk-ink-2)]">
-              <input
-                type="checkbox"
-                checked={termsAccepted}
-                onChange={(e) => setTermsAccepted(e.target.checked)}
-                className="mt-0.5 h-4 w-4 accent-brand-600"
-              />
-              <span>
-                קראתי ואני מסכימ/ה{" "}
-                <Link href="/terms" target="_blank" className="underline hover:text-[var(--mk-ink)]">
-                  לתנאי השימוש
-                </Link>{" "}
-                ולמדיניות הביטולים של SkillUp.
-              </span>
-            </label>
-
-            <p className="flex items-start gap-2 text-[13px] leading-relaxed text-[var(--mk-ink-3)]">
-              <Clock size={14} className="mt-0.5 shrink-0" />
-              הבקשה נשלחת למורה לאישור. שיעור ראשון אצל מורה חדש מאושר בדרך
-              כלל תוך 24 שעות.
-            </p>
+            <div className="space-y-2 text-sm leading-relaxed">
+              <p className="text-ink">
+                התשלום והביטול נקבעים ישירות מול {name}. SkillUp לא גובה מכם כלום.
+              </p>
+              <p className="text-ink-2">
+                בשליחת הבקשה אתם מאשרים את{" "}
+                <Link href="/terms" className="font-medium text-ink underline hover:text-action">
+                  תנאי השימוש
+                </Link>
+                .
+              </p>
+            </div>
           </div>
         )}
       </div>
 
       {error && (
-        <p role="alert" className="mt-4 rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-600">
+        <p
+          role="alert"
+          className="mt-4 rounded-[var(--r-sm)] border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-ink"
+        >
           {error}
         </p>
       )}
 
-      {/* Footer nav */}
-      <div className="mk-hairline-t mt-8 flex items-center justify-between pt-5">
-        <button
-          type="button"
-          onClick={() => setStep((s) => Math.max(0, s - 1))}
-          disabled={step === 0}
-          className="cursor-pointer text-sm font-medium text-[var(--mk-ink-2)] underline hover:text-[var(--mk-ink)] disabled:invisible"
-        >
-          חזרה
-        </button>
-        {step < STEPS.length - 1 ? (
+      {/* Footer nav (hidden when there is nothing to book) */}
+      {!(step === 0 && noSlots) && (
+        <div className="mt-8 flex items-center justify-between gap-4 border-t border-line pt-5">
           <button
             type="button"
-            onClick={() => canContinue && setStep((s) => s + 1)}
-            disabled={!canContinue}
-            className="h-12 cursor-pointer rounded-full bg-brand-600 px-8 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-40"
+            onClick={() => setStep((s) => Math.max(0, s - 1))}
+            disabled={step === 0}
+            className="inline-flex min-h-11 cursor-pointer items-center px-2 text-sm font-medium text-ink-2 underline hover:text-ink disabled:invisible"
           >
-            המשך
+            חזרה
           </button>
-        ) : (
-          <button
-            type="button"
-            onClick={submit}
-            disabled={!canContinue || pending}
-            className="h-12 cursor-pointer rounded-full bg-brand-600 px-8 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-40"
-          >
-            {pending
-              ? "שולחים בקשה..."
-              : selectedSlots.length > 1
-                ? `אישור ${selectedSlots.length} שיעורים`
-                : "אישור וקביעת שיעור"}
-          </button>
-        )}
-      </div>
+          {step < STEPS.length - 1 ? (
+            <button
+              type="button"
+              onClick={() => canContinue && setStep((s) => s + 1)}
+              disabled={!canContinue}
+              className="min-h-12 cursor-pointer rounded-[var(--r-pill)] bg-action px-8 text-sm font-semibold text-on-action transition-colors hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              המשך
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={submit}
+              disabled={!canContinue || pending}
+              className="min-h-12 cursor-pointer rounded-[var(--r-pill)] bg-action px-6 text-sm font-semibold text-on-action transition-colors hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {pending ? "שולחים..." : submitLabel(name, selectedSlots.length)}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

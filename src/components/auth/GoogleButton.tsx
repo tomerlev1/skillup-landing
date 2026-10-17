@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { safeNextPath } from "@/lib/safe-next";
 
 // OAuth round-trip: Supabase redirects back to /auth/callback which
 // exchanges the code, ensures the role row and resumes `next`.
@@ -14,7 +15,7 @@ export default function GoogleButton({ next, label }: { next: string; label: str
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(safeNextPath(next))}`,
       },
     });
   }

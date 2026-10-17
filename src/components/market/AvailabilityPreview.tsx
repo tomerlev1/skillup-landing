@@ -1,7 +1,12 @@
 import Link from "next/link";
 import GatedLink from "@/components/market/GatedLink";
 import { bookHref } from "@/lib/booking";
-import { formatDateShort, formatTime, formatWeekday } from "@/lib/format";
+import {
+  availabilityTime,
+  jerusalemDateShort,
+  jerusalemDayKey,
+  jerusalemWeekday,
+} from "@/lib/availability-label";
 import type { AvailabilitySlot } from "@/lib/types";
 
 interface AvailabilityPreviewProps {
@@ -18,7 +23,8 @@ const MAX_PER_DAY = 5;
 export default function AvailabilityPreview({ teacherId, slots }: AvailabilityPreviewProps) {
   const byDay = new Map<string, AvailabilitySlot[]>();
   for (const slot of slots) {
-    const day = slot.start_at.slice(0, 10);
+    // Group by the Jerusalem calendar day (a 00:30 slot is UTC "yesterday").
+    const day = jerusalemDayKey(slot.start_at);
     const list = byDay.get(day);
     if (list) list.push(slot);
     else if (byDay.size < MAX_DAYS) byDay.set(day, [slot]);
@@ -42,7 +48,7 @@ export default function AvailabilityPreview({ teacherId, slots }: AvailabilityPr
         {[...byDay.entries()].map(([day, daySlots]) => (
           <div key={day} className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
             <span className="shrink-0 text-sm sm:w-32 font-medium text-ink">
-              {formatWeekday(daySlots[0].start_at)}, {formatDateShort(daySlots[0].start_at)}
+              {jerusalemWeekday(daySlots[0].start_at)}, {jerusalemDateShort(daySlots[0].start_at)}
             </span>
             <div className="flex flex-wrap gap-2">
               {daySlots.slice(0, MAX_PER_DAY).map((slot) => (
@@ -52,7 +58,7 @@ export default function AvailabilityPreview({ teacherId, slots }: AvailabilityPr
                   href={bookHref(teacherId, slot.id)}
                   className="tnum inline-flex h-11 min-w-[72px] cursor-pointer items-center justify-center rounded-[var(--r-pill)] border border-line bg-surface px-4 text-sm font-medium text-ink transition-colors hover:border-action hover:bg-action-soft"
                 >
-                  {formatTime(slot.start_at)}
+                  {availabilityTime(slot.start_at)}
                 </GatedLink>
               ))}
             </div>

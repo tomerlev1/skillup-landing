@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { availabilityLabel, availabilityTime } from "../availability-label";
+import {
+  availabilityLabel,
+  availabilityTime,
+  jerusalemDateShort,
+  jerusalemDayKey,
+  jerusalemWeekday,
+} from "../availability-label";
 
 const now = new Date("2026-10-20T09:00:00Z");
 
@@ -30,5 +36,24 @@ describe("availabilityLabel", () => {
 describe("availabilityTime", () => {
   it("formats Jerusalem 24h time", () => {
     expect(availabilityTime("2026-10-21T14:00:00Z")).toBe("17:00");
+  });
+});
+
+describe("jerusalemDayKey", () => {
+  it("uses the Jerusalem calendar day, not UTC", () => {
+    expect(jerusalemDayKey("2026-10-20T21:30:00Z")).toBe("2026-10-21");
+  });
+  it("same day before midnight", () => {
+    expect(jerusalemDayKey("2026-10-20T20:30:00Z")).toBe("2026-10-20");
+  });
+});
+
+describe("jerusalem day labels", () => {
+  it("weekday follows the Jerusalem day", () => {
+    // 2026-10-21 is a Wednesday.
+    expect(jerusalemWeekday("2026-10-20T21:30:00Z")).toBe("יום רביעי");
+  });
+  it("short date follows the Jerusalem day", () => {
+    expect(jerusalemDateShort("2026-10-20T21:30:00Z")).toBe("21 באוקטובר");
   });
 });

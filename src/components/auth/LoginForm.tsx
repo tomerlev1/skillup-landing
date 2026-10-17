@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { authErrorHe } from "@/lib/auth/ensure-role-row";
 import GoogleButton from "@/components/auth/GoogleButton";
+import { safeNextPath } from "@/lib/safe-next";
 
 // `next` carries the gated action the user was trying to perform —
 // after login they resume exactly there, not on the homepage.
@@ -13,7 +14,7 @@ export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = useMemo(() => createClient(), []);
-  const next = searchParams.get("next") || "/";
+  const next = safeNextPath(searchParams.get("next"));
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

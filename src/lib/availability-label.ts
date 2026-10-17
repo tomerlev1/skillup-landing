@@ -20,6 +20,28 @@ function dayNumber(d: Date): number {
   return Date.UTC(y, m - 1, day) / 86_400_000;
 }
 
+const weekdayFmt = new Intl.DateTimeFormat("he-IL", { timeZone: TZ, weekday: "long" });
+const dateShortFmt = new Intl.DateTimeFormat("he-IL", {
+  timeZone: TZ,
+  day: "numeric",
+  month: "long",
+});
+
+/** "2026-10-21": the Jerusalem calendar day of an instant (for grouping slots by day). */
+export function jerusalemDayKey(iso: string): string {
+  return dateFmt.format(new Date(iso));
+}
+
+/** "יום רביעי", Jerusalem calendar day. */
+export function jerusalemWeekday(iso: string): string {
+  return weekdayFmt.format(new Date(iso));
+}
+
+/** "21 באוקטובר", Jerusalem calendar day. */
+export function jerusalemDateShort(iso: string): string {
+  return dateShortFmt.format(new Date(iso));
+}
+
 /** "17:00", Jerusalem time, 24h. */
 export function availabilityTime(startIso: string): string {
   return timeFmt.format(new Date(startIso));

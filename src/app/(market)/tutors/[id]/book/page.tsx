@@ -4,6 +4,8 @@ import BookingWizard from "@/components/booking/BookingWizard";
 import { getUpcomingSlots } from "@/lib/data/availability";
 import { getTeacherProfile, getTeacherSubjects } from "@/lib/data/teachers";
 import { getSessionProfile } from "@/lib/data/session";
+import { bookHref } from "@/lib/booking";
+import { safeNextPath } from "@/lib/safe-next";
 
 export const metadata: Metadata = {
   title: "קביעת שיעור | SkillUp",
@@ -12,14 +14,20 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ slot?: string | string[] }>;
 }
 
-export default async function BookLessonPage({ params }: PageProps) {
+export default async function BookLessonPage({ params, searchParams }: PageProps) {
   const { id } = await params;
+  const { slot: rawSlot } = await searchParams;
+  const slotId = (Array.isArray(rawSlot) ? rawSlot[0] : rawSlot) || undefined;
 
   // Server-side gate (belt to GatedLink's suspenders): students only.
+  // Guests come back to the exact same URL, ?slot= included.
   const session = await getSessionProfile();
-  if (!session) redirect(`/login?next=${encodeURIComponent(`/tutors/${id}/book`)}`);
+  if (!session) {
+    redirect(`/login?next=${encodeURIComponent(safeNextPath(bookHref(id, slotId)))}`);
+  }
   if (session.role === "teacher") redirect(`/tutors/${id}`);
 
   const [teacher, subjects, slots] = await Promise.all([
@@ -45,6 +53,7 @@ export default async function BookLessonPage({ params }: PageProps) {
         subjects={subjects.map((s) => ({ id: s.id, name_he: s.name_he }))}
         slots={slots}
         studentId={session.userId}
+        preselectedSlotId={slotId}
       />
     </div>
   );

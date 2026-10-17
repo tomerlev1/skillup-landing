@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { authErrorHe, ensureRoleRow } from "@/lib/auth/ensure-role-row";
 import { useAuth } from "@/components/auth/AuthProvider";
 import GoogleButton from "@/components/auth/GoogleButton";
+import { safeNextPath } from "@/lib/safe-next";
 import type { UserRole } from "@/lib/types";
 
 // Signup collects the same fields as the iOS app (role, name, phone, email,
@@ -16,7 +17,7 @@ export default function SignupForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = useMemo(() => createClient(), []);
-  const next = searchParams.get("next") || "/";
+  const next = safeNextPath(searchParams.get("next"));
 
   const [role, setRole] = useState<UserRole>(
     searchParams.get("role") === "teacher" ? "teacher" : "student",
