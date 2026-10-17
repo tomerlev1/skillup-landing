@@ -7,17 +7,13 @@ interface AvatarProps {
   className?: string;
 }
 
-function initials(name: string): string {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("");
+/** First visible letter of a name ("ד״ר מיכל" → "ד"). */
+export function monogram(name: string): string {
+  return name.trim().match(/\p{L}/u)?.[0] ?? "";
 }
 
-// Photo avatar with an initials fallback on the brand tint (accent-budget
-// exception: tiny identity moments may use the indigo-50 tint).
+// Photo avatar; without a photo, a serif monogram (spec §7.4):
+// first letter, Frank Ruhl 900, --c-action on --c-action-soft.
 export default function Avatar({ src, name, size, className = "" }: AvatarProps) {
   if (src) {
     return (
@@ -36,10 +32,10 @@ export default function Avatar({ src, name, size, className = "" }: AvatarProps)
     <span
       role="img"
       aria-label={name}
-      className={`inline-flex items-center justify-center rounded-full bg-brand-50 font-semibold text-brand-700 ${className}`}
-      style={{ width: size, height: size, fontSize: Math.max(12, size * 0.36) }}
+      className={`font-ed inline-flex shrink-0 items-center justify-center rounded-full bg-action-soft font-black leading-none text-action ${className}`}
+      style={{ width: size, height: size, fontSize: Math.max(14, Math.round(size * 0.46)) }}
     >
-      {initials(name)}
+      {monogram(name)}
     </span>
   );
 }

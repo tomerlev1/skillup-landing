@@ -1,132 +1,236 @@
 import Image from "next/image";
 import Link from "next/link";
-import { BadgeCheck, ChevronLeft, MapPin } from "lucide-react";
 import RatingStars from "@/components/ui/RatingStars";
+import VerifiedMark from "@/components/ui/VerifiedMark";
+import { monogram } from "@/components/ui/Avatar";
 import SaveButton from "@/components/market/SaveButton";
-import { formatPrice, lessonModeLabel } from "@/lib/format";
-import type { TeacherCard as TeacherCardData } from "@/lib/types";
+import { availabilityLabel } from "@/lib/availability-label";
+import { teacherCardLines } from "@/lib/teacher-card";
+import type { AvailabilitySlot, TeacherCard as TeacherCardData } from "@/lib/types";
+
+export type TeacherCardVariant = "card" | "auto" | "wall";
 
 interface TeacherCardProps {
   teacher: TeacherCardData;
+  /** First open slot in the next 7 days; drives the "יש מקום…" label. */
+  nextSlot?: AvailabilitySlot | null;
+  /**
+   * "card": grid card (§8.2). "auto": compact row below md (768px), card from
+   * md up — one DOM tree, responsive classes. "wall": photo + name + subject.
+   */
+  variant?: TeacherCardVariant;
   /** Set on above-the-fold rails so LCP images load eagerly. */
   priority?: boolean;
 }
 
-// Marketplace listing card. Information order mirrors how people decide:
-// face → name + rating → what they teach → where → how (mode chips) →
-// price + profile action. Icon fills are inline styles — never utility
-// classes — so they can't be dropped by CSS generation.
-export default function TeacherCard({ teacher, priority = false }: TeacherCardProps) {
-  // Cards show the tutor's FACE (avatar). Cover/background images belong
-  // only to the profile-page header.
-  const image = teacher.avatar_url;
-  const subjectsLine = teacher.subjects.slice(0, 3).join(" · ");
-  const modes = teacher.lesson_modes ?? [];
+const NUM = new Intl.NumberFormat("he-IL", { maximumFractionDigits: 0 });
+
+/** "יש מקום מחר · 17:00" → day text + LTR-isolated time. */
+function AvailabilityText({ label }: { label: string }) {
+  const i = label.lastIndexOf(" · ");
+  if (i < 0) return <>{label}</>;
+  return (
+    <>
+      {label.slice(0, i)} ·{" "}
+      <span className="ltr-isolate tnum">{label.slice(i + 3)}</span>
+    </>
+  );
+}
+
+/** Photo, or a serif monogram on the soft action tint (spec §7.4). */
+function Photo({
+  teacher,
+  sizes,
+  priority,
+  monoClass = "",
+}: {
+  teacher: TeacherCardData;
+  sizes: string;
+  priority: boolean;
+  monoClass?: string;
+}) {
+  if (teacher.avatar_url) {
+    return (
+      <Image
+        src={teacher.avatar_url}
+        alt={`${teacher.display_name}, מורה ל${teacher.subjects[0] ?? "שיעורים פרטיים"}`}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className="object-cover transition-transform duration-[250ms] ease-[var(--ease)] group-hover:scale-[1.035]"
+      />
+    );
+  }
+  return (
+    <div
+      role="img"
+      aria-label={teacher.display_name}
+      className="absolute inset-0 grid place-items-center bg-action-soft"
+    >
+      <span
+        aria-hidden="true"
+        className={`font-ed relative text-[80px] font-black leading-none text-action ${monoClass}`}
+      >
+        {monogram(teacher.display_name)}
+        <span className="absolute -end-4 top-1 size-3 rounded-full bg-spark" />
+      </span>
+    </div>
+  );
+}
+
+function GreenAvailability({ label, className = "" }: { label: string; className?: string }) {
+  return (
+    <p
+      className={`flex min-w-0 items-center gap-1.5 text-sm font-semibold leading-5 text-ok-text ${className}`}
+    >
+      <span aria-hidden="true" className="size-[7px] shrink-0 rounded-full bg-ok" />
+      <span className="truncate">
+        <AvailabilityText label={label} />
+      </span>
+    </p>
+  );
+}
+
+// The marketplace's most-seen component. Information order mirrors how people
+// decide: face → availability → name + verified + rating → what they teach →
+// experience → where + price. The whole card is one link; the save heart sits
+// outside it (absolutely positioned) so it never navigates.
+export default function TeacherCard({
+  teacher,
+  nextSlot = null,
+  variant = "card",
+  priority = false,
+}: TeacherCardProps) {
+  const lines = teacherCardLines(teacher);
+  const available = nextSlot ? availabilityLabel(nextSlot.start_at, new Date()) : null;
+  const href = `/tutors/${teacher.id}`;
+  const name = teacher.display_name;
+
+  if (variant === "wall") {
+    return (
+      <article className="group relative">
+        <Link
+          href={href}
+          className="block rounded-[var(--r-md)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-action"
+        >
+          <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--r-md)] bg-canvas">
+            <Photo
+              teacher={teacher}
+              priority={priority}
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 240px"
+            />
+          </div>
+          <h3 className="mt-3 flex min-w-0 items-center gap-1.5 text-base font-semibold leading-snug text-ink">
+            <span className="min-w-0 truncate" title={name}>
+              {name}
+            </span>
+            {teacher.is_verified && <VerifiedMark />}
+          </h3>
+          {teacher.subjects[0] && (
+            <p className="mt-0.5 truncate text-sm text-ink-2">{teacher.subjects[0]}</p>
+          )}
+          {available && <GreenAvailability label={available} className="mt-1" />}
+        </Link>
+        <div className="absolute end-2.5 top-2.5">
+          <SaveButton teacherId={teacher.id} teacherName={name} />
+        </div>
+      </article>
+    );
+  }
+
+  // "auto" adds the below-md row layout; "card" never gets those classes.
+  const auto = variant === "auto";
+  const row = (cls: string) => (auto ? cls : "");
 
   return (
-    <article className="mk-card group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--mk-hairline)] bg-white shadow-[var(--mk-shadow-soft)] transition-[box-shadow,border-color] duration-300 hover:border-brand-200 hover:shadow-[var(--mk-shadow)]">
+    <article
+      className={`group relative h-full overflow-hidden rounded-[var(--r-md)] border border-line bg-surface transition-[transform,box-shadow] duration-200 ease-[var(--ease)] hover:-translate-y-[3px] hover:shadow-[var(--shadow-lift)] ${row("max-md:p-2.5")}`}
+    >
       <Link
-        href={`/tutors/${teacher.id}`}
-        className="flex h-full flex-col focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-brand-600"
+        href={href}
+        className={`flex h-full flex-col rounded-[var(--r-md)] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-action ${row("max-md:flex-row max-md:gap-3 max-md:rounded-[var(--r-sm)]")}`}
       >
-        {/* Inline aspect-ratio: geometry must survive any CSS caching issue */}
+        {/* Photo 4:5 (row: 96×120). Card top corners come from the article clip. */}
         <div
-          className="relative w-full overflow-hidden bg-paper-50"
-          style={{ aspectRatio: "1 / 1" }}
+          className={`relative aspect-[4/5] w-full shrink-0 overflow-hidden bg-canvas ${row("max-md:aspect-auto max-md:h-[120px] max-md:w-24 max-md:rounded-[var(--r-sm)]")}`}
         >
-          {image ? (
-            <Image
-              src={image}
-              alt={`${teacher.display_name}, מורה ל${teacher.subjects[0] ?? "שיעורים פרטיים"}`}
-              fill
-              sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-              className="mk-card-img object-cover"
-              priority={priority}
-            />
-          ) : (
-            <div className="grid h-full w-full place-items-center bg-gradient-to-br from-brand-50 via-paper-25 to-accent-50">
-              <span className="grid h-20 w-20 place-items-center rounded-full bg-white/75 font-display text-3xl font-bold text-brand-500 shadow-sm ring-1 ring-black/[0.03]">
-                {teacher.display_name.slice(0, 1)}
-              </span>
-            </div>
-          )}
-
-          {teacher.is_verified && (
-            <span className="absolute top-3 start-3 inline-flex items-center gap-1.5 rounded-full bg-white/95 py-1.5 ps-2.5 pe-3 text-[11px] font-bold text-emerald-700 shadow-sm">
-              <BadgeCheck
-                size={16}
-                strokeWidth={2.25}
-                style={{ fill: "#10b981", color: "#ffffff" }}
+          <Photo
+            teacher={teacher}
+            priority={priority}
+            monoClass={row("max-md:text-[40px]")}
+            sizes={
+              auto
+                ? "(max-width: 767px) 96px, (max-width: 1200px) 33vw, 300px"
+                : "(max-width: 640px) 72vw, (max-width: 1200px) 33vw, 300px"
+            }
+          />
+          {available && (
+            // White in both themes on purpose: it sits on a photo.
+            <span
+              className={`absolute bottom-2.5 start-2.5 inline-flex max-w-[calc(100%-20px)] items-center gap-1.5 whitespace-nowrap rounded-[var(--r-pill)] bg-white/95 py-[5px] ps-2.5 pe-3 text-[13px] font-semibold leading-[18px] text-[#0B7A55] shadow-[0_1px_3px_rgba(0,0,0,0.12)] ${row("max-md:hidden")}`}
+            >
+              <span
                 aria-hidden="true"
+                className="size-[7px] shrink-0 rounded-full bg-[#0E9F6E] shadow-[0_0_0_3px_rgba(14,159,110,0.18)]"
               />
-              מורה מאומת
+              <span className="truncate">
+                <AvailabilityText label={available} />
+              </span>
             </span>
           )}
         </div>
 
-        <div className="flex flex-1 flex-col px-4 pb-4 pt-3">
-          {/* Identity + quality */}
+        <div
+          className={`flex min-w-0 flex-1 flex-col px-4 pb-4 pt-3.5 ${row("max-md:p-0 max-md:py-0.5")}`}
+        >
+          {/* Line 1: name + verified ⟷ rating, sharing one baseline */}
           <div className="flex items-baseline justify-between gap-2">
-            <h3 className="truncate text-base font-semibold text-[var(--mk-ink)]">
-              {teacher.display_name}
+            <h3
+              className={`flex min-w-0 items-center gap-1.5 text-[17px] font-semibold leading-[1.3] text-ink ${row("max-md:text-base")}`}
+            >
+              <span className="min-w-0 truncate" title={name}>
+                {name}
+              </span>
+              {teacher.is_verified && <VerifiedMark />}
             </h3>
             <RatingStars value={teacher.rating_avg} count={teacher.review_count} />
           </div>
 
-          {/* What they teach */}
-          {subjectsLine && (
-            <p className="mt-0.5 truncate text-sm text-[var(--mk-ink-3)]">
-              {subjectsLine}
-            </p>
+          {lines.subjects && (
+            <p className="mt-1 truncate text-sm leading-5 text-ink-2">{lines.subjects}</p>
+          )}
+          {lines.credentials && (
+            <p className="mt-0.5 truncate text-sm leading-5 text-ink-3">{lines.credentials}</p>
           )}
 
-          {/* Where */}
-          {teacher.city_name && (
-            <p className="mt-1 flex items-center gap-1 truncate text-sm text-[var(--mk-ink-3)]">
-              <MapPin size={13} className="shrink-0" aria-hidden="true" />
-              {teacher.city_name}
-            </p>
-          )}
+          {/* Row layout: availability as green text instead of the photo pill */}
+          {auto && available && <GreenAvailability label={available} className="mt-1 md:hidden" />}
 
-          {/* How — lesson modes as their own chip row, not mixed with the address */}
-          {modes.length > 0 && (
-            <div className="mt-2 flex flex-wrap gap-1">
-              {modes.map((mode) => (
+          {/* Flexible gap keeps the price row pinned to the bottom */}
+          <div className={`min-h-3 flex-1 ${row("max-md:min-h-1")}`} />
+
+          <div
+            className={`mt-auto flex items-baseline justify-between gap-2 border-t border-line pt-3 ${row("max-md:border-t-0 max-md:pt-1")}`}
+          >
+            <span className="min-w-0 truncate text-sm text-ink-2">{lines.where}</span>
+            {lines.price != null && (
+              <span className="shrink-0 whitespace-nowrap text-sm text-ink-3">
                 <span
-                  key={mode}
-                  className="rounded-md bg-paper-50 px-1.5 py-0.5 text-[11px] font-medium text-[var(--mk-ink-2)]"
+                  className={`ltr-isolate tnum text-lg font-semibold text-ink ${row("max-md:text-base")}`}
                 >
-                  {lessonModeLabel(mode)}
-                </span>
-              ))}
-            </div>
-          )}
-
-          {/* Spacer: keeps the price row pinned to the bottom on short cards */}
-          <div className="min-h-3.5 flex-1" />
-
-          {/* Price + action — bottom row, vertically centered */}
-          <div className="mk-hairline-t flex items-center justify-between gap-2 pt-3.5">
-            {teacher.hourly_rate != null ? (
-              <span className="inline-flex h-9 items-center rounded-full bg-brand-50 px-3.5 text-sm text-brand-800">
-                <span className="ltr-isolate tnum font-bold">
-                  {formatPrice(teacher.hourly_rate)}
-                </span>
-                <span className="ms-1 font-medium">לשעה</span>
+                  ₪{NUM.format(lines.price)}
+                </span>{" "}
+                לשעה
               </span>
-            ) : (
-              <span />
             )}
-            <span className="hidden h-9 items-center gap-0.5 rounded-full border border-brand-200 px-3.5 text-[13px] font-semibold text-brand-700 transition-colors group-hover:border-brand-600 group-hover:bg-brand-50 min-[400px]:inline-flex">
-              לפרופיל
-              <ChevronLeft size={14} aria-hidden="true" />
-            </span>
           </div>
         </div>
       </Link>
 
-      <div className="absolute top-3 end-3">
-        <SaveButton teacherId={teacher.id} teacherName={teacher.display_name} />
+      <div
+        className={`absolute end-2.5 top-2.5 ${row("max-md:end-auto max-md:start-[14px] max-md:top-[14px]")}`}
+      >
+        <SaveButton teacherId={teacher.id} teacherName={name} />
       </div>
     </article>
   );
