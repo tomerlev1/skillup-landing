@@ -167,7 +167,7 @@ export default function ScheduleManager({
               </span>
               {dayOpen > 0 && (
                 <span
-                  className={`tnum mt-1 block text-xs font-bold ${
+                  className={`tnum mt-1 block text-sm font-bold ${
                     selected ? "text-surface" : "text-ok-text"
                   }`}
                 >
@@ -203,7 +203,7 @@ export default function ScheduleManager({
                 booked
                   ? "cursor-not-allowed border-warn/30 bg-warn/10 text-warn"
                   : open
-                    ? "border-emerald-500 bg-ok text-white hover:bg-emerald-600"
+                    ? "border-ok bg-ok/10 text-ok-text hover:bg-ok/20"
                     : past
                       ? "cursor-not-allowed border-line bg-canvas text-ink-3 opacity-50"
                       : "border-line bg-surface text-ink hover:border-ink"
