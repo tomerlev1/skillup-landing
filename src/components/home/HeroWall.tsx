@@ -49,14 +49,8 @@ export default function HeroWall({ categories, stats, wall, nextSlots }: HeroWal
   return (
     <section className="relative isolate overflow-hidden" style={{ background: "var(--hero-wash)" }}>
       {/* Soft decorative orbs — brand indigo + spark, light enough to stay calm */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-24 end-[-120px] -z-10 size-[420px] rounded-full bg-brand-200/40 blur-3xl"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-32 start-[-80px] -z-10 size-[360px] rounded-full bg-tint-peach blur-3xl"
-      />
+      <div aria-hidden="true" className="orb end-[-60px] top-[-80px] size-[380px] bg-brand-200/45" />
+      <div aria-hidden="true" className="orb orb--slow start-[10%] top-[30%] size-[300px] bg-tint-peach/80" />
 
       <div
         className={`relative mx-auto px-4 pb-14 pt-10 sm:px-6 sm:pt-16 lg:pb-20 ${
@@ -115,15 +109,15 @@ export default function HeroWall({ categories, stats, wall, nextSlots }: HeroWal
             {/* Brand disc behind the floating cards */}
             <div
               aria-hidden="true"
-              className="absolute inset-x-6 top-6 bottom-6 -z-10 rounded-[var(--r-lg)] bg-gradient-to-br from-[#6D63F2] via-[#5B50EE] to-[#8B7CF8] shadow-[var(--shadow-lift)] lg:inset-x-10"
+              className="absolute inset-x-6 top-6 bottom-6 -z-10 rounded-[var(--r-lg)] bg-[linear-gradient(160deg,var(--c-brand-100)_0%,var(--c-brand-50)_45%,var(--c-tint-peach)_100%)] shadow-[var(--shadow-card)] ring-1 ring-brand-200/70 lg:inset-x-10"
             />
             <div
               aria-hidden="true"
-              className="absolute -top-3 end-10 -z-10 size-16 rounded-[var(--r-md)] bg-tint-peach rotate-12"
+              className="float-y absolute -top-3 end-10 -z-10 size-14 rotate-12 rounded-[var(--r-md)] bg-tint-peach"
             />
             <div
               aria-hidden="true"
-              className="absolute -bottom-3 start-8 -z-10 size-12 rounded-full bg-tint-mint"
+              className="float-y absolute -bottom-2 start-8 -z-10 size-11 rounded-full bg-tint-mint [animation-delay:-3s]"
             />
             <ul className="flex flex-col gap-3 pt-12 pb-[68px]">
               {wall.map((t, i) => (
@@ -140,7 +134,7 @@ export default function HeroWall({ categories, stats, wall, nextSlots }: HeroWal
                 </li>
               ))}
             </ul>
-            <p className="absolute inset-x-0 bottom-[30px] text-center text-[13px] font-semibold text-white/90">
+            <p className="absolute inset-x-0 bottom-[30px] text-center text-[13px] font-semibold text-tint-indigo-fg">
               חלק מהמורים שמחכים לכם
             </p>
           </div>

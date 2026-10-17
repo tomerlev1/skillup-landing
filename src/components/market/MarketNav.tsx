@@ -93,8 +93,10 @@ export default function MarketNav({ categories }: MarketNavProps) {
 
   return (
     <header
-      className={`sticky top-0 z-50 bg-surface transition-[box-shadow,border-color] ${
-        scrolled ? "border-b border-line" : "border-b border-transparent"
+      className={`sticky top-0 z-50 backdrop-blur-xl backdrop-saturate-150 transition-[box-shadow,border-color,background-color] duration-300 ${
+        scrolled
+          ? "border-b border-line/70 bg-surface/80 shadow-[0_8px_24px_-18px_rgba(46,40,168,0.35)]"
+          : "border-b border-transparent bg-surface/60"
       }`}
     >
       <nav className="mx-auto flex h-[72px] max-w-[1280px] items-center gap-6 px-4 sm:px-6">
@@ -212,7 +214,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
                   ))}
                   <div role="none" className="px-3 py-2.5">
                     <p className="mb-2 text-sm font-medium text-ink">ערכת צבע</p>
-                    <ThemeToggle />
+                    <ThemeToggle showCaption={false} />
                   </div>
                   <button
                     type="button"

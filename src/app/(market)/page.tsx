@@ -90,7 +90,7 @@ export default async function HomePage() {
       {/* 7. For teachers + FAQ */}
       <ForTeachersPanel />
 
-      <section className="mx-auto max-w-[840px] px-4 pb-24 pt-14 sm:px-6 sm:pt-16">
+      <section className="mx-auto max-w-[840px] px-4 pb-10 pt-14 sm:px-6 sm:pt-16">
         <h2 className="font-ed text-[26px] font-extrabold leading-tight text-balance text-ink sm:text-[32px]">
           שאלות נפוצות
         </h2>

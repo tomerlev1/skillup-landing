@@ -30,17 +30,11 @@ export default function AuthShell({ title, subtitle, children }: AuthShellProps)
           </div>
         </div>
 
-        <aside className="relative isolate hidden overflow-hidden bg-gradient-to-br from-[#4F46E5] via-[#5B50EE] to-[#8070F6] p-12 text-white lg:flex lg:flex-col lg:justify-between">
-          <div
-            aria-hidden="true"
-            className="absolute -top-24 -end-20 -z-10 size-[320px] rounded-full bg-white/10 blur-2xl"
-          />
-          <div
-            aria-hidden="true"
-            className="absolute -bottom-28 -start-16 -z-10 size-[300px] rounded-full bg-[#F97316]/30 blur-3xl"
-          />
+        <aside className="panel-soft hidden p-12 text-ink lg:flex lg:flex-col lg:justify-between" style={{ outline: "none", boxShadow: "none" }}>
+          <div aria-hidden="true" className="orb end-[-40px] top-[-60px] size-[280px] bg-brand-200/60" />
+        <div aria-hidden="true" className="orb orb--slow bottom-[-80px] start-[-40px] size-[260px] bg-tint-peach" />
           <div>
-            <p className="text-sm font-semibold text-white/75">SkillUp</p>
+            <p className="text-sm font-semibold text-action">SkillUp</p>
             <p className="font-ed mt-2 text-[34px] font-black leading-tight text-balance">
               המורה הנכון מחכה לכם כאן.
             </p>
@@ -48,14 +42,14 @@ export default function AuthShell({ title, subtitle, children }: AuthShellProps)
           <ul className="mt-10 space-y-4">
             {POINTS.map(({ icon: Icon, text }) => (
               <li key={text} className="flex items-center gap-3">
-                <span className="grid size-10 shrink-0 place-items-center rounded-[var(--r-sm)] bg-white/15 ring-1 ring-white/25">
+                <span className="grid size-10 shrink-0 place-items-center rounded-[var(--r-sm)] bg-surface text-action shadow-[var(--shadow-card)] ring-1 ring-line/60">
                   <Icon size={20} strokeWidth={2} aria-hidden="true" />
                 </span>
                 <span className="text-[15px] font-semibold leading-snug">{text}</span>
               </li>
             ))}
           </ul>
-          <p className="mt-10 text-sm text-white/70">אותו חשבון באתר ובאפליקציה.</p>
+          <p className="mt-10 text-sm text-ink-3">אותו חשבון באתר ובאפליקציה.</p>
         </aside>
       </div>
     </div>

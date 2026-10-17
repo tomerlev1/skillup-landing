@@ -92,9 +92,9 @@
   --c-tint-lilac: #F4ECFF;   --c-tint-lilac-fg: #6D28D9;
   --c-tint-teal: #E3F6F6;    --c-tint-teal-fg: #0F766E;
   --shadow-card: 0 1px 2px rgba(20, 19, 31, 0.04), 0 8px 24px -14px rgba(46, 40, 168, 0.18);
-  --hero-wash: radial-gradient(60% 80% at 100% 0%, #E9E6FF 0%, transparent 60%),
-    radial-gradient(45% 60% at 0% 100%, #FFE8D9 0%, transparent 65%),
-    linear-gradient(180deg, #FBFAFF 0%, #F6F5FC 100%);
+  --hero-wash: radial-gradient(55% 70% at 100% 0%, #E9E6FF 0%, transparent 70%),
+    radial-gradient(40% 45% at 8% 40%, #FFEBDD 0%, transparent 70%),
+    linear-gradient(180deg, #FBFAFF 0%, #F6F6FA 85%);
   --r-pill: 999px;
   --shadow-lift: 0 16px 32px -18px rgba(20, 19, 31, 0.35);
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -139,9 +139,9 @@
   --c-tint-lilac: #2A1A47;   --c-tint-lilac-fg: #C4B5FD;
   --c-tint-teal: #0F2E2E;    --c-tint-teal-fg: #5EEAD4;
   --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
-  --hero-wash: radial-gradient(60% 80% at 100% 0%, #262259 0%, transparent 60%),
-    radial-gradient(45% 60% at 0% 100%, #33201A 0%, transparent 65%),
-    linear-gradient(180deg, #13112B 0%, #100E22 100%);
+  --hero-wash: radial-gradient(55% 70% at 100% 0%, #262259 0%, transparent 70%),
+    radial-gradient(40% 45% at 8% 40%, #2E1D17 0%, transparent 70%),
+    linear-gradient(180deg, #13112B 0%, #100E22 85%);
 
   color-scheme: dark;
 }
@@ -181,9 +181,9 @@
     --c-tint-lilac: #2A1A47;   --c-tint-lilac-fg: #C4B5FD;
     --c-tint-teal: #0F2E2E;    --c-tint-teal-fg: #5EEAD4;
     --shadow-card: 0 1px 0 rgba(255, 255, 255, 0.03), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
-    --hero-wash: radial-gradient(60% 80% at 100% 0%, #262259 0%, transparent 60%),
-      radial-gradient(45% 60% at 0% 100%, #33201A 0%, transparent 65%),
-      linear-gradient(180deg, #13112B 0%, #100E22 100%);
+    --hero-wash: radial-gradient(55% 70% at 100% 0%, #262259 0%, transparent 70%),
+      radial-gradient(40% 45% at 8% 40%, #2E1D17 0%, transparent 70%),
+      linear-gradient(180deg, #13112B 0%, #100E22 85%);
 
     color-scheme: dark;
   }
@@ -376,3 +376,121 @@ select:focus {
   border-color: var(--c-action);
   box-shadow: 0 0 0 4px var(--c-brand-100);
 }
+
+
+/* ===== SOFT SECTION BANDS: colour fades in and out, never a hard edge ===== */
+.band-soft {
+  background: linear-gradient(
+    180deg,
+    transparent 0,
+    var(--c-brand-50) 96px,
+    var(--c-brand-50) calc(100% - 96px),
+    transparent 100%
+  );
+}
+.band-white {
+  background: linear-gradient(
+    180deg,
+    transparent 0,
+    var(--c-surface) 96px,
+    var(--c-surface) calc(100% - 96px),
+    transparent 100%
+  );
+}
+.band-footer {
+  background: linear-gradient(180deg, transparent 0, var(--c-brand-50) 180px);
+}
+
+/* Light brand panel (replaces solid purple slabs): white base with soft
+   indigo + peach light, used for CTAs, the teacher panel and auth aside. */
+.panel-soft {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(70% 90% at 100% 0%, var(--c-brand-100) 0%, transparent 65%),
+    radial-gradient(55% 80% at 0% 100%, var(--c-tint-peach) 0%, transparent 65%),
+    var(--c-surface);
+  box-shadow: var(--shadow-card);
+  outline: 1px solid color-mix(in srgb, var(--c-brand-200) 55%, transparent);
+  outline-offset: -1px;
+}
+
+/* Slow drifting light orbs: gentle movement that draws the eye */
+@keyframes drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(24px, -18px, 0) scale(1.08); }
+  100% { transform: translate3d(-12px, 10px, 0) scale(0.96); }
+}
+.orb {
+  position: absolute;
+  z-index: -1;
+  border-radius: 9999px;
+  filter: blur(40px);
+  pointer-events: none;
+  animation: drift 16s ease-in-out infinite alternate;
+}
+.orb--slow { animation-duration: 22s; animation-delay: -6s; }
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.float-y { animation: float-y 6s ease-in-out infinite; }
+
+/* Theme switch: the knob icon spins in when the mode changes */
+@keyframes knob-in {
+  from { transform: rotate(-120deg) scale(0.4); opacity: 0; }
+  to   { transform: rotate(0) scale(1); opacity: 1; }
+}
+.theme-knob-icon { animation: knob-in 450ms cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* App store buttons: deep ink glass with a moving brand sheen on hover */
+.store-btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(135deg, #14131F 0%, #24214A 100%);
+  box-shadow: 0 10px 24px -14px rgba(20, 19, 31, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: transform 250ms var(--ease), box-shadow 250ms var(--ease);
+}
+.store-btn::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  background: linear-gradient(120deg, transparent 30%, rgba(139, 133, 255, 0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 700ms var(--ease);
+}
+a.store-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 32px -16px rgba(79, 70, 229, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+a.store-btn:hover::before { transform: translateX(120%); }
+.store-btn--soon { opacity: 0.72; background: linear-gradient(135deg, #2A2840 0%, #3A3760 100%); }
+:root[data-theme="dark"] .store-btn { outline: 1px solid rgba(255, 255, 255, 0.12); outline-offset: -1px; }
+.store-btn--soon { overflow: visible; }
+
+/* ===== SCROLL REVEAL: sections ease in as they enter the viewport =====
+   Pure CSS (scroll-driven animations); browsers without support simply
+   show the content, so nothing ever stays hidden. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Tactile press on every button and link-button */
+@media (prefers-reduced-motion: no-preference) {
+  a[class*="rounded-"]:active,
+  button:active { transform: scale(0.98); }
+}
+.store-btn--soon::before { display: none; }

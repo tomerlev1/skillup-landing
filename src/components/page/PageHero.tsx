@@ -26,10 +26,8 @@ export default function PageHero({
 }: PageHeroProps) {
   return (
     <section className="relative isolate overflow-hidden" style={{ background: "var(--hero-wash)" }}>
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -top-24 end-[-100px] -z-10 size-[360px] rounded-full bg-brand-200/40 blur-3xl"
-      />
+      <div aria-hidden="true" className="orb end-[-60px] top-[-90px] size-[340px] bg-brand-200/45" />
+      <div aria-hidden="true" className="orb orb--slow start-[6%] top-[20%] size-[240px] bg-tint-peach/80" />
       <div className="mx-auto max-w-[1280px] px-4 pb-12 pt-8 sm:px-6 sm:pb-16 sm:pt-10">
         {top}
         <div className={`max-w-[760px] ${top ? "mt-6" : ""}`}>

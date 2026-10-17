@@ -29,7 +29,7 @@ export default function TeacherRail({
   if (teachers.length < minCount) return null;
 
   return (
-    <section className="mx-auto max-w-[1280px] px-4 sm:px-6">
+    <section className="reveal mx-auto max-w-[1280px] px-4 sm:px-6">
       <div className="mb-5 flex items-baseline justify-between gap-4">
         <h2 className="font-ed text-[26px] font-extrabold leading-tight text-balance text-ink sm:text-[32px]">
           {title}

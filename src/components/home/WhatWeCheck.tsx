@@ -25,7 +25,7 @@ const ITEMS = [
 // promises beyond what exists.
 export default function WhatWeCheck() {
   return (
-    <section className="mx-auto max-w-[1280px] px-4 py-16 sm:px-6 sm:py-20">
+    <section className="reveal mx-auto max-w-[1280px] px-4 py-16 sm:px-6 sm:py-20">
       <div className="grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.6fr)] lg:items-center">
         <div>
           <p className="text-sm font-semibold text-action">למה לסמוך עלינו</p>

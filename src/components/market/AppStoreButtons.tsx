@@ -31,10 +31,10 @@ export default function AppStoreButtons({
   size = "default",
   className = "",
 }: AppStoreButtonsProps) {
-  const pad = size === "compact" ? "h-11 px-3.5" : "h-14 px-5";
-  const glyph = size === "compact" ? "h-5 w-5" : "h-7 w-7";
+  const pad = size === "compact" ? "h-14 px-5" : "h-16 px-6";
+  const glyph = size === "compact" ? "h-7 w-7" : "h-8 w-8";
   const small = "text-xs"; // 12px: tiny badge label (spec §7.2)
-  const big = size === "compact" ? "text-sm" : "text-base";
+  const big = size === "compact" ? "text-[17px]" : "text-lg";
 
   return (
     <div className={`flex flex-wrap gap-3 ${className}`}>
@@ -44,12 +44,12 @@ export default function AppStoreButtons({
         target="_blank"
         rel="noopener noreferrer"
         aria-label="הורדת אפליקציית SkillUp מ-App Store"
-        className={`inline-flex ${pad} items-center gap-2.5 rounded-[var(--r-sm)] bg-ink text-surface transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5`}
+        className={`store-btn group inline-flex ${pad} items-center gap-3 rounded-[var(--r-md)] text-white`}
       >
-        <AppleGlyph className={glyph} />
+        <AppleGlyph className={`${glyph} transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110`} />
         <span className="flex flex-col items-start leading-none">
-          <span className={`${small} opacity-80`}>הורידו עכשיו</span>
-          <span className={`${big} font-semibold`}>App Store</span>
+          <span className={`${small} opacity-75`}>הורידו מה-</span>
+          <span className={`${big} whitespace-nowrap font-bold`}>App Store</span>
         </span>
       </a>
 
@@ -60,7 +60,7 @@ export default function AppStoreButtons({
           target="_blank"
           rel="noopener noreferrer"
           aria-label="הורדת אפליקציית SkillUp מ-Google Play"
-          className={`inline-flex ${pad} items-center gap-2.5 rounded-[var(--r-sm)] bg-ink text-surface transition-transform duration-200 ease-[var(--ease)] hover:-translate-y-0.5`}
+          className={`store-btn group inline-flex ${pad} items-center gap-3 rounded-[var(--r-md)] text-white`}
         >
           <PlayGlyph className={glyph} />
           <span className="flex flex-col items-start leading-none">
@@ -71,11 +71,14 @@ export default function AppStoreButtons({
       ) : (
         <span
           aria-disabled="true"
-          className={`relative inline-flex ${pad} cursor-default items-center gap-2.5 rounded-[var(--r-sm)] border border-line bg-surface text-ink-3`}
+          className={`store-btn store-btn--soon relative inline-flex ${pad} cursor-default items-center gap-3 rounded-[var(--r-md)] text-white`}
         >
-          <PlayGlyph className={`${glyph} opacity-40`} />
-          <span className={`${big} font-semibold text-ink-2`}>Google Play</span>
-          <span className="absolute -top-2 end-2 rounded-full border border-line bg-surface px-2 py-0.5 text-xs font-semibold text-ink-2">
+          <PlayGlyph className={`${glyph} opacity-70 grayscale-[35%]`} />
+          <span className="flex flex-col items-start leading-none">
+            <span className={`${small} opacity-75`}>בקרוב ב-</span>
+            <span className={`${big} whitespace-nowrap font-bold`}>Google Play</span>
+          </span>
+          <span className="absolute -top-2.5 end-3 rounded-full bg-tint-peach px-2.5 py-0.5 text-xs font-bold text-tint-peach-fg shadow-[var(--shadow-card)]">
             בקרוב
           </span>
         </span>

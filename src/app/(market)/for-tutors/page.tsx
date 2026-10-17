@@ -99,7 +99,7 @@ export default function ForTutorsPage() {
         </ul>
       </section>
 
-      <section className="bg-brand-50 py-16 sm:py-20">
+      <section className="band-soft py-20 sm:py-28">
         <div className="mx-auto grid max-w-[1280px] gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-start">
           <div>
             <p className="text-sm font-semibold text-action">ארבעה צעדים</p>

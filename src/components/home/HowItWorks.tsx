@@ -22,9 +22,9 @@ const LOOK: { icon: LucideIcon; tone: string }[] = [
 ];
 
 // Three steps (spec §8.3.4). Step 2 carries the "we don't charge you" line.
-export default function HowItWorks({ heading = true, className = "mt-20" }: { heading?: boolean; className?: string }) {
+export default function HowItWorks({ heading = true, className = "mt-8" }: { heading?: boolean; className?: string }) {
   return (
-    <section id="how-it-works" className={`bg-brand-50 py-16 sm:py-20 ${className}`}>
+    <section id="how-it-works" className={`reveal band-soft py-16 sm:py-24 ${className}`}>
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
         {heading && (
           <>

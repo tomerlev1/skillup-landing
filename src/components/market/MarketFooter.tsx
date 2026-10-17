@@ -2,7 +2,7 @@ import Link from "next/link";
 import AppStoreButtons from "@/components/market/AppStoreButtons";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import BrandLogo from "@/components/ui/BrandLogo";
-import { APP_STORE_URL, CONTACT_EMAIL } from "@/lib/constants";
+import { CONTACT_EMAIL } from "@/lib/constants";
 import { categorySlug, citySlug } from "@/lib/slugs";
 import type { Category, City } from "@/lib/types";
 
@@ -11,54 +11,70 @@ interface MarketFooterProps {
   majorCities: City[];
 }
 
-// Footer as a browse/SEO surface: every link is a real indexable landing
-// page (categories, cities), plus company/legal. Calm 14px link columns.
-export default function MarketFooter({ categories, majorCities }: MarketFooterProps) {
+const linkClass =
+  "inline-flex min-h-6 items-center text-[15px] text-ink-2 transition-colors hover:text-action";
+
+function Column({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <footer className="mt-4 border-t border-line bg-brand-50">
-      <div className="mx-auto max-w-[1280px] px-4 py-14 sm:px-6">
-        <div className="grid grid-cols-2 gap-10 md:grid-cols-4">
-          <nav aria-label="מקצועות פופולריים">
-            <h3 className="mb-4 text-sm font-semibold text-ink">
-              מקצועות
-            </h3>
-            <ul className="space-y-2.5">
+    <nav aria-label={title}>
+      <h3 className="mb-4 text-sm font-extrabold text-ink">{title}</h3>
+      <ul className="space-y-2.5">{children}</ul>
+    </nav>
+  );
+}
+
+// Footer: a brand column (logo, promise, apps, display switch) beside the
+// browse/SEO link columns. It fades in from the page instead of starting at a
+// hard line.
+export default function MarketFooter({ categories, majorCities }: MarketFooterProps) {
+  const cities = majorCities.slice(0, 8);
+  return (
+    <footer className="band-footer mt-10 pt-16">
+      <div className="mx-auto max-w-[1280px] px-4 pb-10 sm:px-6">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,2.2fr)]">
+          {/* Brand column */}
+          <div className="max-w-[380px]">
+            <BrandLogo className="h-12 w-auto" />
+            <p className="mt-4 text-[15px] leading-relaxed text-ink-2">
+              הדרך הפשוטה למצוא מורה פרטי בישראל: פרופילים מאומתים, מחירים ברורים
+              וקשר ישיר עם המורה, בלי מתווכים.
+            </p>
+            <p className="mt-7 text-sm font-extrabold text-ink">האפליקציה בכיס</p>
+            <AppStoreButtons size="compact" className="mt-3" />
+            <p className="mt-7 text-sm font-extrabold text-ink">מצב תצוגה</p>
+            <div className="mt-3">
+              <ThemeToggle />
+            </div>
+          </div>
+
+          {/* Link columns */}
+          <div className="grid grid-cols-2 gap-10 sm:grid-cols-4">
+            <Column title="מקצועות">
               {categories.map((cat) => (
                 <li key={cat.id}>
-                  <Link
-                    href={`/categories/${categorySlug(cat)}`}
-                    className="inline-flex min-h-6 items-center text-sm text-ink-2 hover:text-ink hover:underline"
-                  >
-                    מורים ל{cat.name_he}
+                  <Link href={`/categories/${categorySlug(cat)}`} className={linkClass}>
+                    {cat.name_he}
                   </Link>
                 </li>
               ))}
-            </ul>
-          </nav>
+            </Column>
 
-          <nav aria-label="מורים לפי עיר">
-            <h3 className="mb-4 text-sm font-semibold text-ink">
-              ערים
-            </h3>
-            <ul className="space-y-2.5">
-              {majorCities.map((city) => (
+            <Column title="ערים">
+              {cities.map((city) => (
                 <li key={city.id}>
-                  <Link
-                    href={`/cities/${citySlug(city)}`}
-                    className="inline-flex min-h-6 items-center text-sm text-ink-2 hover:text-ink hover:underline"
-                  >
-                    מורה פרטי ב{city.name_he.split(" - ")[0]}
+                  <Link href={`/cities/${citySlug(city)}`} className={linkClass}>
+                    {city.name_he.split(" - ")[0]}
                   </Link>
                 </li>
               ))}
-            </ul>
-          </nav>
+              <li>
+                <Link href="/search" className={`${linkClass} font-bold text-action`}>
+                  כל הערים
+                </Link>
+              </li>
+            </Column>
 
-          <nav aria-label="SkillUp">
-            <h3 className="mb-4 text-sm font-semibold text-ink">
-              SkillUp
-            </h3>
-            <ul className="space-y-2.5">
+            <Column title="SkillUp">
               {[
                 { href: "/how-it-works", label: "איך זה עובד" },
                 { href: "/for-tutors", label: "הצטרפות כמורה" },
@@ -66,38 +82,19 @@ export default function MarketFooter({ categories, majorCities }: MarketFooterPr
                 { href: "/articles", label: "מדריכים ומאמרים" },
               ].map((l) => (
                 <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="inline-flex min-h-6 items-center text-sm text-ink-2 hover:text-ink hover:underline"
-                  >
+                  <Link href={l.href} className={linkClass}>
                     {l.label}
                   </Link>
                 </li>
               ))}
               <li>
-                <a
-                  href={APP_STORE_URL}
-                  className="inline-flex min-h-6 items-center text-sm text-ink-2 hover:text-ink hover:underline"
-                >
-                  הורדת האפליקציה ל-iPhone
-                </a>
-              </li>
-              <li>
-                <a
-                  href={`mailto:${CONTACT_EMAIL}`}
-                  className="inline-flex min-h-6 items-center text-sm text-ink-2 hover:text-ink hover:underline"
-                >
+                <a href={`mailto:${CONTACT_EMAIL}`} className={linkClass}>
                   יצירת קשר
                 </a>
               </li>
-            </ul>
-          </nav>
+            </Column>
 
-          <div>
-            <h3 className="mb-4 text-sm font-semibold text-ink">
-              משפטי
-            </h3>
-            <ul className="space-y-2.5">
+            <Column title="משפטי">
               {[
                 { href: "/terms", label: "תנאי שימוש" },
                 { href: "/privacy", label: "מדיניות פרטיות" },
@@ -105,35 +102,18 @@ export default function MarketFooter({ categories, majorCities }: MarketFooterPr
                 { href: "/accessibility", label: "הצהרת נגישות" },
               ].map((l) => (
                 <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="inline-flex min-h-6 items-center text-sm text-ink-2 hover:text-ink hover:underline"
-                  >
+                  <Link href={l.href} className={linkClass}>
                     {l.label}
                   </Link>
                 </li>
               ))}
-            </ul>
-
-            <p className="mt-6 max-w-[26ch] text-sm leading-relaxed text-ink-3">
-              SkillUp היא הדרך הפשוטה למצוא מורה פרטי בישראל: קשר ישיר עם
-              המורה, בלי מתווכים.
-            </p>
-
+            </Column>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-6 border-t border-line pt-6">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <AppStoreButtons size="compact" />
-            <ThemeToggle />
-          </div>
-          <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
-            <BrandLogo className="h-10 w-auto" />
-            <p className="text-sm text-ink-3">
-              © {new Date().getFullYear()} SkillUp. כל הזכויות שמורות.
-            </p>
-          </div>
+        <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-brand-100 pt-6 text-sm text-ink-3 sm:flex-row">
+          <p>© {new Date().getFullYear()} SkillUp. כל הזכויות שמורות.</p>
+          <p>שיעורים פרטיים בכל תחום, בכל הארץ</p>
         </div>
       </div>
     </footer>

@@ -23,7 +23,7 @@ const STYLE: Record<string, { icon: LucideIcon; tone: string; sub: string }> = {
 export default function GoalTiles({ goals }: { goals: GoalTile[] }) {
   if (goals.length === 0) return null;
   return (
-    <section className="mx-auto max-w-[1280px] px-4 pt-16 sm:px-6 sm:pt-20">
+    <section className="reveal mx-auto max-w-[1280px] px-4 pt-6 sm:px-6 sm:pt-8">
       <p className="text-sm font-semibold text-action">מתחילים מהמטרה</p>
       <h2 className="font-ed mt-1 text-[28px] font-extrabold leading-tight text-balance text-ink sm:text-[36px]">
         מה המטרה שלכם?

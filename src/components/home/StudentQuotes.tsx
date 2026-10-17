@@ -12,7 +12,7 @@ const TONES = [
 export default function StudentQuotes({ quotes }: { quotes: HomeQuote[] }) {
   if (quotes.length < 3) return null;
   return (
-    <section className="bg-surface py-16 sm:py-20">
+    <section className="reveal band-white py-16 sm:py-24">
       <div className="mx-auto max-w-[1280px] px-4 sm:px-6">
         <p className="text-sm font-semibold text-action">מהתלמידים שלנו</p>
         <h2 className="font-ed mt-1 text-[28px] font-extrabold leading-tight text-balance text-ink sm:text-[36px]">
