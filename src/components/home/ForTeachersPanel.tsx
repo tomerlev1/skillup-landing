@@ -17,7 +17,7 @@ export default function ForTeachersPanel() {
             <GuestOnly>
               <Link
                 href="/signup?role=teacher"
-                className="inline-flex h-12 items-center rounded-[var(--r-pill)] bg-action px-6 text-base font-semibold text-on-action transition-colors duration-200 ease-[var(--ease)] hover:bg-action-hover"
+                className="inline-flex h-12 items-center rounded-[var(--r-pill)] bg-ink px-6 text-base font-semibold text-surface transition-colors duration-200 ease-[var(--ease)] hover:bg-ink-2"
               >
                 פתיחת פרופיל מורה
               </Link>

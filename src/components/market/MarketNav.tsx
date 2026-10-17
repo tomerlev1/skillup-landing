@@ -240,7 +240,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
               </Link>
               <Link
                 href="/signup"
-                className="inline-flex h-10 items-center rounded-pill bg-action px-4 text-sm font-semibold text-on-action transition-colors hover:bg-action-hover sm:px-5"
+                className="inline-flex h-10 items-center rounded-pill bg-ink px-4 text-sm font-semibold text-surface transition-colors hover:bg-ink-2 sm:px-5"
               >
                 הרשמה
               </Link>
@@ -309,7 +309,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
                 </Link>
                 <Link
                   href="/signup"
-                  className="flex h-11 flex-1 items-center justify-center rounded-pill bg-action text-sm font-semibold text-on-action"
+                  className="flex h-11 flex-1 items-center justify-center rounded-pill bg-ink text-sm font-semibold text-surface"
                 >
                   הרשמה
                 </Link>

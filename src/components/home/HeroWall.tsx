@@ -43,7 +43,7 @@ export default function HeroWall({ categories, stats, wall, nextSlots }: HeroWal
           </p>
 
           {/* z-20 keeps the suggestions panel above the wall on mobile */}
-          <div className="relative z-20 mt-7 max-w-[620px] sm:mt-8">
+          <div className={`relative z-20 mt-7 max-w-[620px] sm:mt-8 ${hasWall ? "" : "mx-auto"}`}>
             <SearchPill categories={categories} />
           </div>
 
