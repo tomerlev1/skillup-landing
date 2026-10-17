@@ -26,7 +26,15 @@ describe("buildIcs", () => {
   });
   it("escapes text", () => {
     expect(ics).toContain("SUMMARY:שיעור מתמטיקה\\, עם רותם");
-    expect(ics).toContain("DESCRIPTION:שורה ראשונה\\nשורה\; שנייה");
+    expect(ics).toContain("DESCRIPTION:שורה ראשונה\\nשורה\\; שנייה");
+  });
+  it("escapes each special character with a literal backslash", () => {
+    const one = (title: string) =>
+      buildIcs({ ...event, title }).split("\r\n").find((l) => l.startsWith("SUMMARY:"));
+    expect(one("a;b")).toBe("SUMMARY:a" + String.fromCharCode(92) + ";b");
+    expect(one("a,b")).toBe("SUMMARY:a" + String.fromCharCode(92) + ",b");
+    expect(one("a\\b")).toBe("SUMMARY:a" + String.fromCharCode(92, 92) + "b");
+    expect(one("a\nb")).toBe("SUMMARY:a" + String.fromCharCode(92) + "nb");
   });
   it("includes the uid", () => {
     expect(ics).toContain("UID:b1@skillup");
