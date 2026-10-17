@@ -1,119 +1,8 @@
 @import "tailwindcss";
 
+/* Brand v2 design tokens (spec §7). Only these semantic colors exist; every
+   value follows light/dark through the --c-* variables below. */
 @theme inline {
-  --color-dark-950: #030712;
-  --color-dark-900: #0F172A;
-  --color-dark-800: #1E293B;
-  --color-dark-700: #334155;
-  --color-dark-600: #475569;
-  --color-dark-500: #64748B;
-  --color-dark-400: #94A3B8;
-  --color-dark-300: #CBD5E1;
-  --color-dark-200: #E2E8F0;
-  --color-dark-100: #F1F5F9;
-  --color-dark-50: #F8FAFC;
-
-  /* Brand: matches the iOS app palette (DesignTokens.swift)
-     — indigo #4F46E5 primary + orange dot #F97316 */
-  --color-brand-950: #1E1B4B;
-  --color-brand-900: #312E81;
-  --color-brand-800: #3730A3;
-  --color-brand-700: #4338CA;
-  --color-brand-600: var(--c-action); /* TEMP alias (Task 11 removes) */
-  --color-brand-500: #6366F1;
-  --color-brand-400: #818CF8;
-  --color-brand-300: #A5B4FC;
-  --color-brand-200: #C7D2FE;
-  --color-brand-100: #E0E7FF;
-  --color-brand-50:  #EEF2FF;
-
-  /* Accent orange — the brand "dot" */
-  --color-accent-600: #EA580C;
-  --color-accent-500: #F97316;
-  --color-accent-400: #FB923C;
-  --color-accent-200: #FED7AA;
-  --color-accent-100: #FFEDD5;
-  --color-accent-50:  #FFF7ED;
-
-  --color-indigo-600: #4F46E5;
-  --color-indigo-500: #6366F1;
-  --color-indigo-400: #818CF8;
-  --color-indigo-300: #A5B4FC;
-  --color-indigo-200: #C7D2FE;
-  --color-indigo-100: #E0E7FF;
-  --color-indigo-50: #EEF2FF;
-
-  --color-amber-600: #D97706;
-  --color-amber-500: #F59E0B;
-  --color-amber-400: #FBBF24;
-  --color-amber-200: #FDE68A;
-  --color-amber-100: #FEF3C7;
-  --color-amber-50: #FFFBEB;
-
-  --color-emerald-600: #059669;
-  --color-emerald-500: #10B981;
-  --color-emerald-400: #34D399;
-  --color-emerald-200: #A7F3D0;
-  --color-emerald-100: #D1FAE5;
-  --color-emerald-50: #ECFDF5;
-
-  --color-red-500: #EF4444;
-
-  /* Extended palette for category icons and feature accents */
-  --color-rose-600: #E11D48;
-  --color-rose-500: #F43F5E;
-  --color-rose-200: #FECDD3;
-  --color-rose-100: #FFE4E6;
-  --color-rose-50: #FFF1F2;
-
-  --color-pink-600: #DB2777;
-  --color-pink-500: #EC4899;
-  --color-pink-300: #F9A8D4;
-  --color-pink-200: #FBCFE8;
-  --color-pink-100: #FCE7F3;
-  --color-pink-50: #FDF2F8;
-
-  --color-cyan-700: #0E7490;
-  --color-cyan-600: #0891B2;
-  --color-cyan-500: #06B6D4;
-  --color-cyan-200: #A5F3FC;
-  --color-cyan-100: #CFFAFE;
-  --color-cyan-50: #ECFEFF;
-
-  --color-violet-600: #7C3AED;
-  --color-violet-500: #8B5CF6;
-  --color-violet-200: #DDD6FE;
-  --color-violet-100: #EDE9FE;
-  --color-violet-50: #F5F3FF;
-
-  --color-slate-700: #334155;
-  --color-slate-200: #E2E8F0;
-  --color-slate-100: #F1F5F9;
-
-  /* Editorial ink scale (near-black for display + rules) */
-  --color-ink-1000: #050508;
-  --color-ink-900:  #0E0E14;
-  --color-ink-800:  #1A1A22;
-  --color-ink-700:  #2D2D38;
-  --color-ink-600:  #4B4B57;
-  --color-ink-500:  #6B6B77;
-  --color-ink-400:  #9494A0;
-  --color-ink-300:  #C2C2CB;
-  --color-ink-200:  #E1E1E7;
-  --color-ink-150:  #EDEDF1;
-  --color-ink-100:  #F4F4F7;
-
-  /* Cool app-surface neutrals (section alternation — matches app page bg) */
-  --color-paper-100: #ECEDF3;
-  --color-paper-50:  #F3F4F8;
-  --color-paper-25:  #F8F9FB;
-
-  /* Lesson-mode pastel chips (from the app's mode colors) */
-  --color-mode-online: #CCE2CB;
-  --color-mode-teacher: #F1EF99;
-  --color-mode-student: #FDDBBB;
-
-  /* ===== Brand v2 semantic tokens (follow light/dark via --c-*) ===== */
   --color-action: var(--c-action);
   --color-action-hover: var(--c-action-hover);
   --color-action-soft: var(--c-action-soft);
@@ -217,247 +106,31 @@
 
 .font-ed { font-family: var(--font-ed); }
 
-/* ===================================================================
-   SkillUp — 2026 Editorial tokens
-   =================================================================== */
-:root {
-  /* TEMP aliases to v2 tokens (Task 11 removes) */
-  --bg: var(--c-canvas);
-  --bg-alt: var(--c-surface);
-  --fg: var(--c-ink);
-  --fg-muted: var(--c-ink-3);
-  --fg-faint: var(--c-ink-3);
-  --rule: var(--c-line);
-  --rule-strong: #C2C2CB;
-
-  /* Featured-panel tokens (For Tutors + Final CTA) — soft lavender, from the app's hero surface */
-  --panel-bg: linear-gradient(160deg, #F0E8FA 0%, #E4DCF5 100%);
-  --panel-bg-solid: #EAE2F8;
-  --panel-fg: #0E0E14;
-  --panel-muted: #4B4B57;
-  --panel-sub-muted: #6B6B77;
-  --panel-rule: rgba(30, 27, 75, 0.12);
-  --panel-rule-soft: rgba(30, 27, 75, 0.06);
-  --panel-surface: rgba(255, 255, 255, 0.6);
-  --panel-surface-2: rgba(30, 27, 75, 0.04);
-  --panel-wash-a: rgba(99, 102, 241, 0.14);
-  --panel-wash-b: rgba(249, 115, 22, 0.10);
-
-  --accent: var(--c-action);
-  --accent-soft: var(--c-action-soft);
-  --accent-line: #A5B4FC;
-  --accent-grad-a: #4338CA;
-  --accent-grad-b: #6366F1;
-
-  --font-body: var(--font-ui);
-  --font-display: var(--font-ui);
-  --font-mono-stack: var(--font-ui);
-
-  --text-display-xl: clamp(56px, 8.5vw, 112px);
-  --text-display-2xl: clamp(72px, 11vw, 140px);
-  --text-display-lg: clamp(40px, 5vw, 60px);
-  --text-display-md: clamp(28px, 3.6vw, 44px);
-
-  --r-lg: 22px;
-  --r-xl: 32px;
-
-  /* Brand-tinted shadows (app spec: #4F46E5 at low opacity) */
-  --shadow-sm: 0 1px 2px rgba(79,70,229,0.05), 0 1px 1px rgba(10,10,15,0.02);
-  --shadow-md: 0 4px 16px -4px rgba(79,70,229,0.08), 0 2px 4px rgba(10,10,15,0.03);
-  --shadow-lg: 0 24px 48px -16px rgba(79,70,229,0.10), 0 8px 16px -8px rgba(10,10,15,0.05);
-}
-
 /* ===== BASE ===== */
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: var(--font-body);
+  font-family: var(--font-ui);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--bg);
-  color: var(--fg);
+  background-color: var(--c-canvas);
+  color: var(--c-ink);
   line-height: 1.5;
 }
 
 ::selection {
-  background: var(--accent);
-  color: #fff;
+  background: var(--c-action);
+  color: var(--c-on-action);
 }
 
-/* ===================================================================
-   EDITORIAL TYPE
-   =================================================================== */
-.font-display { font-family: var(--font-display); }
-.font-mono-lc { font-family: var(--font-mono-stack); font-feature-settings: "ss01"; }
-
-.display {
-  font-family: var(--font-display);
-  font-weight: 900;
-  letter-spacing: -0.035em;
-  line-height: 0.95;
-}
-.display-2xl { font-size: var(--text-display-2xl); }
-.display-xl  { font-size: var(--text-display-xl); }
-.display-lg  { font-size: var(--text-display-lg); letter-spacing: -0.03em; line-height: 1.02; }
-.display-md  { font-size: var(--text-display-md); letter-spacing: -0.025em; line-height: 1.05; font-weight: 800; }
-
-.mono-sm {
-  font-family: var(--font-mono-stack);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-}
-
+/* ===== TYPE ===== */
 .eyebrow {
   font-family: var(--font-ui);
   font-size: 13px;
   font-weight: 500;
   color: var(--c-ink-3);
-}
-
-.muted { color: var(--fg-muted); }
-.faint { color: var(--fg-faint); }
-
-/* ===================================================================
-   REVEAL
-   =================================================================== */
-.reveal {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.reveal.in { opacity: 1; transform: translateY(0); }
-
-/* ===================================================================
-   HAIRLINE
-   =================================================================== */
-.hairline {
-  height: 1px;
-  width: 100%;
-  background: linear-gradient(90deg, transparent, var(--rule) 50%, transparent);
-}
-
-/* ===================================================================
-   FAQ — editorial accordion
-   =================================================================== */
-.faq details {
-  border-bottom: 1px solid var(--rule);
-  padding: 22px 8px;
-  transition: background 0.2s;
-}
-.faq details[open] { background: var(--bg-alt); }
-.faq summary {
-  list-style: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 18px;
-  color: var(--fg);
-}
-.faq summary::-webkit-details-marker { display: none; }
-.faq summary .idx {
-  font-family: var(--font-mono-stack);
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--fg-muted);
-  min-width: 42px;
-}
-.faq summary .chev {
-  margin-inline-start: auto;
-  transition: transform 0.3s;
-}
-.faq details[open] summary .chev { transform: rotate(180deg); }
-.faq details p {
-  margin: 14px 0 0;
-  padding-inline-start: 58px;
-  color: var(--fg-muted);
-  font-size: 14px;
-  line-height: 1.65;
-}
-
-/* ===================================================================
-   FINAL CTA + PANEL SECTION — warm-light panel (For Tutors / CTA)
-   =================================================================== */
-.panel-section {
-  background: var(--panel-bg);
-  color: var(--panel-fg);
-  position: relative;
-  overflow: hidden;
-  border-block: 1px solid var(--panel-rule-soft);
-}
-.panel-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 55% 50% at 12% 25%, var(--panel-wash-a), transparent 62%),
-    radial-gradient(ellipse 45% 45% at 90% 85%, var(--panel-wash-b), transparent 62%);
-  pointer-events: none;
-}
-.panel-section > * { position: relative; z-index: 1; }
-
-.panel-muted { color: var(--panel-muted); }
-.panel-sub-muted { color: var(--panel-sub-muted); }
-
-.final-cta {
-  background: var(--panel-bg);
-  color: var(--panel-fg);
-  border-radius: var(--r-xl);
-  padding: clamp(48px, 7vw, 96px) clamp(32px, 6vw, 72px);
-  position: relative;
-  overflow: hidden;
-  border: 1px solid var(--panel-rule-soft);
-}
-.final-cta::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 55% at 18% 30%, var(--panel-wash-a), transparent 60%),
-    radial-gradient(ellipse 50% 50% at 88% 80%, var(--panel-wash-b), transparent 60%);
-  pointer-events: none;
-}
-
-/* ===== ANIMATIONS ===== */
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-@keyframes float-y {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-10px); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-2px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.animate-pulse-dot { animation: pulse-dot 2s ease infinite; }
-.animate-float-y { animation: float-y 6s ease-in-out infinite; }
-
-/* ===================================================================
-   MARKETPLACE LAYER (skillup-web)
-   Web-native browse/booking surfaces. Discipline per the 2026 brief:
-   monochrome ink base, ONE hairline value, ONE shadow tier (hover/
-   overlay only — cards are borderless + shadowless at rest), indigo
-   reserved for the primary action / focus / selected states.
-   =================================================================== */
-:root {
-  --mk-ink: var(--c-ink);
-  --mk-ink-2: var(--c-ink-2);
-  --mk-ink-3: var(--c-ink-3);
-  --mk-hairline: var(--c-line);
-  --mk-band: var(--c-canvas);          /* cool 1–2% indigo-tinted section band */
-  --mk-shadow: 0 0 0 1px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 0, 0, 0.04),
-    0 4px 8px rgba(0, 0, 0, 0.1);
-  --mk-shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* Financial-grade numerals: prices, ratings, counters never jitter. */
@@ -466,19 +139,75 @@ body {
 /* LTR isolation for numbers/prices/phones inside RTL text. */
 .ltr-isolate { direction: ltr; unicode-bidi: isolate; display: inline-block; }
 
-.mk-shadow { box-shadow: var(--mk-shadow); }
-.mk-hairline-b { border-bottom: 1px solid var(--mk-hairline); }
-.mk-hairline-t { border-top: 1px solid var(--mk-hairline); }
-
-/* Listing card: borderless at rest; elevation + image zoom on hover only. */
-.mk-card .mk-card-img {
-  transition: transform 0.3s ease-out;
+/* ===== LOGO (light/dark swap, see components/ui/BrandLogo.tsx) =====
+   Unlayered, so display:none beats layout utilities on the hidden variant;
+   revert-layer hands the visible one back to its Tailwind classes. */
+.logo-dark { display: none; }
+:root[data-theme="dark"] .logo-light { display: none; }
+:root[data-theme="dark"] .logo-dark { display: revert-layer; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo-light { display: none; }
+  :root:not([data-theme="light"]) .logo-dark { display: revert-layer; }
 }
-@media (hover: hover) {
-  .mk-card:hover .mk-card-img { transform: scale(1.04); }
+
+/* ===== 44px HIT AREA =====
+   Keeps a compact visual (e.g. 36px chip) while the tap target is at least
+   44x44, centred on the element (spec §7.3). */
+@utility hit-44 {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
 }
 
-/* Skeleton shimmer (~1.5s cycle), layout-matching, CLS-free. */
+/* ===== FAQ accordion (home + /faq) ===== */
+.faq details {
+  border-bottom: 1px solid var(--c-line);
+  padding: 20px 8px;
+  transition: background-color 200ms var(--ease);
+}
+.faq details[open] { background: var(--c-surface); }
+.faq summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 44px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--c-ink);
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary .idx {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--c-ink-3);
+  min-width: 32px;
+}
+.faq summary .chev {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  color: var(--c-ink-3);
+  transition: transform 200ms var(--ease);
+}
+.faq details[open] summary .chev { transform: rotate(180deg); }
+.faq details p {
+  margin: 12px 0 0;
+  padding-inline-start: 48px;
+  color: var(--c-ink-2);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* ===== SKELETON (~1.5s shimmer, layout-matching, CLS-free) ===== */
 .skeleton {
   position: relative;
   overflow: hidden;
@@ -506,64 +235,36 @@ body {
 .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
-/* ===== Hero entrance + live search (2026 motion, reduced-motion safe) ===== */
+/* ===== MOTION ===== */
 @keyframes rise-in {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .rise-in {
   opacity: 0;
-  animation: rise-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: rise-in 250ms var(--ease) both;
 }
 
 /* Blinking caret for the typewriter placeholder. */
 @keyframes caret-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 .caret { animation: caret-blink 1s step-end infinite; }
 
-@media (prefers-reduced-motion: reduce) {
-  .rise-in { opacity: 1; animation: none; }
-  .caret { animation: none; }
-}
-
 /* ===== FOCUS VISIBLE ===== */
 a:focus-visible,
-button:focus-visible {
+button:focus-visible,
+summary:focus-visible {
   outline: 2px solid var(--c-action);
   outline-offset: 2px;
 }
 
 /* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .rise-in { opacity: 1; animation: none; }
+  .caret { animation: none; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-}
-
-/* ===== LOGO (light/dark swap, see components/ui/BrandLogo.tsx) =====
-   Unlayered, so display:none beats layout utilities on the hidden variant;
-   revert-layer hands the visible one back to its Tailwind classes. */
-.logo-dark { display: none; }
-:root[data-theme="dark"] .logo-light { display: none; }
-:root[data-theme="dark"] .logo-dark { display: revert-layer; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .logo-light { display: none; }
-  :root:not([data-theme="light"]) .logo-dark { display: revert-layer; }
-}
-
-/* ===== 44px HIT AREA =====
-   Keeps a compact visual (e.g. 36px chip) while the tap target is at least
-   44x44, centred on the element (spec §7.3). */
-@utility hit-44 {
-  position: relative;
-  &::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: max(100%, 44px);
-    height: max(100%, 44px);
-    transform: translate(-50%, -50%);
   }
 }
