@@ -31,7 +31,7 @@ export default async function MessagesPage() {
             : "השיחות שלכם עם מורים ותלמידים"
         }
       />
-    <div className="mx-auto max-w-[960px] px-4 pb-16 sm:px-6">
+    <div className="relative mx-auto max-w-[960px] px-4 pb-16 sm:px-6">
 
       {conversations.length === 0 ? (
         <div className="mt-4 rounded-[var(--r-lg)] bg-surface px-6 py-16 text-center shadow-[var(--shadow-card)] ring-1 ring-line/60">

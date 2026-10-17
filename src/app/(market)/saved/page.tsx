@@ -103,7 +103,7 @@ export default function SavedTutorsPage() {
           )
         }
       />
-    <div className="mx-auto max-w-[960px] px-4 pb-16 sm:px-6">
+    <div className="relative mx-auto max-w-[960px] px-4 pb-16 sm:px-6">
 
       {loading ? (
         <div>

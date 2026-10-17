@@ -32,7 +32,7 @@ export default async function SchedulePage() {
         subtitle="לוחצים על שעה כדי לפתוח אותה להזמנה. מסתנכרן מיד עם האפליקציה."
         back={{ href: "/account", label: "לפרופיל שלי" }}
       />
-      <div className="mx-auto max-w-[960px] px-4 pb-16 sm:px-6">
+      <div className="relative mx-auto max-w-[960px] px-4 pb-16 sm:px-6">
         <ScheduleManager
           teacherId={profile.userId}
           slotMinutes={teacher?.default_lesson_duration_minutes ?? 60}
