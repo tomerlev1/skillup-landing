@@ -163,6 +163,7 @@ export default function MarketNav({ categories }: MarketNavProps) {
         </div>
 
         <div className="ms-auto flex items-center gap-2 sm:gap-3">
+          <ThemeToggle />
           {user && profile ? (
             <div className="relative" ref={accountRef}>
               <button
@@ -212,10 +213,6 @@ export default function MarketNav({ categories }: MarketNavProps) {
                       {label}
                     </Link>
                   ))}
-                  <div role="none" className="px-3 py-2.5">
-                    <p className="mb-2 text-sm font-medium text-ink">ערכת צבע</p>
-                    <ThemeToggle showCaption={false} />
-                  </div>
                   <button
                     type="button"
                     role="menuitem"

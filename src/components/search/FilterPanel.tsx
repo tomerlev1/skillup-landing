@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { MapPin, X } from "lucide-react";
+import { Check, ChevronDown, MapPin, Star, X } from "lucide-react";
+import CategoryIcon from "@/components/market/CategoryIcon";
 import { createClient } from "@/lib/supabase/client";
 import Chip from "@/components/ui/Chip";
 import { PRICE_RANGES } from "@/lib/market-constants";
@@ -25,6 +26,84 @@ const RATING_OPTIONS = [
   { label: "4 ומעלה", value: 4 },
   { label: "4.5 ומעלה", value: 4.5 },
 ];
+
+/** Collapsible filter group: the header shows the current choice, so a
+ *  closed group still tells you what is applied. */
+function Section({
+  title,
+  summary,
+  defaultOpen = false,
+  children,
+}: {
+  title: string;
+  summary?: string | null;
+  defaultOpen?: boolean;
+  children: React.ReactNode;
+}) {
+  const [open, setOpen] = useState(defaultOpen || Boolean(summary));
+  return (
+    <section className="border-b border-line/70 last:border-b-0">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="flex w-full cursor-pointer items-center justify-between gap-3 py-3.5 text-start"
+      >
+        <span className="min-w-0">
+          <span className="block text-[15px] font-extrabold text-ink">{title}</span>
+          {summary && (
+            <span className="mt-0.5 block truncate text-[13px] font-semibold text-action">{summary}</span>
+          )}
+        </span>
+        <ChevronDown
+          size={18}
+          strokeWidth={2}
+          aria-hidden="true"
+          className={`shrink-0 text-ink-3 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      <div className={`grid transition-[grid-template-rows] duration-300 ease-[var(--ease)] ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+        <div className="overflow-hidden">
+          <div className="pb-4">{children}</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/** Compact checklist row used for single/multi choice lists. */
+function OptionRow({
+  selected,
+  onClick,
+  children,
+  multi = false,
+}: {
+  selected: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+  multi?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={selected}
+      className={`flex min-h-10 w-full cursor-pointer items-center gap-3 rounded-[var(--r-sm)] px-2.5 text-start text-[15px] transition-colors ${
+        selected ? "bg-tint-indigo font-bold text-tint-indigo-fg" : "text-ink-2 hover:bg-canvas hover:text-ink"
+      }`}
+    >
+      <span
+        aria-hidden="true"
+        className={`grid size-[18px] shrink-0 place-items-center border-2 transition-colors ${
+          multi ? "rounded-[var(--r-sm)] scale-90" : "rounded-full"
+        } ${selected ? "border-action bg-action text-on-action" : "border-line bg-surface"}`}
+      >
+        {selected && <Check size={12} strokeWidth={3.5} />}
+      </span>
+      <span className="min-w-0 flex-1 truncate">{children}</span>
+    </button>
+  );
+}
 
 // The full filter set. Desktop renders it as the (RTL-right) sidebar with
 // instant apply; the mobile bottom sheet renders it in batch mode with a
@@ -128,18 +207,26 @@ export default function FilterPanel({
 
   const apply = () => commit(draft);
 
+  // Summaries shown on collapsed group headers.
+  const categoryName = categories.find((c) => c.id === draft.categoryId)?.name_he ?? null;
+  const subjectName = subjects.find((s) => s.id === draft.subjectIds?.[0])?.name_he ?? null;
+  const modesSummary = draft.modes?.length
+    ? draft.modes.map((m) => LESSON_MODE_LABELS[m]).join(", ")
+    : null;
+  const priceSummary =
+    PRICE_RANGES.find((r) => r.min === draft.minPrice && r.max === draft.maxPrice)?.label ?? null;
+  const ratingSummary = RATING_OPTIONS.find((o) => o.value === draft.minRating)?.label ?? null;
+
   return (
-    <div className="space-y-7">
+    <div>
       {/* Category */}
-      <fieldset>
-        <legend className="mb-3 text-[15px] font-bold text-ink">תחום</legend>
-        <div className="flex flex-wrap gap-2">
+      <Section title="תחום" summary={categoryName} defaultOpen>
+        <div className="space-y-0.5">
           {categories.map((cat) => {
             const selected = draft.categoryId === cat.id;
             return (
-              <Chip
+              <OptionRow
                 key={cat.id}
-                size="sm"
                 selected={selected}
                 onClick={() =>
                   update({
@@ -148,18 +235,20 @@ export default function FilterPanel({
                   })
                 }
               >
-                {cat.name_he}
-              </Chip>
+                <span className="inline-flex items-center gap-2">
+                  <CategoryIcon iconName={cat.icon_name} size={16} className="shrink-0 opacity-70" />
+                  {cat.name_he}
+                </span>
+              </OptionRow>
             );
           })}
         </div>
-      </fieldset>
+      </Section>
 
       {/* Subject (within category) */}
       {subjects.length > 0 && (
-        <fieldset>
-          <legend className="mb-3 text-[15px] font-bold text-ink">מקצוע</legend>
-          <div className="flex max-h-44 flex-wrap gap-2 overflow-y-auto">
+        <Section title="מקצוע" summary={subjectName} defaultOpen>
+          <div className="flex max-h-48 flex-wrap gap-1.5 overflow-y-auto pe-1">
             {subjects.map((s) => {
               const selected = draft.subjectIds?.[0] === s.id;
               return (
@@ -167,24 +256,21 @@ export default function FilterPanel({
                   key={s.id}
                   size="sm"
                   selected={selected}
-                  onClick={() =>
-                    update({ subjectIds: selected ? undefined : [s.id] })
-                  }
+                  onClick={() => update({ subjectIds: selected ? undefined : [s.id] })}
                 >
                   {s.name_he}
                 </Chip>
               );
             })}
           </div>
-        </fieldset>
+        </Section>
       )}
 
       {/* City */}
-      <fieldset>
-        <legend className="mb-3 text-[15px] font-bold text-ink">עיר</legend>
+      <Section title="עיר" summary={draft.cityId ? cityName : null}>
         {draft.cityId && cityName ? (
-          <span className="inline-flex items-center gap-2 rounded-full bg-action py-2 ps-4 pe-2 text-[15px] font-bold text-on-action shadow-[0_10px_24px_-12px_rgba(79,70,229,0.85)]">
-            <MapPin strokeWidth={1.75} size={16} />
+          <span className="inline-flex items-center gap-2 rounded-full bg-tint-indigo py-1.5 ps-3.5 pe-1.5 text-sm font-bold text-tint-indigo-fg">
+            <MapPin strokeWidth={2} size={15} />
             {cityName}
             <button
               type="button"
@@ -193,21 +279,28 @@ export default function FilterPanel({
                 update({ cityId: undefined });
                 setCityName(null);
               }}
-              className="hit-44 grid h-8 w-8 cursor-pointer place-items-center rounded-full hover:bg-surface/20"
+              className="hit-44 grid h-7 w-7 cursor-pointer place-items-center rounded-full hover:bg-brand-100"
             >
-              <X strokeWidth={1.75} size={16} />
+              <X strokeWidth={2} size={15} />
             </button>
           </span>
         ) : (
           <div className="relative">
+            <MapPin
+              size={16}
+              strokeWidth={2}
+              aria-hidden="true"
+              className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-ink-3"
+            />
             <input
               value={cityQuery}
               onChange={(e) => setCityQuery(e.target.value)}
               placeholder="חיפוש עיר..."
-              className="h-11 w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 text-sm outline-none transition-colors placeholder:text-ink-3 focus:border-ink"
+              aria-label="חיפוש עיר"
+              className="h-11 w-full rounded-[var(--r-sm)] border border-line bg-canvas ps-9 pe-3 text-sm outline-none placeholder:text-ink-3"
             />
             {cityOptions.length > 0 && (
-              <div className="shadow-[var(--shadow-lift)] absolute top-full inset-x-0 z-30 mt-1 overflow-hidden rounded-[var(--r-sm)] border border-line bg-surface py-1">
+              <div className="absolute inset-x-0 top-full z-30 mt-1 overflow-hidden rounded-[var(--r-sm)] bg-surface py-1 shadow-[var(--shadow-lift)] ring-1 ring-line/60">
                 {cityOptions.map((c) => (
                   <button
                     key={c.id}
@@ -227,46 +320,41 @@ export default function FilterPanel({
             )}
           </div>
         )}
-      </fieldset>
+      </Section>
 
       {/* Lesson mode */}
-      <fieldset>
-        <legend className="mb-3 text-[15px] font-bold text-ink">אופן הלימוד</legend>
-        <div className="flex flex-wrap gap-2">
+      <Section title="אופן הלימוד" summary={modesSummary} defaultOpen>
+        <div className="space-y-0.5">
           {(Object.keys(LESSON_MODE_LABELS) as LessonMode[]).map((mode) => {
             const selected = draft.modes?.includes(mode) ?? false;
             return (
-              <Chip
+              <OptionRow
                 key={mode}
-                size="sm"
+                multi
                 selected={selected}
                 onClick={() => {
                   const current = draft.modes ?? [];
-                  const next = selected
-                    ? current.filter((m) => m !== mode)
-                    : [...current, mode];
+                  const next = selected ? current.filter((m) => m !== mode) : [...current, mode];
                   update({ modes: next.length ? next : undefined });
                 }}
               >
                 {LESSON_MODE_LABELS[mode]}
-              </Chip>
+              </OptionRow>
             );
           })}
         </div>
-      </fieldset>
+      </Section>
 
       {/* Price */}
-      <fieldset>
-        <legend className="mb-3 text-[15px] font-bold text-ink">מחיר לשעה</legend>
-        <div className="flex flex-wrap gap-2">
+      <Section title="מחיר לשעה" summary={priceSummary}>
+        <div className="grid grid-cols-3 gap-1.5">
           {PRICE_RANGES.map((range) => {
-            const selected =
-              draft.minPrice === range.min && draft.maxPrice === range.max;
+            const selected = draft.minPrice === range.min && draft.maxPrice === range.max;
             return (
-              <Chip
+              <button
                 key={range.label}
-                size="sm"
-                selected={selected}
+                type="button"
+                aria-pressed={selected}
                 onClick={() =>
                   update(
                     selected
@@ -274,37 +362,45 @@ export default function FilterPanel({
                       : { minPrice: range.min, maxPrice: range.max },
                   )
                 }
+                className={`min-h-10 cursor-pointer rounded-[var(--r-sm)] px-1 text-[13px] font-bold transition-colors ${
+                  selected
+                    ? "bg-action text-on-action"
+                    : "bg-canvas text-ink-2 ring-1 ring-line/70 hover:text-ink hover:ring-brand-200"
+                }`}
               >
                 <span className="ltr-isolate tnum">{range.label}</span>
-              </Chip>
+              </button>
             );
           })}
         </div>
-      </fieldset>
+      </Section>
 
       {/* Rating */}
-      <fieldset>
-        <legend className="mb-3 text-[15px] font-bold text-ink">דירוג</legend>
-        <div className="flex flex-wrap gap-2">
+      <Section title="דירוג" summary={ratingSummary ? `${ratingSummary} כוכבים` : null}>
+        <div className="grid grid-cols-2 gap-1.5">
           {RATING_OPTIONS.map((opt) => {
             const selected = draft.minRating === opt.value;
             return (
-              <Chip
+              <button
                 key={opt.value}
-                size="sm"
-                selected={selected}
-                onClick={() =>
-                  update({ minRating: selected ? undefined : opt.value })
-                }
+                type="button"
+                aria-pressed={selected}
+                onClick={() => update({ minRating: selected ? undefined : opt.value })}
+                className={`inline-flex min-h-10 cursor-pointer items-center justify-center gap-1 rounded-[var(--r-sm)] text-[13px] font-bold transition-colors ${
+                  selected
+                    ? "bg-action text-on-action"
+                    : "bg-canvas text-ink-2 ring-1 ring-line/70 hover:text-ink hover:ring-brand-200"
+                }`}
               >
-                ★ <span className="tnum">{opt.label}</span>
-              </Chip>
+                <Star size={14} strokeWidth={2} fill="currentColor" className={selected ? "" : "text-star"} aria-hidden="true" />
+                <span className="tnum">{opt.label}</span>
+              </button>
             );
           })}
         </div>
-      </fieldset>
+      </Section>
 
-      {batch && renderApply?.(previewCount, apply)}
+      {batch && <div className="pt-4">{renderApply?.(previewCount, apply)}</div>}
     </div>
   );
 }

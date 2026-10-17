@@ -1,6 +1,5 @@
 import Link from "next/link";
 import AppStoreButtons from "@/components/market/AppStoreButtons";
-import ThemeToggle from "@/components/ui/ThemeToggle";
 import BrandLogo from "@/components/ui/BrandLogo";
 import { CONTACT_EMAIL } from "@/lib/constants";
 import { categorySlug, citySlug } from "@/lib/slugs";
@@ -23,7 +22,7 @@ function Column({ title, children }: { title: string; children: React.ReactNode 
   );
 }
 
-// Footer: a brand column (logo, promise, apps, display switch) beside the
+// Footer: a brand column (logo, promise, apps) beside the
 // browse/SEO link columns. It fades in from the page instead of starting at a
 // hard line.
 export default function MarketFooter({ categories, majorCities }: MarketFooterProps) {
@@ -41,10 +40,6 @@ export default function MarketFooter({ categories, majorCities }: MarketFooterPr
             </p>
             <p className="mt-7 text-sm font-extrabold text-ink">האפליקציה בכיס</p>
             <AppStoreButtons size="compact" className="mt-3" />
-            <p className="mt-7 text-sm font-extrabold text-ink">מצב תצוגה</p>
-            <div className="mt-3">
-              <ThemeToggle />
-            </div>
           </div>
 
           {/* Link columns */}

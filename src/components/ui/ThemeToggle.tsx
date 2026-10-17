@@ -4,20 +4,13 @@ import { useEffect, useState } from "react";
 import { Moon, MonitorSmartphone, Sun } from "lucide-react";
 import { resolveTheme, THEME_STORAGE_KEY, type ThemePref } from "@/lib/theme";
 
-// Physical order of the switch (left → right): dark, auto, light.
-// Like a light switch: right is "on" (light), left is "off" (dark), and the
-// middle follows the device.
+// Physical order (left → right): dark, auto, light. Like a light switch:
+// right is "on" (light), left is "off" (dark), the middle follows the device.
 const STOPS: { value: ThemePref; label: string; icon: typeof Sun }[] = [
-  { value: "dark", label: "כהה", icon: Moon },
+  { value: "dark", label: "מצב כהה", icon: Moon },
   { value: "system", label: "לפי המכשיר", icon: MonitorSmartphone },
-  { value: "light", label: "בהיר", icon: Sun },
+  { value: "light", label: "מצב בהיר", icon: Sun },
 ];
-
-const CAPTION: Record<ThemePref, string> = {
-  light: "מצב בהיר",
-  dark: "מצב כהה",
-  system: "לפי המכשיר",
-};
 
 function readPref(): ThemePref {
   try {
@@ -32,9 +25,12 @@ function apply(pref: ThemePref) {
   document.documentElement.setAttribute("data-theme", resolveTheme(pref, systemDark));
 }
 
-const STOP = 40; // px between stops (track 128 = 3×40 + 8 padding)
+const STOP = 30; // px between stops: track 98 = 3×30 + 8 padding
 
-export default function ThemeToggle({ showCaption = true }: { showCaption?: boolean }) {
+// Compact, tactile three-way switch for the navbar: a recessed track and a
+// raised knob that slides between the stops. Neutral by design — the brand
+// colour stays reserved for actions.
+export default function ThemeToggle() {
   const [pref, setPref] = useState<ThemePref>("system");
 
   useEffect(() => {
@@ -69,79 +65,44 @@ export default function ThemeToggle({ showCaption = true }: { showCaption?: bool
   const index = STOPS.findIndex((s) => s.value === pref);
   const Active = STOPS[index].icon;
 
-  const track =
-    pref === "light"
-      ? "bg-[linear-gradient(90deg,#C9E6FF,#FFE9B8)]"
-      : pref === "dark"
-        ? "bg-[linear-gradient(90deg,#1E1B4B,#3B3486)]"
-        : "bg-[linear-gradient(90deg,#2B2766,#C9C3FF_50%,#FFE9B8)]";
-
   return (
-    <div className="inline-flex items-center gap-3">
-      <div
-        role="radiogroup"
-        aria-label="מצב תצוגה"
-        dir="ltr"
-        onKeyDown={onKeyDown}
-        className={`relative h-12 w-[128px] shrink-0 rounded-pill p-1 shadow-[inset_0_1px_3px_rgba(20,19,31,0.25)] ring-1 ring-line/60 transition-[background] duration-500 ${track}`}
+    <div
+      role="radiogroup"
+      aria-label="מצב תצוגה"
+      title={STOPS[index].label}
+      dir="ltr"
+      onKeyDown={onKeyDown}
+      className="theme-track relative h-[38px] w-[98px] shrink-0 rounded-pill p-1"
+    >
+      {/* Raised knob */}
+      <span
+        aria-hidden="true"
+        className="theme-knob absolute start-1 top-1 grid size-[30px] place-items-center rounded-full transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+        style={{ transform: `translateX(${index * STOP}px)` }}
       >
-        {/* Stars appear at night */}
-        <span
-          aria-hidden="true"
-          className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${pref === "dark" ? "opacity-100" : "opacity-0"}`}
-        >
-          <span className="absolute start-[56px] top-[12px] size-[3px] rounded-full bg-white/90" />
-          <span className="absolute start-[78px] top-[26px] size-[2px] rounded-full bg-white/70" />
-          <span className="absolute start-[100px] top-[14px] size-[2px] rounded-full bg-white/80" />
-          <span className="absolute start-[112px] top-[30px] size-[3px] rounded-full bg-white/60" />
-        </span>
+        <Active key={pref} size={16} strokeWidth={2.25} className="theme-knob-icon text-ink" />
+      </span>
 
-        {/* Knob */}
-        <span
-          aria-hidden="true"
-          className="absolute top-1 start-1 grid size-10 place-items-center rounded-full bg-white shadow-[0_4px_10px_-2px_rgba(20,19,31,0.35)] transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
-          style={{ transform: `translateX(${index * STOP}px)` }}
-        >
-          <Active
-            key={pref}
-            size={20}
-            strokeWidth={2.25}
-            className={`theme-knob-icon ${
-              pref === "light" ? "text-[#E08A00]" : pref === "dark" ? "text-[#4338CA]" : "text-action"
-            }`}
-          />
-        </span>
-
-        {/* Hit targets */}
-        <div className="relative grid h-full grid-cols-3">
-          {STOPS.map((s) => (
-            <button
-              key={s.value}
-              type="button"
-              role="radio"
-              aria-checked={pref === s.value}
-              aria-label={s.label}
-              tabIndex={pref === s.value ? 0 : -1}
-              onClick={() => choose(s.value)}
-              className="grid cursor-pointer place-items-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-action"
-            >
-              {pref !== s.value && (
-                <s.icon
-                  size={16}
-                  strokeWidth={2}
-                  aria-hidden="true"
-                  className={pref === "dark" ? "text-white/70" : "text-ink/45"}
-                />
-              )}
-            </button>
-          ))}
-        </div>
+      {/* Stops (hit targets) */}
+      <div className="relative grid h-full grid-cols-3">
+        {STOPS.map((s) => (
+          <button
+            key={s.value}
+            type="button"
+            role="radio"
+            aria-checked={pref === s.value}
+            aria-label={s.label}
+            title={s.label}
+            tabIndex={pref === s.value ? 0 : -1}
+            onClick={() => choose(s.value)}
+            className="hit-44 grid cursor-pointer place-items-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-action"
+          >
+            {pref !== s.value && (
+              <s.icon size={14} strokeWidth={2} aria-hidden="true" className="text-ink-3" />
+            )}
+          </button>
+        ))}
       </div>
-      {showCaption && (
-        <span className="text-sm font-semibold text-ink-2" aria-live="polite">
-          {CAPTION[pref]}
-        </span>
-      )}
     </div>
   );
 }

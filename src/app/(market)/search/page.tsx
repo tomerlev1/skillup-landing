@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { SearchX } from "lucide-react";
 import ActiveFilters from "@/components/search/ActiveFilters";
@@ -9,7 +10,7 @@ import { getNextSlots } from "@/lib/data/availability";
 import { searchTeachers } from "@/lib/data/teachers";
 import { getCategories } from "@/lib/data/taxonomy";
 import { createPublicClient } from "@/lib/supabase/public";
-import { parseSearchParams, type RawSearchParams } from "@/lib/search-params";
+import { parseSearchParams, searchHref, type RawSearchParams } from "@/lib/search-params";
 import { categorySlug } from "@/lib/slugs";
 
 const PAGE_SIZE = 24;
@@ -74,6 +75,17 @@ export default async function SearchPage({
     ? (categories.find((c) => c.id === applied.categoryId)?.name_he ?? null)
     : null;
 
+  // Applied filter groups (search text and sort aren't filters).
+  const activeCount = [
+    applied.categoryId,
+    applied.subjectIds?.length,
+    applied.cityId,
+    applied.modes?.length,
+    applied.minPrice != null || applied.maxPrice != null,
+    applied.minRating,
+  ].filter(Boolean).length;
+  const clearHref = searchHref({ query: applied.query, sort: applied.sort });
+
   const heading = subjectName
     ? `מורים ל${subjectName}`
     : categoryName
@@ -92,13 +104,35 @@ export default async function SearchPage({
       <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
         {/* Filter sidebar — first in DOM = the RIGHT side in RTL */}
         <aside className="hidden lg:block" aria-label="סינון תוצאות">
-          <div className="sticky top-24 rounded-[var(--r-lg)] bg-surface p-5 shadow-[var(--shadow-card)] ring-1 ring-line/60">
-            <h2 className="mb-5 text-lg font-extrabold text-ink">סינון</h2>
-            <FilterPanel
-              categories={categories}
-              applied={applied}
-              appliedCityName={cityName}
-            />
+          {/* Sticky panel that always fits the viewport: fixed header,
+              internally scrolling body with soft edge fades. */}
+          <div className="sticky top-24 flex max-h-[calc(100dvh-7.5rem)] flex-col overflow-hidden rounded-[var(--r-lg)] bg-surface shadow-[var(--shadow-card)] ring-1 ring-line/60">
+            <div className="flex items-center justify-between gap-3 border-b border-line/70 px-5 py-4">
+              <h2 className="flex items-center gap-2 text-lg font-extrabold text-ink">
+                סינון
+                {activeCount > 0 && (
+                  <span className="tnum grid size-6 place-items-center rounded-full bg-action text-xs font-bold text-on-action">
+                    {activeCount}
+                  </span>
+                )}
+              </h2>
+              {activeCount > 0 && (
+                <Link
+                  href={clearHref}
+                  scroll={false}
+                  className="hit-44 text-sm font-bold text-action hover:underline"
+                >
+                  ניקוי הכל
+                </Link>
+              )}
+            </div>
+            <div className="filter-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-5">
+              <FilterPanel
+                categories={categories}
+                applied={applied}
+                appliedCityName={cityName}
+              />
+            </div>
           </div>
         </aside>
 

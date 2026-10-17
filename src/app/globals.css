@@ -494,3 +494,35 @@ a.store-btn:hover::before { transform: translateX(120%); }
   button:active { transform: scale(0.98); }
 }
 .store-btn--soon::before { display: none; }
+
+/* Navbar theme switch: recessed track + raised knob (tactile, neutral) */
+.theme-track {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--c-line) 70%, var(--c-canvas)) 0%, var(--c-canvas) 100%);
+  box-shadow:
+    inset 0 2px 4px rgba(20, 19, 31, 0.14),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.7),
+    0 1px 0 rgba(255, 255, 255, 0.6);
+  outline: 1px solid color-mix(in srgb, var(--c-line) 80%, transparent);
+  outline-offset: -1px;
+}
+.theme-knob {
+  background: linear-gradient(180deg, #FFFFFF 0%, #ECEBF4 100%);
+  box-shadow:
+    0 3px 6px -1px rgba(20, 19, 31, 0.28),
+    0 1px 2px rgba(20, 19, 31, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+:root[data-theme="dark"] .theme-track {
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.55), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+}
+:root[data-theme="dark"] .theme-knob {
+  background: linear-gradient(180deg, #3A3666 0%, #24214A 100%);
+  box-shadow: 0 3px 8px -1px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+/* Filter sidebar body: thin scrollbar + soft fades at the scroll edges */
+.filter-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-brand-200) transparent;
+  mask-image: linear-gradient(180deg, transparent 0, #000 14px, #000 calc(100% - 22px), transparent 100%);
+}
