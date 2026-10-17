@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SkillUp — Web
 
-## Getting Started
+אתר המרקטפלייס של SkillUp: חיפוש מורים פרטיים, פרופיל מורה, קביעת שיעור, הודעות ואזור אישי.
+Next.js 16 (App Router) · React 19 · Tailwind v4 · Supabase. עברית, RTL.
 
-First, run the development server:
+## הרצה מקומית
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # למלא את מפתחות Supabase של סביבת ה-DEV
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| פקודה | מה עושה |
+| --- | --- |
+| `npm run dev` | שרת פיתוח |
+| `npm run build` / `npm start` | בנייה והרצה כמו בפרודקשן |
+| `npm test` | בדיקות (vitest), כולל בדיקות שמירה על המותג |
+| `npm run lint` | ESLint |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## מבנה
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/app/(market)` — כל דפי האתר (בית, חיפוש, מורה, הזמנה, הודעות, פרופיל, מאמרים, משפטי).
+- `src/app/{chat,lesson,teacher,dev/teacher,verify-email,settings,unsubscribe}` — דפי נחיתה ל-Universal Links של האפליקציה. **לא למחוק**: הם רשומים ב-`public/.well-known/apple-app-site-association`.
+- `src/components` — רכיבי UI לפי תחום (`market`, `search`, `account`, `chat`, `booking`, `home`, `ui`).
+- `src/lib` — לוגיקה, גישה לנתונים (`lib/data`) ולקוחות Supabase.
+- `src/app/globals.css` — טוקנים של המותג (צבעים, רדיוסים, צללים, מצב כהה).
+- `docs/brand` — מסמך המיתוג. `docs/superpowers` — אפיון ותוכנית העיצוב מחדש.
 
-## Learn More
+## כללי מותג
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+רדיוסים רק דרך `rounded-[var(--r-*)]` / `rounded-full`, צבעים רק מהטוקנים. `src/lib/__tests__/brand-guards.test.ts` נכשל אם הכללים נשברים.
