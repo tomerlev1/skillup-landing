@@ -10,7 +10,7 @@ export interface PublicReview {
 
 /**
  * Published reviews for a teacher, with the reviewer's FIRST name (anon-safe
- * RPC — no other student PII is exposed). Falls back to "תלמיד/ה".
+ * RPC — no other student PII is exposed). Falls back to the RPC default name.
  */
 export async function getTeacherReviews(
   teacherId: string,

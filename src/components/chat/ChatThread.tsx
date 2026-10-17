@@ -215,25 +215,25 @@ export default function ChatThread({
   return (
     <div className="mx-auto flex h-[calc(100dvh-64px)] max-w-[760px] flex-col px-0 sm:px-6">
       {/* Thread header */}
-      <div className="mk-hairline-b flex items-center gap-3 bg-white px-4 py-3 sm:px-0">
+      <div className="border-b border-line flex items-center gap-3 bg-surface px-4 py-3 sm:px-0">
         <Link
           href="/messages"
           aria-label="חזרה להודעות"
-          className="grid h-9 w-9 shrink-0 place-items-center rounded-full transition-colors hover:bg-paper-25"
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-[var(--r-pill)] transition-colors hover:bg-canvas"
         >
           <ChevronRight size={18} />
         </Link>
         {peerProfileHref ? (
           <Link href={peerProfileHref} className="flex min-w-0 items-center gap-3">
             <Avatar src={peerAvatar} name={peerName} size={38} />
-            <span className="truncate text-[15px] font-semibold text-[var(--mk-ink)] hover:underline">
+            <span className="truncate text-[15px] font-semibold text-ink hover:underline">
               {peerName}
             </span>
           </Link>
         ) : (
           <div className="flex min-w-0 items-center gap-3">
             <Avatar src={peerAvatar} name={peerName} size={38} />
-            <span className="truncate text-[15px] font-semibold text-[var(--mk-ink)]">
+            <span className="truncate text-[15px] font-semibold text-ink">
               {peerName}
             </span>
           </div>
@@ -241,16 +241,16 @@ export default function ChatThread({
       </div>
 
       {/* Messages */}
-      <div className="min-h-0 flex-1 space-y-2 overflow-y-auto bg-[var(--mk-band)] px-4 py-5 sm:rounded-2xl">
+      <div className="min-h-0 flex-1 space-y-2 overflow-y-auto bg-canvas px-4 py-5 sm:rounded-[var(--r-md)]">
         {messages.map((m) => {
           const mine = m.sender_id === userId;
           return (
             <div key={m.id} className={`flex ${mine ? "justify-start" : "justify-end"}`}>
               <div
-                className={`max-w-[78%] rounded-2xl px-4 py-2.5 ${
+                className={`max-w-[78%] rounded-[var(--r-md)] px-4 py-2.5 ${
                   mine
-                    ? "rounded-ee-md bg-brand-600 text-white"
-                    : "rounded-es-md border border-[var(--mk-hairline)] bg-white text-[var(--mk-ink)]"
+                    ? "rounded-ee-md bg-action text-on-action"
+                    : "rounded-es-md border border-line bg-surface text-ink"
                 }`}
               >
                 {m.content && (
@@ -259,14 +259,14 @@ export default function ChatThread({
                   </p>
                 )}
                 {(m.image_url || m.file_url || m.attachment_path) && (
-                  <p className={`mt-1 inline-flex items-center gap-1.5 text-[13px] ${mine ? "text-white/85" : "text-[var(--mk-ink-3)]"}`}>
+                  <p className={`mt-1 inline-flex items-center gap-1.5 text-sm ${mine ? "text-on-action/85" : "text-ink-3"}`}>
                     <Paperclip size={13} />
                     {m.file_name ?? "קובץ מצורף (זמין באפליקציה)"}
                   </p>
                 )}
                 <p
-                  className={`tnum mt-1 text-end text-[11px] ${
-                    mine ? "text-white/70" : "text-[var(--mk-ink-3)]"
+                  className={`tnum mt-1 text-end text-sm ${
+                    mine ? "text-on-action/70" : "text-ink-3"
                   }`}
                 >
                   {formatTime(m.created_at)}
@@ -278,8 +278,8 @@ export default function ChatThread({
         })}
         {peerTyping && (
           <div className="flex justify-end">
-            <div className="rounded-2xl rounded-es-md border border-[var(--mk-hairline)] bg-white px-4 py-2.5 text-sm text-[var(--mk-ink-3)]">
-              {peerName} מקליד/ה...
+            <div className="rounded-[var(--r-md)] rounded-es-md border border-line bg-surface px-4 py-2.5 text-sm text-ink-3">
+              {peerName} מקלידים...
             </div>
           </div>
         )}
@@ -292,7 +292,7 @@ export default function ChatThread({
           e.preventDefault();
           send();
         }}
-        className="flex items-end gap-2 bg-white px-4 py-3 sm:px-0"
+        className="flex items-end gap-2 bg-surface px-4 py-3 sm:px-0"
       >
         <textarea
           value={draft}
@@ -309,13 +309,13 @@ export default function ChatThread({
           rows={1}
           placeholder="כתבו הודעה..."
           aria-label="הודעה"
-          className="max-h-32 min-h-12 flex-1 resize-none rounded-2xl border border-[var(--mk-hairline)] bg-white px-4 py-3 text-[15px] leading-snug outline-none transition-colors focus:border-[var(--mk-ink)]"
+          className="max-h-32 min-h-12 flex-1 resize-none rounded-[var(--r-md)] border border-line bg-surface px-4 py-3 text-[15px] leading-snug outline-none transition-colors focus:border-action"
         />
         <button
           type="submit"
           disabled={!draft.trim()}
           aria-label="שליחה"
-          className="grid h-12 w-12 shrink-0 cursor-pointer place-items-center rounded-full bg-brand-600 text-white transition-colors hover:bg-brand-700 disabled:opacity-40"
+          className="grid h-12 w-12 shrink-0 cursor-pointer place-items-center rounded-[var(--r-pill)] bg-action text-on-action transition-colors hover:bg-action-hover disabled:opacity-40"
         >
           <SendHorizontal size={18} className="-scale-x-100" />
         </button>

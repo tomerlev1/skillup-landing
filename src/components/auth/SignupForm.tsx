@@ -36,9 +36,9 @@ export default function SignupForm() {
   // navigations that never touch the server.
   if (currentUser && !pending && !confirmEmailSent) {
     return (
-      <p className="rounded-2xl bg-[var(--mk-band)] p-6 text-center text-sm leading-relaxed text-[var(--mk-ink-2)]">
+      <p className="rounded-[var(--r-md)] bg-canvas p-6 text-center text-sm leading-relaxed text-ink-2">
         אתם כבר מחוברים לחשבון SkillUp.{" "}
-        <Link href="/account" className="font-semibold text-brand-700 hover:underline">
+        <Link href="/account" className="font-semibold text-action hover:underline">
           לפרופיל שלי
         </Link>
       </p>
@@ -88,11 +88,11 @@ export default function SignupForm() {
 
   if (confirmEmailSent) {
     return (
-      <div className="rounded-2xl bg-[var(--mk-band)] p-6 text-center">
-        <h2 className="text-base font-semibold text-[var(--mk-ink)]">
+      <div className="rounded-[var(--r-md)] bg-canvas p-6 text-center">
+        <h2 className="text-base font-semibold text-ink">
           נשלח אליכם מייל אימות
         </h2>
-        <p className="mt-2 text-sm leading-relaxed text-[var(--mk-ink-2)]">
+        <p className="mt-2 text-sm leading-relaxed text-ink-2">
           פתחו את הקישור במייל כדי להשלים את ההרשמה, ואז חזרו לכאן להתחברות.
         </p>
       </div>
@@ -100,20 +100,28 @@ export default function SignupForm() {
   }
 
   const inputClass =
-    "h-12 w-full rounded-xl border border-[var(--mk-hairline)] bg-white px-4 text-[15px] outline-none transition-colors focus:border-[var(--mk-ink)]";
+    "h-12 w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 text-[15px] outline-none transition-colors focus:border-action";
 
   return (
     <div className="space-y-5">
+      <GoogleButton next={next} label="המשך עם Google" />
+
+      <div className="flex items-center gap-3 text-sm text-ink-3">
+        <span className="h-px flex-1 bg-line" />
+        או עם אימייל
+        <span className="h-px flex-1 bg-line" />
+      </div>
+
       {/* Role selection — same first step as the app */}
       <div
         role="radiogroup"
         aria-label="סוג החשבון"
-        className="grid grid-cols-2 gap-1 rounded-full border border-[var(--mk-hairline)] bg-paper-25 p-1"
+        className="grid grid-cols-2 gap-1 rounded-[var(--r-pill)] border border-line bg-canvas p-1"
       >
         {(
           [
-            { value: "student", label: "תלמיד/ה" },
-            { value: "teacher", label: "מורה" },
+            { value: "student", label: "אני רוצה ללמוד" },
+            { value: "teacher", label: "אני רוצה ללמד" },
           ] as const
         ).map((opt) => (
           <button
@@ -122,10 +130,10 @@ export default function SignupForm() {
             role="radio"
             aria-checked={role === opt.value}
             onClick={() => setRole(opt.value)}
-            className={`h-10 cursor-pointer rounded-full text-sm font-semibold transition-colors ${
+            className={`h-11 cursor-pointer rounded-[var(--r-pill)] text-sm font-semibold transition-colors ${
               role === opt.value
-                ? "bg-white text-[var(--mk-ink)] shadow-sm"
-                : "text-[var(--mk-ink-3)] hover:text-[var(--mk-ink)]"
+                ? "bg-ink text-surface"
+                : "text-ink-3 hover:text-ink"
             }`}
           >
             {opt.label}
@@ -136,7 +144,7 @@ export default function SignupForm() {
       <form onSubmit={onSubmit} className="space-y-3.5">
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label htmlFor="first-name" className="mb-1.5 block text-sm font-medium text-[var(--mk-ink)]">
+            <label htmlFor="first-name" className="mb-1.5 block text-sm font-medium text-ink">
               שם פרטי
             </label>
             <input
@@ -149,7 +157,7 @@ export default function SignupForm() {
             />
           </div>
           <div>
-            <label htmlFor="last-name" className="mb-1.5 block text-sm font-medium text-[var(--mk-ink)]">
+            <label htmlFor="last-name" className="mb-1.5 block text-sm font-medium text-ink">
               שם משפחה
             </label>
             <input
@@ -163,7 +171,7 @@ export default function SignupForm() {
           </div>
         </div>
         <div>
-          <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-[var(--mk-ink)]">
+          <label htmlFor="phone" className="mb-1.5 block text-sm font-medium text-ink">
             טלפון
           </label>
           <input
@@ -180,7 +188,7 @@ export default function SignupForm() {
           />
         </div>
         <div>
-          <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-[var(--mk-ink)]">
+          <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-ink">
             אימייל
           </label>
           <input
@@ -195,7 +203,7 @@ export default function SignupForm() {
           />
         </div>
         <div>
-          <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-[var(--mk-ink)]">
+          <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-ink">
             סיסמה
           </label>
           <input
@@ -209,11 +217,11 @@ export default function SignupForm() {
             onChange={(e) => setPassword(e.target.value)}
             className={`${inputClass} text-start`}
           />
-          <p className="mt-1 text-xs text-[var(--mk-ink-3)]">לפחות 8 תווים</p>
+          <p className="mt-1 text-sm text-ink-3">לפחות 8 תווים</p>
         </div>
 
         {error && (
-          <p role="alert" className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-600">
+          <p role="alert" className="rounded-[var(--r-sm)] bg-danger/10 px-4 py-3 text-sm text-danger">
             {error}
           </p>
         )}
@@ -221,7 +229,7 @@ export default function SignupForm() {
         <button
           type="submit"
           disabled={pending}
-          className="h-12 w-full cursor-pointer rounded-full bg-brand-600 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
+          className="min-h-12 w-full cursor-pointer rounded-[var(--r-pill)] bg-action text-sm font-semibold text-on-action transition-colors hover:bg-action-hover disabled:opacity-60"
         >
           {pending
             ? "נרשמים..."
@@ -231,38 +239,30 @@ export default function SignupForm() {
         </button>
 
         {role === "teacher" && (
-          <p className="rounded-xl bg-[var(--mk-band)] px-4 py-3 text-center text-[13px] leading-relaxed text-[var(--mk-ink-2)]">
+          <p className="rounded-[var(--r-sm)] bg-canvas px-4 py-3 text-center text-sm leading-relaxed text-ink-2">
             אחרי ההרשמה ממלאים את פרטי הפרופיל, והוא יופיע מול תלמידים באתר
             ובאפליקציה. אותו חשבון עובד בשניהם.
           </p>
         )}
 
-        <p className="text-center text-xs leading-relaxed text-[var(--mk-ink-3)]">
+        <p className="text-center text-sm leading-relaxed text-ink-3">
           ההרשמה מהווה הסכמה{" "}
-          <Link href="/terms" className="underline hover:text-[var(--mk-ink)]">
+          <Link href="/terms" className="underline hover:text-ink">
             לתנאי השימוש
           </Link>{" "}
           ו
-          <Link href="/privacy" className="underline hover:text-[var(--mk-ink)]">
+          <Link href="/privacy" className="underline hover:text-ink">
             למדיניות הפרטיות
           </Link>
           .
         </p>
       </form>
 
-      <div className="flex items-center gap-3 text-xs text-[var(--mk-ink-3)]">
-        <span className="h-px flex-1 bg-[var(--mk-hairline)]" />
-        או
-        <span className="h-px flex-1 bg-[var(--mk-hairline)]" />
-      </div>
-
-      <GoogleButton next={next} label="הרשמה עם Google" />
-
-      <p className="text-center text-sm text-[var(--mk-ink-2)]">
+      <p className="text-center text-sm text-ink-2">
         כבר יש לכם חשבון?{" "}
         <Link
           href={`/login${next !== "/" ? `?next=${encodeURIComponent(next)}` : ""}`}
-          className="font-semibold text-brand-700 hover:underline"
+          className="font-semibold text-action hover:underline"
         >
           התחברות
         </Link>

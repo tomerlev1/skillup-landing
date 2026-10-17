@@ -123,14 +123,14 @@ export default function ScheduleManager({
   return (
     <div>
       <div className="flex items-center gap-2.5">
-        <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-50 text-brand-700">
+        <span className="grid h-9 w-9 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
           <CalendarClock size={18} />
         </span>
         <div>
-          <h2 className="font-display text-lg font-bold text-[var(--mk-ink)]">
+          <h2 className="font-display text-lg font-bold text-ink">
             ניהול הזמינות שלי
           </h2>
-          <p className="text-[13px] text-[var(--mk-ink-3)]">
+          <p className="text-sm text-ink-3">
             מסומן בירוק = פנוי להזמנה. השינויים מסתנכרנים מיד עם האפליקציה.
           </p>
         </div>
@@ -151,24 +151,24 @@ export default function ScheduleManager({
               key={i}
               type="button"
               onClick={() => setDayOffset(i)}
-              className={`relative shrink-0 rounded-2xl border px-3.5 py-2 text-center transition-colors ${
+              className={`relative shrink-0 rounded-[var(--r-md)] border px-3.5 py-2 text-center transition-colors ${
                 selected
-                  ? "border-[var(--mk-ink)] bg-[var(--mk-ink)] text-white"
-                  : "border-[var(--mk-hairline)] bg-white text-[var(--mk-ink)] hover:border-[var(--mk-ink)]"
+                  ? "border-ink bg-ink text-surface"
+                  : "border-line bg-surface text-ink hover:border-ink"
               }`}
             >
-              <span className="block text-[13px] font-semibold">
+              <span className="block text-sm font-semibold">
                 {i === 0 ? "היום" : formatWeekday(d.toISOString())}
               </span>
               <span
-                className={`block text-xs ${selected ? "text-white/80" : "text-[var(--mk-ink-3)]"}`}
+                className={`block text-sm ${selected ? "text-surface/80" : "text-ink-3"}`}
               >
                 {formatDateShort(d.toISOString())}
               </span>
               {dayOpen > 0 && (
                 <span
-                  className={`tnum mt-1 block text-[11px] font-bold ${
-                    selected ? "text-white" : "text-emerald-600"
+                  className={`tnum mt-1 block text-xs font-bold ${
+                    selected ? "text-surface" : "text-ok-text"
                   }`}
                 >
                   {dayOpen} פנויים
@@ -199,14 +199,14 @@ export default function ScheduleManager({
               onClick={() => toggle(block)}
               disabled={past || booked || busyKey === block.iso}
               aria-pressed={open}
-              className={`tnum inline-flex h-11 items-center justify-center gap-1.5 rounded-xl border text-sm font-medium transition-colors ${
+              className={`tnum inline-flex h-11 items-center justify-center gap-1.5 rounded-[var(--r-sm)] border text-sm font-medium transition-colors ${
                 booked
-                  ? "cursor-not-allowed border-amber-200 bg-amber-50 text-amber-700"
+                  ? "cursor-not-allowed border-warn/30 bg-warn/10 text-warn"
                   : open
-                    ? "border-emerald-500 bg-emerald-500 text-white hover:bg-emerald-600"
+                    ? "border-emerald-500 bg-ok text-white hover:bg-emerald-600"
                     : past
-                      ? "cursor-not-allowed border-[var(--mk-hairline)] bg-paper-25 text-[var(--mk-ink-3)] opacity-50"
-                      : "border-[var(--mk-hairline)] bg-white text-[var(--mk-ink)] hover:border-[var(--mk-ink)]"
+                      ? "cursor-not-allowed border-line bg-canvas text-ink-3 opacity-50"
+                      : "border-line bg-surface text-ink hover:border-ink"
               }`}
             >
               {booked ? (
@@ -220,14 +220,14 @@ export default function ScheduleManager({
         })}
       </div>
 
-      <p className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-[var(--mk-ink-3)]">
+      <p className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-ink-3">
         <span className="inline-flex items-center gap-1.5">
-          <span className="h-3 w-3 rounded bg-emerald-500" /> פנוי
+          <span className="h-3 w-3 rounded-[var(--r-sm)] bg-ok" /> פנוי
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="h-3 w-3 rounded border border-amber-200 bg-amber-50" /> הוזמן
+          <span className="h-3 w-3 rounded-[var(--r-sm)] border border-warn/30 bg-warn/10" /> הוזמן
         </span>
-        <span className="tnum ms-auto font-medium text-[var(--mk-ink-2)]">
+        <span className="tnum ms-auto font-medium text-ink-2">
           {openCount} חלונות פנויים בשבועיים הקרובים
         </span>
       </p>

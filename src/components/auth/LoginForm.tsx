@@ -40,9 +40,17 @@ export default function LoginForm() {
 
   return (
     <div className="space-y-5">
+      <GoogleButton next={next} label="המשך עם Google" />
+
+      <div className="flex items-center gap-3 text-sm text-ink-3">
+        <span className="h-px flex-1 bg-line" />
+        או עם אימייל
+        <span className="h-px flex-1 bg-line" />
+      </div>
+
       <form onSubmit={onSubmit} className="space-y-3.5">
         <div>
-          <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-[var(--mk-ink)]">
+          <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-ink">
             אימייל
           </label>
           <input
@@ -53,17 +61,17 @@ export default function LoginForm() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="h-12 w-full rounded-xl border border-[var(--mk-hairline)] bg-white px-4 text-start text-[15px] outline-none transition-colors focus:border-[var(--mk-ink)]"
+            className="h-12 w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 text-start text-[15px] outline-none transition-colors focus:border-action"
           />
         </div>
         <div>
           <div className="mb-1.5 flex items-center justify-between">
-            <label htmlFor="password" className="text-sm font-medium text-[var(--mk-ink)]">
+            <label htmlFor="password" className="text-sm font-medium text-ink">
               סיסמה
             </label>
             <Link
               href="/forgot-password"
-              className="text-[13px] text-[var(--mk-ink-3)] hover:text-[var(--mk-ink)] hover:underline"
+              className="text-sm text-ink-3 hover:text-ink hover:underline"
             >
               שכחתם סיסמה?
             </Link>
@@ -76,12 +84,12 @@ export default function LoginForm() {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="h-12 w-full rounded-xl border border-[var(--mk-hairline)] bg-white px-4 text-start text-[15px] outline-none transition-colors focus:border-[var(--mk-ink)]"
+            className="h-12 w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 text-start text-[15px] outline-none transition-colors focus:border-action"
           />
         </div>
 
         {error && (
-          <p role="alert" className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-600">
+          <p role="alert" className="rounded-[var(--r-sm)] bg-danger/10 px-4 py-3 text-sm text-danger">
             {error}
           </p>
         )}
@@ -89,25 +97,17 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={pending}
-          className="h-12 w-full cursor-pointer rounded-full bg-brand-600 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60"
+          className="min-h-12 w-full cursor-pointer rounded-[var(--r-pill)] bg-action text-sm font-semibold text-on-action transition-colors hover:bg-action-hover disabled:opacity-60"
         >
           {pending ? "מתחברים..." : "התחברות"}
         </button>
       </form>
 
-      <div className="flex items-center gap-3 text-xs text-[var(--mk-ink-3)]">
-        <span className="h-px flex-1 bg-[var(--mk-hairline)]" />
-        או
-        <span className="h-px flex-1 bg-[var(--mk-hairline)]" />
-      </div>
-
-      <GoogleButton next={next} label="התחברות עם Google" />
-
-      <p className="text-center text-sm text-[var(--mk-ink-2)]">
+      <p className="text-center text-sm text-ink-2">
         עדיין אין לכם חשבון?{" "}
         <Link
           href={`/signup${next !== "/" ? `?next=${encodeURIComponent(next)}` : ""}`}
-          className="font-semibold text-brand-700 hover:underline"
+          className="font-semibold text-action hover:underline"
         >
           הרשמה
         </Link>

@@ -24,7 +24,7 @@ export async function ensureRoleRow(
     // (/account or the app) — incomplete teachers never appear in search.
     await supabase.from("teachers").insert({
       id: user.id,
-      display_name: displayName || "מורה חדש/ה",
+      display_name: displayName || "מורה ב-SkillUp",
       email: user.email ?? null,
       phone_number: meta.phone || null,
       is_active: true,

@@ -126,27 +126,27 @@ export default function AccountForm({
   }
 
   const inputClass =
-    "h-12 w-full rounded-xl border border-[var(--mk-hairline)] bg-white px-4 text-[15px] outline-none transition-colors focus:border-[var(--mk-ink)]";
+    "h-12 w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 text-[15px] outline-none transition-colors focus:border-action";
 
   return (
     <div>
       {searchParams.get("welcome") && isTeacher && (
-        <div className="mb-6 rounded-2xl bg-brand-50 px-5 py-4 text-sm leading-relaxed text-brand-800">
-          ברוכים הבאים ל-SkillUp! השלימו את הפרטים כאן, והפרופיל שלכם יופיע מול
+        <div className="mb-6 rounded-[var(--r-md)] bg-action-soft px-5 py-4 text-sm leading-relaxed text-ink">
+          ברוכים הבאים ל-SkillUp. השלימו את הפרטים כאן, והפרופיל שלכם יופיע מול
           תלמידים באתר ובאפליקציה.
         </div>
       )}
 
-      <h1 className="font-display text-2xl font-bold text-[var(--mk-ink)]">
+      <h1 className="font-display text-2xl font-bold text-ink">
         הפרופיל שלי
       </h1>
-      <p className="mt-1.5 text-sm text-[var(--mk-ink-2)]">
+      <p className="mt-1.5 text-sm text-ink-2">
         {initial.email as string} ·{" "}
-        {isTeacher ? "חשבון מורה" : "חשבון תלמיד/ה"}
+        {isTeacher ? "חשבון מורה" : "חשבון לומד"}
       </p>
 
       {isTeacher && !initial.profile_completed && (
-        <p className="mt-4 flex items-start gap-2 rounded-2xl bg-amber-50 px-4 py-3 text-[13px] leading-relaxed text-amber-700">
+        <p className="mt-4 flex items-start gap-2 rounded-[var(--r-md)] bg-warn/10 px-4 py-3 text-sm leading-relaxed text-warn">
           <BadgeCheck size={15} className="mt-0.5 shrink-0" />
           הפרופיל עדיין לא מוצג בחיפוש. מילוי שם תצוגה, תיאור, מחיר ועיר יפרסם
           אותו אוטומטית.
@@ -157,7 +157,7 @@ export default function AccountForm({
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           {fields.map((f) => (
             <div key={f.key} className={f.type === "textarea" ? "sm:col-span-2" : ""}>
-              <label htmlFor={f.key} className="mb-1.5 block text-sm font-medium text-[var(--mk-ink)]">
+              <label htmlFor={f.key} className="mb-1.5 block text-sm font-medium text-ink">
                 {f.label}
               </label>
               {f.type === "textarea" ? (
@@ -168,7 +168,7 @@ export default function AccountForm({
                   placeholder={f.placeholder}
                   value={(values[f.key] as string) ?? ""}
                   onChange={(e) => setValues((v) => ({ ...v, [f.key]: e.target.value }))}
-                  className="w-full rounded-xl border border-[var(--mk-hairline)] bg-white px-4 py-3 text-[15px] outline-none transition-colors focus:border-[var(--mk-ink)]"
+                  className="w-full rounded-[var(--r-sm)] border border-line bg-surface px-4 py-3 text-[15px] outline-none transition-colors focus:border-action"
                 />
               ) : (
                 <input
@@ -182,15 +182,15 @@ export default function AccountForm({
                   className={`${inputClass} ${f.type === "text" ? "" : "text-start"}`}
                 />
               )}
-              {f.hint && <p className="mt-1 text-xs text-[var(--mk-ink-3)]">{f.hint}</p>}
+              {f.hint && <p className="mt-1 text-sm text-ink-3">{f.hint}</p>}
             </div>
           ))}
 
           {/* City */}
           <div className="sm:col-span-2">
-            <span className="mb-1.5 block text-sm font-medium text-[var(--mk-ink)]">עיר</span>
+            <span className="mb-1.5 block text-sm font-medium text-ink">עיר</span>
             {cityId && cityName ? (
-              <span className="inline-flex items-center gap-2 rounded-full bg-[var(--mk-ink)] py-2 ps-4 pe-2 text-sm font-medium text-white">
+              <span className="inline-flex items-center gap-2 rounded-[var(--r-pill)] bg-ink py-2 ps-4 pe-2 text-sm font-medium text-surface">
                 <MapPin size={14} />
                 {cityName}
                 <button
@@ -200,7 +200,7 @@ export default function AccountForm({
                     setCityId(null);
                     setCityName(null);
                   }}
-                  className="grid h-6 w-6 cursor-pointer place-items-center rounded-full hover:bg-white/20"
+                  className="grid h-6 w-6 cursor-pointer place-items-center rounded-[var(--r-pill)] hover:bg-surface/20"
                 >
                   <X size={13} />
                 </button>
@@ -214,7 +214,7 @@ export default function AccountForm({
                   className={inputClass}
                 />
                 {cityOptions.length > 0 && (
-                  <div className="mk-shadow absolute top-full inset-x-0 z-30 mt-1 overflow-hidden rounded-xl border border-[var(--mk-hairline)] bg-white py-1">
+                  <div className="shadow-[var(--shadow-lift)] absolute top-full inset-x-0 z-30 mt-1 overflow-hidden rounded-[var(--r-sm)] border border-line bg-surface py-1">
                     {cityOptions.map((c) => (
                       <button
                         key={c.id}
@@ -225,7 +225,7 @@ export default function AccountForm({
                           setCityQuery("");
                           setCityOptions([]);
                         }}
-                        className="block w-full cursor-pointer px-4 py-2.5 text-start text-sm hover:bg-paper-25"
+                        className="block w-full cursor-pointer px-4 py-2.5 text-start text-sm hover:bg-canvas"
                       >
                         {c.name_he}
                       </button>
@@ -238,12 +238,12 @@ export default function AccountForm({
         </div>
 
         {error && (
-          <p role="alert" className="rounded-xl bg-rose-50 px-4 py-3 text-sm text-rose-600">
+          <p role="alert" className="rounded-[var(--r-sm)] bg-danger/10 px-4 py-3 text-sm text-danger">
             {error}
           </p>
         )}
         {saved && (
-          <p className="flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+          <p className="flex items-center gap-2 rounded-[var(--r-sm)] bg-ok/10 px-4 py-3 text-sm text-ok-text">
             <CheckCircle2 size={16} />
             הפרטים נשמרו.
           </p>
@@ -252,7 +252,7 @@ export default function AccountForm({
         <button
           type="submit"
           disabled={pending}
-          className="h-12 w-full cursor-pointer rounded-full bg-brand-600 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:opacity-60 sm:w-auto sm:px-10"
+          className="min-h-12 w-full cursor-pointer rounded-[var(--r-pill)] bg-action text-sm font-semibold text-on-action transition-colors hover:bg-action-hover disabled:opacity-60 sm:w-auto sm:px-10"
         >
           {pending ? "שומרים..." : "שמירת הפרטים"}
         </button>
@@ -262,25 +262,25 @@ export default function AccountForm({
         <>
           <Link
             href="/account/schedule"
-            className="mt-8 flex items-center gap-3.5 rounded-2xl border border-[var(--mk-hairline)] bg-white p-4 transition-colors hover:border-[var(--mk-ink)]"
+            className="mt-8 flex items-center gap-3.5 rounded-[var(--r-md)] border border-line bg-surface p-4 transition-colors hover:border-ink"
           >
-            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-700">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[var(--r-sm)] bg-action-soft text-action">
               <CalendarClock size={19} />
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block text-sm font-semibold text-[var(--mk-ink)]">
+              <span className="block text-sm font-semibold text-ink">
                 ניהול הזמינות שלי
               </span>
-              <span className="block text-[13px] text-[var(--mk-ink-3)]">
+              <span className="block text-sm text-ink-3">
                 הוספה והסרה של חלונות לשיעורים. מסתנכרן מיד עם האפליקציה.
               </span>
             </span>
-            <ChevronLeft size={18} className="shrink-0 text-[var(--mk-ink-3)]" />
+            <ChevronLeft size={18} className="shrink-0 text-ink-3" />
           </Link>
 
-          <p className="mt-4 rounded-2xl bg-[var(--mk-band)] px-5 py-4 text-[13px] leading-relaxed text-[var(--mk-ink-2)]">
+          <p className="mt-4 rounded-[var(--r-md)] bg-canvas px-5 py-4 text-sm leading-relaxed text-ink-2">
             תמונות פרופיל ומקצועות לימוד מנהלים כרגע דרך{" "}
-            <a href={APP_STORE_URL} className="font-semibold text-brand-700 hover:underline">
+            <a href={APP_STORE_URL} className="font-semibold text-action hover:underline">
               אפליקציית SkillUp
             </a>
             . אותו חשבון, אותו פרופיל.

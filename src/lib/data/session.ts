@@ -23,7 +23,7 @@ export async function getSessionProfile(): Promise<SessionProfile | null> {
       role: "student",
       displayName:
         [student.first_name, student.last_name].filter(Boolean).join(" ") ||
-        "תלמיד/ה",
+        "לומד",
       avatarUrl: student.avatar_url,
     };
   }
@@ -47,7 +47,7 @@ export async function getSessionProfile(): Promise<SessionProfile | null> {
   return {
     userId: user.id,
     role: "student",
-    displayName: user.email ?? "משתמש/ת",
+    displayName: user.email ?? "משתמש SkillUp",
     avatarUrl: null,
   };
 }

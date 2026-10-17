@@ -18,13 +18,21 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
+const WARN = "bg-warn/10 text-warn";
+const OK = "bg-ok/10 text-ok-text";
+const DANGER = "bg-danger/10 text-danger";
+const NEUTRAL = "bg-canvas text-ink-3";
+
+// `awaiting_payment` is a legacy status that should not occur (SkillUp never
+// charges students); it reads as waiting on the teacher. `refunded` reads as
+// cancelled.
 const STATUS_LABELS: Record<string, { label: string; tone: string }> = {
-  pending: { label: "ממתין לאישור המורה", tone: "bg-amber-50 text-amber-600" },
-  awaiting_payment: { label: "ממתין לתשלום", tone: "bg-amber-50 text-amber-600" },
-  confirmed: { label: "מאושר", tone: "bg-emerald-50 text-emerald-600" },
-  completed: { label: "הסתיים", tone: "bg-ink-100 text-ink-600" },
-  cancelled: { label: "בוטל", tone: "bg-rose-50 text-rose-500" },
-  refunded: { label: "הוחזר", tone: "bg-ink-100 text-ink-600" },
+  pending: { label: "ממתין לאישור המורה", tone: WARN },
+  awaiting_payment: { label: "ממתין לתיאום עם המורה", tone: WARN },
+  confirmed: { label: "מאושר", tone: OK },
+  completed: { label: "הסתיים", tone: NEUTRAL },
+  cancelled: { label: "בוטל", tone: DANGER },
+  refunded: { label: "בוטל", tone: DANGER },
 };
 
 // booking.mode uses the enum keys (teacher_location/student_location).
@@ -141,13 +149,13 @@ export default async function BookingsPage() {
     const peer = peerMap.get(peerId);
     const status = STATUS_LABELS[booking.status] ?? {
       label: booking.status,
-      tone: "bg-ink-100 text-ink-600",
+      tone: NEUTRAL,
     };
     const revealed =
       booking.mode === "teacher_location" ? addressMap.get(booking.teacher_id) : null;
 
     return (
-      <article className="rounded-2xl border border-[var(--mk-hairline)] bg-white p-5">
+      <article className="rounded-[var(--r-md)] border border-line bg-surface p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="flex min-w-0 items-center gap-3">
             <Avatar src={peer?.avatar} name={peer?.name ?? ""} size={42} />
@@ -155,16 +163,16 @@ export default async function BookingsPage() {
               {profile!.role === "student" ? (
                 <Link
                   href={`/tutors/${booking.teacher_id}`}
-                  className="block truncate text-[15px] font-semibold text-[var(--mk-ink)] hover:underline"
+                  className="block truncate text-[15px] font-semibold text-ink hover:underline"
                 >
                   {peer?.name ?? "מורה"}
                 </Link>
               ) : (
-                <p className="truncate text-[15px] font-semibold text-[var(--mk-ink)]">
-                  {peer?.name ?? "תלמיד/ה"}
+                <p className="truncate text-[15px] font-semibold text-ink">
+                  {peer?.name ?? "לומד"}
                 </p>
               )}
-              <p className="truncate text-sm text-[var(--mk-ink-3)]">
+              <p className="truncate text-sm text-ink-3">
                 {[
                   booking.subject_id ? subjectMap.get(booking.subject_id) : null,
                   lessonModeLabel(BOOKING_MODE_TO_LESSON[booking.mode] ?? booking.mode),
@@ -175,14 +183,14 @@ export default async function BookingsPage() {
             </div>
           </div>
           <span
-            className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${status.tone}`}
+            className={`shrink-0 rounded-[var(--r-pill)] px-3 py-1 text-sm font-semibold ${status.tone}`}
           >
             {status.label}
           </span>
         </div>
 
-        <div className="mk-hairline-t mt-4 flex flex-wrap items-center justify-between gap-3 pt-3.5 text-sm">
-          <p className="text-[var(--mk-ink)]">
+        <div className="border-t border-line mt-4 flex flex-wrap items-center justify-between gap-3 pt-3.5 text-sm">
+          <p className="text-ink">
             {formatWeekday(booking.start_at)}, {formatDateFull(booking.start_at)}
             {" · "}
             <span className="tnum">
@@ -190,7 +198,7 @@ export default async function BookingsPage() {
             </span>
           </p>
           {booking.total_price != null && (
-            <p className="ltr-isolate tnum font-semibold text-[var(--mk-ink)]">
+            <p className="ltr-isolate tnum font-semibold text-ink">
               {formatPrice(booking.total_price)}
             </p>
           )}
@@ -201,21 +209,21 @@ export default async function BookingsPage() {
             href={booking.meeting_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-brand-700 hover:underline"
+            className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-action hover:underline"
           >
             <Video size={15} />
             קישור לשיעור אונליין
           </a>
         )}
         {revealed && (
-          <p className="mt-3 flex items-center gap-2 text-sm text-[var(--mk-ink)]">
-            <MapPin size={15} className="shrink-0 text-[var(--mk-ink-3)]" />
+          <p className="mt-3 flex items-center gap-2 text-sm text-ink">
+            <MapPin size={15} className="shrink-0 text-ink-3" />
             {revealed}
           </p>
         )}
         {booking.mode === "student_location" && booking.location && (
-          <p className="mt-3 flex items-center gap-2 text-sm text-[var(--mk-ink)]">
-            <MapPin size={15} className="shrink-0 text-[var(--mk-ink-3)]" />
+          <p className="mt-3 flex items-center gap-2 text-sm text-ink">
+            <MapPin size={15} className="shrink-0 text-ink-3" />
             {booking.location}
           </p>
         )}
@@ -225,24 +233,24 @@ export default async function BookingsPage() {
 
   return (
     <div className="mx-auto max-w-[760px] px-4 py-8 sm:px-6">
-      <h1 className="font-display text-2xl font-bold text-[var(--mk-ink)]">
+      <h1 className="font-display text-2xl font-bold text-ink">
         השיעורים שלי
       </h1>
 
       {bookings.length === 0 ? (
-        <div className="mt-10 rounded-3xl bg-[var(--mk-band)] px-6 py-16 text-center">
-          <CalendarX2 size={36} className="mx-auto text-[var(--mk-ink-3)]" />
-          <h2 className="mt-4 text-lg font-semibold text-[var(--mk-ink)]">
+        <div className="mt-10 rounded-[var(--r-md)] bg-canvas px-6 py-16 text-center">
+          <CalendarX2 size={36} className="mx-auto text-ink-3" />
+          <h2 className="mt-4 text-lg font-semibold text-ink">
             עדיין אין שיעורים
           </h2>
           {profile.role === "student" && (
             <>
-              <p className="mx-auto mt-2 max-w-[360px] text-sm leading-relaxed text-[var(--mk-ink-2)]">
+              <p className="mx-auto mt-2 max-w-[360px] text-sm leading-relaxed text-ink-2">
                 השיעור הראשון שלכם קרוב מתמיד. מצאו מורה שמתאים לכם וקבעו מועד.
               </p>
               <Link
                 href="/search"
-                className="mt-6 inline-flex h-11 items-center rounded-full bg-brand-600 px-6 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+                className="mt-6 inline-flex h-11 items-center rounded-[var(--r-pill)] bg-action px-6 text-sm font-semibold text-on-action transition-colors hover:bg-action-hover"
               >
                 למציאת מורה
               </Link>
@@ -253,7 +261,7 @@ export default async function BookingsPage() {
         <div className="mt-6 space-y-10">
           {upcoming.length > 0 && (
             <section aria-label="שיעורים קרובים">
-              <h2 className="mb-4 text-base font-semibold text-[var(--mk-ink)]">
+              <h2 className="mb-4 text-base font-semibold text-ink">
                 שיעורים קרובים
               </h2>
               <div className="space-y-3">
@@ -265,7 +273,7 @@ export default async function BookingsPage() {
           )}
           {past.length > 0 && (
             <section aria-label="שיעורים קודמים">
-              <h2 className="mb-4 text-base font-semibold text-[var(--mk-ink)]">
+              <h2 className="mb-4 text-base font-semibold text-ink">
                 היסטוריה
               </h2>
               <div className="space-y-3">

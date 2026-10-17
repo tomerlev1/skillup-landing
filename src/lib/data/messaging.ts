@@ -66,7 +66,7 @@ export async function getConversations(
       name:
         (row.display_name as string) ??
         [row.first_name, row.last_name].filter(Boolean).join(" ") ??
-        "משתמש/ת",
+        "משתמש SkillUp",
       avatar: row.avatar_url,
     });
   }
@@ -86,7 +86,7 @@ export async function getConversations(
     const peer = peerMap.get(peerId);
     return {
       ...c,
-      peerName: peer?.name || "משתמש/ת",
+      peerName: peer?.name || "משתמש SkillUp",
       peerAvatar: peer?.avatar ?? null,
       unread: unreadMap.get(c.id) ?? 0,
     };

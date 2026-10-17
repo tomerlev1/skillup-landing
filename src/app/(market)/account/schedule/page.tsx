@@ -27,7 +27,7 @@ export default async function SchedulePage() {
     <div className="mx-auto max-w-[720px] px-4 py-10 sm:px-6">
       <Link
         href="/account"
-        className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-[var(--mk-ink-2)] hover:text-[var(--mk-ink)]"
+        className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-ink-2 hover:text-ink"
       >
         <ChevronRight size={16} />
         לפרופיל שלי

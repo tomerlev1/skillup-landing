@@ -30,7 +30,7 @@ export default async function ConversationPage({ params }: PageProps) {
   const peerId =
     profile.role === "teacher" ? conversation.student_id : conversation.teacher_id;
 
-  let peerName = "משתמש/ת";
+  let peerName = "משתמש SkillUp";
   let peerAvatar: string | null = null;
   let peerProfileHref: string | null = null;
 
