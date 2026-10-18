@@ -18,11 +18,12 @@ export const metadata: Metadata = {
 };
 
 const STUDENT_COLS =
-  "first_name, last_name, phone, email, bio, city_id, avatar_url, level_category, level_proficiency, subjects_interests";
+  "first_name, last_name, bio, city_id, avatar_url, level_category, level_proficiency, subjects_interests";
 const TEACHER_COLS =
-  "display_name, phone_number, email, bio, hourly_rate, experience_years, city_id, instagram_url, facebook_url, website_url, profile_completed, avatar_url";
+  "display_name, bio, hourly_rate, experience_years, city_id, instagram_url, facebook_url, website_url, profile_completed, avatar_url";
 
 type Row = Record<string, string | number | boolean | null | string[]>;
+type PrivateProfile = { teacher: Row | null; student: Row | null };
 
 function Ring({ percent }: { percent: number }) {
   const r = 26;
@@ -62,8 +63,11 @@ export default async function AccountPage() {
     ? supabase.from("teachers").select(TEACHER_COLS).eq("id", profile.userId).maybeSingle()
     : supabase.from("students").select(STUDENT_COLS).eq("id", profile.userId).maybeSingle();
 
-  const [{ data: rowData }, { data: bookingData }, categories] = await Promise.all([
+  // The user's own contact details come from get_my_private_profile and are
+  // merged over the public columns.
+  const [{ data: rowData }, { data: privateData }, { data: bookingData }, categories] = await Promise.all([
     rowQuery,
+    supabase.rpc("get_my_private_profile"),
     supabase
       .from("bookings")
       .select("start_at, end_at, status, teacher_id, student_id, subject_id")
@@ -72,7 +76,8 @@ export default async function AccountPage() {
       .limit(1000),
     isTeacher ? Promise.resolve([]) : getCategories(),
   ]);
-  const row = (rowData ?? {}) as Row;
+  const privateRow = (privateData as PrivateProfile | null)?.[isTeacher ? "teacher" : "student"] ?? {};
+  const row = { ...((rowData ?? {}) as Row), ...privateRow } as Row;
   const bookings = (bookingData ?? []) as ProgressBooking[];
 
   let cityName: string | null = null;
