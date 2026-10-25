@@ -1,5 +1,7 @@
 @AGENTS.md
 
 ## Claude Code only
-- This repo has no `.claude/` and no `.mcp.json`: sessions started here load no hooks, no project MCP servers and no repo skills.
-  No local hook blocks a push to `main` or a prod write. The AGENTS.md rules are on you.
+- Committed hook `.claude/hooks/skillup-guardrail.sh` (wired in `.claude/settings.json`, same file as in skillup-ios):
+  **denies** `git push` to main/master; **asks** before prod Supabase MCP writes, `gh pr merge`, enabling auto-merge,
+  and any Bash command naming the prod ref. It also covers `run_in_terminal` and desktop-commander processes.
+- No `.mcp.json` and no repo skills here.

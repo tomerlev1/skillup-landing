@@ -46,7 +46,7 @@ Next 16 has breaking changes from older Next.js (for example `src/proxy.ts` repl
   Keep the `.well-known` files byte-identical to `../SkillUpTeam` (they are today).
 - Backend: there is no `supabase/` here. Schema, RPCs and migrations live in `../skillup-ios/supabase`. If you need a new
   RPC, table or column, open a backend issue first. Changes go to DEV first and to prod only after a founder approves.
-- Planned: shared design tokens and an RPC contract in `skillup-platform`. They don't exist yet.
+- Shared contract in `../skillup-platform`: feature registry, parity matrix, RPC contracts and generated DB types. Design tokens are not there yet.
 
 ## Git
-Branch → PR to `main` → a founder merges (Tomer owns the repo). Never push to `main`. No Vercel previews yet.
+Branch → PR to `main` (Tomer owns the repo). Harel does not merge: when the PR is ready, ask him for a merge click, then the agent runs `gh pr merge <n> --squash --delete-branch`. Never push to `main`. No Vercel previews yet.

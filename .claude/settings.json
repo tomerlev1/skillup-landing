@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|mcp__ccd_pr__set_auto_merge|mcp__terminal__run_in_terminal|mcp__.*desktop-commander.*__(start_process|interact_with_process)|mcp__.*supabase.*__(apply_migration|execute_sql|deploy_edge_function|merge_branch|pause_project|restore_project)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/skillup-guardrail.sh",
+            "timeout": 10,
+            "onFailure": "block"
+          }
+        ]
+      }
+    ]
+  }
+}
