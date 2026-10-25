@@ -1,4 +1,4 @@
-# SkillUp — Web
+# SkillUp - Web
 
 אתר המרקטפלייס של SkillUp: חיפוש מורים פרטיים, פרופיל מורה, קביעת שיעור, הודעות ואזור אישי.
 Next.js 16 (App Router) · React 19 · Tailwind v4 · Supabase. עברית, RTL.
@@ -20,12 +20,12 @@ npm run dev                  # http://localhost:3000
 
 ## מבנה
 
-- `src/app/(market)` — כל דפי האתר (בית, חיפוש, מורה, הזמנה, הודעות, פרופיל, מאמרים, משפטי).
-- `src/app/{chat,lesson,teacher,dev/teacher,verify-email,settings,unsubscribe}` — דפי נחיתה ל-Universal Links של האפליקציה. **לא למחוק**: הם רשומים ב-`public/.well-known/apple-app-site-association`.
-- `src/components` — רכיבי UI לפי תחום (`market`, `search`, `account`, `chat`, `booking`, `home`, `ui`).
-- `src/lib` — לוגיקה, גישה לנתונים (`lib/data`) ולקוחות Supabase.
-- `src/app/globals.css` — טוקנים של המותג (צבעים, רדיוסים, צללים, מצב כהה).
-- `docs/brand` — מסמך המיתוג. `docs/superpowers` — אפיון ותוכנית העיצוב מחדש.
+- `src/app/(market)` - כל דפי האתר (בית, חיפוש, מורה, הזמנה, הודעות, פרופיל, מאמרים, משפטי).
+- `src/app/{chat,lesson,teacher,dev/teacher,verify-email,settings,unsubscribe}` - דפי נחיתה ל-Universal Links של האפליקציה. **לא למחוק**: הם רשומים ב-`public/.well-known/apple-app-site-association`.
+- `src/components` - רכיבי UI לפי תחום (`market`, `search`, `account`, `chat`, `booking`, `home`, `ui`).
+- `src/lib` - לוגיקה, גישה לנתונים (`lib/data`) ולקוחות Supabase.
+- `src/app/globals.css` - טוקנים של המותג (צבעים, רדיוסים, צללים, מצב כהה).
+- `docs/brand` - מסמך המיתוג. `docs/superpowers` - אפיון ותוכנית העיצוב מחדש.
 
 ## כללי מותג
 
