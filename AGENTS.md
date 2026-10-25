@@ -17,7 +17,9 @@ Read `STATUS.md` next. Open web work: `gh issue list -R Harelzx/skillup-platform
 | Lint | `npm run lint` |
 | Tests | `npm test` (vitest, `src/lib/__tests__/`, includes the brand guards) |
 | Build | `npm run build` |
-No CI. Run lint, tests and build locally and paste the result in the PR.
+CI (`.github/workflows/ci.yml`, "Types & Tests"): `tsc --noEmit` and Vitest must pass. ESLint runs as report-only until the
+14 existing React Compiler errors are fixed. CI has no `next build` (static pages need Supabase), so run the build locally
+and paste the result in the PR.
 Next 16 has breaking changes from older Next.js (for example `src/proxy.ts` replaces middleware). 16.1.6 ships no docs in
 `node_modules/next/dist/docs/`, so check the Next.js 16 docs online before using an unfamiliar API.
 
