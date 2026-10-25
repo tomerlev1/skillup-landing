@@ -1,0 +1,39 @@
+name: CI
+
+# Type check and unit tests on every PR and on push to main. Linux only.
+# ESLint runs but does not fail the job yet: 14 existing React Compiler errors
+# (set-state-in-effect, impure render) must be fixed first, then remove
+# continue-on-error. No `next build` here: static pages fetch from Supabase at
+# build time, and this public repo holds no keys.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Types & Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - name: TypeScript
+        run: npx tsc --noEmit
+      - name: Vitest
+        run: npx vitest run
+      - name: ESLint (report only for now)
+        continue-on-error: true
+        run: npx eslint .
