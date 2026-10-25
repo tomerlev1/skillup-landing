@@ -12,6 +12,19 @@ export function formatPrice(amount: number): string {
   return ILS.format(amount);
 }
 
+const ILS_EXACT = new Intl.NumberFormat("he-IL", {
+  style: "currency",
+  currency: "ILS",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
+
+/** Exact amount for quoted lesson prices: shows agorot only when present. */
+export function formatAmount(amount: number): string {
+  const cents = Math.round(amount * 100);
+  return cents % 100 === 0 ? ILS.format(cents / 100) : ILS_EXACT.format(cents / 100);
+}
+
 const RATING = new Intl.NumberFormat("he-IL", {
   minimumFractionDigits: 1,
   maximumFractionDigits: 1,
@@ -79,22 +92,7 @@ export function lessonModeLabel(mode: string): string {
   return LESSON_MODE_LABELS[mode] ?? mode;
 }
 
-// lesson_mode_prices holds a per-mode SURCHARGE (delta) on the base hourly
-// rate — the DB (create_booking) adds it: total = hourly_rate + surcharge.
-// iOS stores surcharges under legacy keys too (teacher_location/student_location).
-const MODE_PRICE_KEYS: Record<string, string> = {
-  online: "online",
-  teacher_home: "teacher_location",
-  student_home: "student_location",
-};
-
-export function lessonModePrice(
-  mode: string,
-  hourlyRate: number | null,
-  prices: Partial<Record<string, number>> | null,
-): number | null {
-  if (hourlyRate == null) return null;
-  const p = prices ?? {};
-  const surcharge = p[mode] ?? p[MODE_PRICE_KEYS[mode] ?? mode] ?? 0;
-  return hourlyRate + surcharge;
-}
+// Lesson prices: never compute them here. The server RPC quote_booking is the
+// source of truth (see src/lib/quote.ts). lesson_mode_prices holds a FLAT
+// per-lesson add-on per mode, not a per-hour surcharge, so it must never be
+// added to the hourly rate or prorated by duration.

@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import { MessageCircle, ShieldCheck } from "lucide-react";
 import GatedLink from "@/components/market/GatedLink";
 import RatingStars from "@/components/ui/RatingStars";
-import { formatPrice, lessonModeLabel, lessonModePrice } from "@/lib/format";
+import { formatPrice, lessonModeLabel } from "@/lib/format";
+import { addonLabel, modeAddon } from "@/lib/quote";
 import { bookHref } from "@/lib/booking";
 import type { LessonMode } from "@/lib/types";
 
@@ -46,20 +47,12 @@ export default function StickyBookingRail({
     };
   }, []);
 
-  // Full per-mode price = base hourly rate + mode surcharge.
-  const modePrice = (mode: LessonMode): number | null =>
-    lessonModePrice(mode, hourlyRate, lessonModePrices);
-
-  // Headline "from" price = cheapest available mode (falls back to base).
-  const modeFullPrices = lessonModes
-    .map(modePrice)
-    .filter((p): p is number => p != null);
-  const fromPrice = modeFullPrices.length
-    ? Math.min(...modeFullPrices)
-    : hourlyRate;
-  const hasRange =
-    modeFullPrices.length > 1 &&
-    Math.min(...modeFullPrices) !== Math.max(...modeFullPrices);
+  // Headline = the hourly rate. A mode's add-on is FLAT per lesson (the way
+  // quote_booking prices it), so it is listed per mode and never folded into
+  // the hourly number.
+  const fromPrice = hourlyRate;
+  const addons = lessonModes.map((m) => modeAddon(m, lessonModePrices));
+  const hasAddons = addons.some((a) => a !== 0);
 
   return (
     <>
@@ -68,9 +61,6 @@ export default function StickyBookingRail({
         <div className="flex items-baseline justify-between gap-3">
           {fromPrice != null && (
             <p className="flex items-baseline gap-1.5 text-ink">
-              {hasRange && (
-                <span className="text-sm text-ink-3">החל מ־</span>
-              )}
               <span className="ltr-isolate tnum text-[30px] font-black text-brand-800">
                 {formatPrice(fromPrice)}
               </span>
@@ -82,17 +72,17 @@ export default function StickyBookingRail({
 
         {lessonModes.length > 0 && (
           <ul className="mt-5 space-y-1.5 rounded-[var(--r-md)] bg-canvas p-3">
-            {lessonModes.map((mode) => {
-              const price = modePrice(mode);
+            {lessonModes.map((mode, i) => {
+              const extra = addonLabel(addons[i]);
               return (
                 <li
                   key={mode}
                   className="flex items-center justify-between rounded-[var(--r-sm)] px-2 py-1.5 text-[15px] text-ink-2"
                 >
                   <span>{lessonModeLabel(mode)}</span>
-                  {price != null && (
-                    <span className="ltr-isolate tnum font-bold text-ink">
-                      {formatPrice(price)}
+                  {fromPrice != null && hasAddons && (
+                    <span className={`tnum ${extra ? "font-bold text-ink" : "text-sm text-ink-3"}`}>
+                      {extra ?? "ללא תוספת"}
                     </span>
                   )}
                 </li>
@@ -127,9 +117,6 @@ export default function StickyBookingRail({
           <div>
             {fromPrice != null && (
               <p className="flex items-baseline gap-1 text-ink">
-                {hasRange && (
-                  <span className="text-sm text-ink-3">החל מ־</span>
-                )}
                 <span className="ltr-isolate tnum text-lg font-bold">
                   {formatPrice(fromPrice)}
                 </span>
