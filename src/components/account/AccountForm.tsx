@@ -40,6 +40,9 @@ const TEACHER_LINKS: FieldDef[] = [
   { key: "website_url", label: "אתר אישי", type: "url", placeholder: "https://…" },
 ];
 
+const TEACHER_PII = ["phone_number"] as const;
+const STUDENT_PII = ["phone"] as const;
+
 const LEVEL_CATEGORIES = ["יסודי", "חטיבת ביניים", "תיכון", "אקדמיה", "מבוגרים"];
 const PROFICIENCIES = ["מתחילים", "בסיס קיים", "מתקדמים"];
 
@@ -181,13 +184,23 @@ export default function AccountForm({
       payload.subjects_interests = interests.length ? interests : null;
     }
 
-    const { error: updateError } = await supabase
-      .from(isTeacher ? "teachers" : "students")
-      .update(payload)
-      .eq("id", userId);
+    // Contact fields are saved through update_my_private_profile.
+    const pii: Record<string, Value> = {};
+    for (const k of isTeacher ? TEACHER_PII : STUDENT_PII) {
+      pii[k] = payload[k];
+      delete payload[k];
+    }
+
+    const [{ error: updateError }, { error: piiError }] = await Promise.all([
+      supabase
+        .from(isTeacher ? "teachers" : "students")
+        .update(payload)
+        .eq("id", userId),
+      supabase.rpc("update_my_private_profile", isTeacher ? { p_teacher: pii } : { p_student: pii }),
+    ]);
 
     setPending(false);
-    if (updateError) {
+    if (updateError || piiError) {
       setError("השמירה נכשלה. בדקו את הפרטים ונסו שוב.");
       return;
     }
