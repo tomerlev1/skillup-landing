@@ -1,0 +1,30 @@
+name: Evidence
+
+# Fails a PR whose body lacks evidence taken on the current head commit
+# (scripts/check_pr_evidence.py). Re-runs when the body is edited.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  evidence:
+    name: Evidence check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Changed files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr diff ${{ github.event.pull_request.number }} --name-only -R ${{ github.repository }} > /tmp/changed.txt
+      - name: Check evidence
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          UI_PATHS: src/app/,src/components/,public/
+        run: CHANGED_FILES="$(cat /tmp/changed.txt)" python3 scripts/check_pr_evidence.py
