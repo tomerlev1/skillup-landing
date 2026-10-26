@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { ChevronRight, TriangleAlert, X } from "lucide-react";
+import { ChevronRight, RotateCw, TriangleAlert, X } from "lucide-react";
 import Avatar from "@/components/ui/Avatar";
 import BookingSuccess, { type BookingOutcome } from "@/components/booking/BookingSuccess";
 import { createClient } from "@/lib/supabase/client";
@@ -13,7 +13,9 @@ import {
   jerusalemWeekday,
 } from "@/lib/availability-label";
 import { resolvePreselectedSlot, slotFitsMode, submitLabel } from "@/lib/booking";
-import { formatPrice, lessonModeLabel, lessonModePrice } from "@/lib/format";
+import { formatAmount, formatPrice, lessonModeLabel } from "@/lib/format";
+import { modeAddon, modePriceLabel, slotDurationMinutes, type SlotPrice } from "@/lib/quote";
+import { useBookingQuotes } from "@/components/booking/useBookingQuotes";
 import type { AvailabilitySlot, LessonMode } from "@/lib/types";
 
 interface WizardTeacher {
@@ -54,10 +56,26 @@ function slotWhen(slot: AvailabilitySlot): string {
   return `${jerusalemWeekday(slot.start_at)} ${availabilityTime(slot.start_at)}`;
 }
 
-function slotDuration(slot: AvailabilitySlot): number {
-  return Math.round(
-    (new Date(slot.end_at).getTime() - new Date(slot.start_at).getTime()) / 60_000,
-  );
+const slotDuration = slotDurationMinutes;
+
+// One quoted price: the number, a same-size placeholder while loading (stable
+// layout), or a quiet "not available" when the quote failed.
+function QuotedPrice({ value, className }: { value: SlotPrice; className: string }) {
+  if (value.status === "ok") {
+    return <span className={`ltr-isolate tnum ${className}`}>{formatAmount(value.price)}</span>;
+  }
+  if (value.status === "loading") {
+    return (
+      <span
+        role="status"
+        aria-label="מחשבים מחיר"
+        className={`inline-block w-16 animate-pulse rounded-[var(--r-sm)] bg-brand-100 align-middle ${className}`}
+      >
+        &nbsp;
+      </span>
+    );
+  }
+  return <span className="text-sm text-ink-3">לא זמין</span>;
 }
 
 // Toggle pill for subject / mode / level choices. Selected = ink, never
@@ -158,20 +176,18 @@ export default function BookingWizard({
     });
   }
 
-  // Full per-lesson price = (base + mode surcharge) prorated by duration.
-  // No hourly rate on the profile → no price at all (never a fake ₪0).
+  // Prices come from the server (quote_booking), one quote per distinct
+  // (mode, duration), so web shows exactly what iOS and Android show. The
+  // charge itself is recomputed by create_booking, so a failed quote never
+  // blocks booking. No hourly rate on the profile → no price shown.
   const hasPrice = teacher.hourly_rate != null;
-  function slotPrice(slot: AvailabilitySlot): number {
-    const perHour =
-      (mode
-        ? lessonModePrice(mode, teacher.hourly_rate, teacher.lesson_mode_prices)
-        : teacher.hourly_rate) ??
-      teacher.hourly_rate ??
-      0;
-    return Math.round(perHour * (slotDuration(slot) / 60));
-  }
-
-  const totalPrice = selectedSlots.reduce((sum, s) => sum + slotPrice(s), 0);
+  const { pricing, retry: retryQuotes } = useBookingQuotes(
+    supabase,
+    teacher.id,
+    mode,
+    selectedSlots,
+  );
+  const selectedAddon = mode ? modeAddon(mode, teacher.lesson_mode_prices) : 0;
 
   const detailsValid =
     Boolean(subjectName) &&
@@ -464,13 +480,15 @@ export default function BookingWizard({
               <legend className="text-lg font-extrabold text-ink">איך תרצו ללמוד?</legend>
               <div className="mt-4 flex flex-wrap gap-2">
                 {teacher.lesson_modes.map((m) => {
-                  const price = lessonModePrice(m, teacher.hourly_rate, teacher.lesson_mode_prices);
+                  // Hourly rate + FLAT per-lesson add-on, never a prorated sum.
+                  const price = modePriceLabel(
+                    teacher.hourly_rate,
+                    modeAddon(m, teacher.lesson_mode_prices),
+                  );
                   return (
                     <Option key={m} selected={mode === m} onClick={() => setMode(m)}>
                       {lessonModeLabel(m)}
-                      {price != null && (
-                        <span className="ltr-isolate tnum opacity-80">· {formatPrice(price)}</span>
-                      )}
+                      {price != null && <span className="tnum opacity-80">· {price}</span>}
                     </Option>
                   );
                 })}
@@ -570,7 +588,7 @@ export default function BookingWizard({
                   <dt className="mb-2 text-ink-3">
                     {selectedSlots.length > 1 ? `${selectedSlots.length} מועדים` : "מועד"}
                   </dt>
-                  {selectedSlots.map((s) => (
+                  {selectedSlots.map((s, i) => (
                     <dd key={s.id} className="flex justify-between gap-4 py-0.5">
                       <span className="text-ink">
                         {jerusalemWeekday(s.start_at)}, {jerusalemDateShort(s.start_at)} ·{" "}
@@ -579,9 +597,7 @@ export default function BookingWizard({
                         </span>
                       </span>
                       {hasPrice && (
-                        <span className="ltr-isolate tnum font-medium text-ink">
-                          {formatPrice(slotPrice(s))}
-                        </span>
+                        <QuotedPrice value={pricing.slots[i]} className="h-5 font-medium text-ink" />
                       )}
                     </dd>
                   ))}
@@ -590,10 +606,36 @@ export default function BookingWizard({
                 {hasPrice && (
                   <div className="flex justify-between gap-4 border-t border-line pt-2.5">
                     <dt className="text-ink-3">סה״כ</dt>
-                    <dd className="ltr-isolate tnum text-xl font-black text-brand-800">{formatPrice(totalPrice)}</dd>
+                    <dd>
+                      <QuotedPrice value={pricing.total} className="h-7 text-xl font-black text-brand-800" />
+                    </dd>
                   </div>
                 )}
               </dl>
+              {hasPrice && selectedAddon !== 0 && pricing.total.status !== "error" && mode && (
+                <p className="mt-3 text-sm text-ink-3">
+                  המחיר כולל{" "}
+                  <span className="ltr-isolate tnum">{formatPrice(Math.abs(selectedAddon))}</span>{" "}
+                  {selectedAddon > 0 ? "תוספת" : "הנחה"} לכל שיעור {lessonModeLabel(mode)}
+                </p>
+              )}
+
+              {hasPrice && pricing.total.status === "error" && (
+                <div
+                  role="alert"
+                  className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-[var(--r-sm)] border border-warn/40 bg-warn/10 px-4 py-3 text-sm text-ink"
+                >
+                  <span>לא הצלחנו לחשב את המחיר כרגע. אפשר לשלוח את הבקשה בכל זאת.</span>
+                  <button
+                    type="button"
+                    onClick={retryQuotes}
+                    className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-[var(--r-pill)] bg-tint-indigo px-4 text-sm font-bold text-tint-indigo-fg transition-colors hover:bg-brand-100"
+                  >
+                    <RotateCw strokeWidth={1.75} size={16} aria-hidden="true" />
+                    נסו שוב
+                  </button>
+                </div>
+              )}
             </div>
 
             <div>
