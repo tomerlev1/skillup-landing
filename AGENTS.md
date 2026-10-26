@@ -51,4 +51,4 @@ Next 16 has breaking changes from older Next.js (for example `src/proxy.ts` repl
 - Shared contract in `../skillup-platform`: feature registry, parity matrix, RPC contracts and generated DB types. Design tokens are not there yet.
 
 ## Git
-Branch → PR to `main` (Tomer owns the repo). Harel does not merge: when the PR is ready, ask him for a merge click, then the agent runs `gh pr merge <n> --squash --delete-branch`. Never push to `main`. No Vercel previews yet.
+Branch → PR to `main` (Tomer owns the repo). Every PR must link its issue (`Fixes #N`, `Closes #N` or `Part of owner/repo#N`); CI fails without it. Harel does not merge: when the PR is ready, ask him for a merge click, then the agent runs `gh pr merge <n> --squash --delete-branch`. Never push to `main`. No Vercel previews yet.
