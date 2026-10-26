@@ -1,0 +1,29 @@
+name: Issue link
+
+# Every PR names the task it belongs to, so the GitHub Project and the
+# Control Room dashboard stay true: "Fixes #N", "Closes #N" or
+# "Part of owner/repo#N" in the PR body. Re-runs when the body is edited.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  issue-link:
+    name: Issue link
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: PR body links an issue
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          if printf '%s' "$PR_BODY" | grep -Eiq '\b(fix(es|ed)?|close[sd]?|resolve[sd]?|part of)[[:space:]]+([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)?#[0-9]+'; then
+            echo "Issue link found."
+          else
+            echo "::error::No linked issue. Add \"Fixes #N\" (or \"Closes #N\", \"Part of owner/repo#N\") to the PR body."
+            exit 1
+          fi
