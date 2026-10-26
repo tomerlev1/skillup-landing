@@ -50,5 +50,18 @@ Next 16 has breaking changes from older Next.js (for example `src/proxy.ts` repl
   RPC, table or column, open a backend issue first. Changes go to DEV first and to prod only after a founder approves.
 - Shared contract in `../skillup-platform`: feature registry, parity matrix, RPC contracts and generated DB types. Design tokens are not there yet.
 
+## Definition of done (proof pack)
+A change is done only when a machine has checked the proof, not when it looks done.
+1. **Acceptance first:** write the acceptance list in the issue or PR before coding. Bug fix: a test that fails before
+   the fix and passes after.
+2. **`scripts/verify.sh`** passes on the final tree (tsc, Vitest, no new ESLint errors). It prints an Evidence block.
+3. **Evidence in the PR** (template in `.github/pull_request_template.md`): `Commit: <head sha>`, the verify output, and
+   for UI changes (`src/app/`, `src/components/`, `public/`) at least one screenshot embedded in the PR body. The
+   "Evidence check" CI job fails if it is missing, was taken on an older commit, or the PR links no issue.
+4. **Independent check:** run the `verifier` subagent (`.claude/agents/verifier.md`) on the PR and fix every FAIL item.
+5. Only then ask Harel for the merge click, with a plain-Hebrew evidence summary.
+- Claude Code: a Stop hook (`.claude/hooks/verify-before-stop.sh`) blocks ending a session with code changes that
+  `scripts/verify.sh` has not passed.
+
 ## Git
 Branch → PR to `main` (Tomer owns the repo). Every PR must link its issue (`Fixes #N`, `Closes #N` or `Part of owner/repo#N`); CI fails without it. Harel does not merge: when the PR is ready, ask him for a merge click, then the agent runs `gh pr merge <n> --squash --delete-branch`. Never push to `main`. No Vercel previews yet.
